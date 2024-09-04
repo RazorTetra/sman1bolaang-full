@@ -1,0 +1,719 @@
+<?php
+require_once('config.php'); // Koneksi database
+
+// Ambil data berita dari database
+$stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC");
+$stmt->execute();
+$news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <!--=============== FAVICON ===============-->
+   <link rel="shortcut icon" href="assets/img/logo-smk.png" type="image/x-icon">
+
+   <!--=============== REMIXICONS ===============-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.4.0/remixicon.css" crossorigin="">
+
+   <!--=============== CSS ===============-->
+   <link rel="stylesheet" href="assets/css/styles.css">
+
+   <title>SMK NEGERI 1 BOLAANG</title>
+</head>
+
+<body>
+   <!--==================== HEADER ====================-->
+   <header class="header" id="header">
+      <nav class="nav container">
+         <a href="#" class="nav__logo">
+            <span class="nav__logo-circle"><img src="/assets/img/logo-smk.png" alt=""></span>
+            <span class="nav__logo-name">smkn1bolaang</span>
+         </a>
+
+         <div class="nav__menu" id="nav-menu">
+            <span class="nav__title">Menu</span>
+
+            <!-- <h3 class="nav__name">Rian</h3> -->
+
+            <ul class="nav__list">
+               <li class="nav__item">
+                  <a href="#home" class="nav__link">Beranda</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="#about" class="nav__link">Tentang Kami</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="#news" class="nav__link">Berita</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="#skills" class="nav__link">Keahlian</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="/struktur.html" class="nav__link">Struktur</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="#contact" class="nav__link .nav__link-button">Kontak</a>
+               </li>
+            </ul>
+
+            <!-- Close button -->
+            <div class="nav__close" id="nav-close">
+               <i class="ri-close-line"></i>
+            </div>
+         </div>
+
+         <div class="nav__buttons">
+            <!-- Theme Button -->
+            <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+               <i class="ri-menu-4-line"></i>
+            </div>
+         </div>
+      </nav>
+   </header>
+
+   <!--==================== MAIN ====================-->
+   <main class="main">
+      <!--==================== HOME ====================-->
+      <section class="home section" id="home">
+         <div class="home__container container grid">
+            <h1 class="home__name">
+               SMKN 1 Bolaang
+            </h1>
+
+            <div class="home__perfil">
+               <div class="home__image">
+                  <!-- <img src="assets/img/home-perfil-3.jpg" alt="image" class="home__img"> -->
+                  <!-- <div class="home__shadow"></div> -->
+                  <iframe src="https://www.youtube.com/embed/p48DjKj-JyI?si=c-O2boxorz6np0Vr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                  <!-- <img src="assets/img/curved-arrow.svg" alt="" class="home__arrow">
+                     <img src="assets/img/random-lines.svg" alt="" class="home__line"> -->
+
+                  <div class="geometric-box"></div>
+               </div>
+
+               <div class="home__social">
+                  <a href="https://www.facebook.com/smkn1bolaang" target="_blank" class="home__social-link">
+                     <i class="ri-facebook-circle-line"></i>
+                  </a>
+
+                  <a href="https://instagram.com/smkn1.bolaang" target="_blank" class="home__social-link">
+                     <i class="ri-instagram-line"></i>
+                  </a>
+
+                  <a href="https://www.youtube.com/@SMKN1BolaangMattoa" target="_blank" class="home__social-link">
+                     <i class="ri-youtube-line"></i>
+                  </a>
+               </div>
+            </div>
+
+            <div class="home__info">
+               <p class="home__description">
+                  <!-- <b>Lorem, ipsum.</b> -->
+                  <b>MATTOA SmeckONEBol</b>
+                  <br>
+                  <b>" Menjadikan Aku Tangguh Terampil <br> Optimis Amanah "</b>
+
+               </p>
+
+               <a href="#about" class="home__scroll">
+                  <div class="home__scroll-box">
+                     <i class="ri-arrow-down-s-line"></i>
+                  </div>
+
+                  <span class="home__scroll-text">Scroll Kebawah</span>
+               </a>
+            </div>
+         </div>
+      </section>
+
+      <!--==================== ABOUT ====================-->
+      <section class="about section" id="about">
+         <div class="about__container container grid">
+            <h2 class="section__title-1">
+               <span>Tabea !</span>
+            </h2>
+
+            <div class="about__perfil">
+               <div class="about__image">
+                  <img src="assets/img/about-perfil-1.jpg" alt="image" class="about__img">
+
+                  <div class="about__shadow"></div>
+
+                  <div class="geometric-box"></div>
+                  <!-- <img src="assets/img/random-lines.svg" alt="" class="about__line"> -->
+                  <div class="about__box"></div>
+               </div>
+            </div>
+
+            <div class="about__info">
+               <p class="about__description">
+                  <!-- <b>Selamat Datang di SMK Negeri 1 Bolaang!</b><br> --> Dengan penuh rasa syukur dan bangga menyambut Anda semua di platform website kami yang dirancang untuk menjadi jembatan informasi yang menghubungkan kami dengan seluruh siswa, serta masyarakat luas.
+                  <br><br>
+                  Mewujudkan visi dan misi sekolah dengan penuh dedikasi. Melalui slogan kami, MATTOA (Menjadikan Aku Tangguh Terampil Optimis Amanah).
+                  <br><br>
+                  Terima kasih telah mengunjungi website kami. Mari bersama-sama kita wujudkan pendidikan berkualitas dan membangun masa depan yang gemilang.
+               </p>
+
+               <ul class="about__list">
+                  <li class="about__item">
+                     Sukur Moanto,
+                     <br><br>
+                     <b>Brusly Polakitan, S.Kom, M.Pd.</b>
+                     <br><br>
+                     Kepala Sekolah SMK Negeri 1 Bolaang
+                  </li>
+               </ul>
+
+               <div class="about__buttons">
+                  <a href="#contact" class="button">
+                     <i class="ri-whatsapp-line"></i> Kontak Saya
+                  </a>
+
+                  <a href="https://www.facebook.com/bpolakitan" target="_blank" class="button__ghost">
+                     <i class="ri-facebook-box-line"></i>
+                  </a>
+                  <a href="https://www.facebook.com/bpolakitan" target="_blank" class="button__ghost">
+                     <i class="ri-instagram-line"></i>
+                  </a>
+                  <a href="https://www.facebook.com/bpolakitan" target="_blank" class="button__ghost">
+                     <i class="ri-youtube-line"></i>
+                  </a>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!--==================== NEWS / BERITA ====================-->
+      <section class="news section" id="news">
+         <h2 class="section__title-1">
+            <span>Berita.</span>
+         </h2>
+
+         <div class="news__container container grid">
+            <?php foreach ($news_items as $news): ?>
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/<?php echo htmlspecialchars($news['image']); ?>" alt="image" class="news__img">
+                     <a href="news_detail.php?id=<?php echo $news['id']; ?>" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle"><?php echo date('d F Y', strtotime($news['created_at'])); ?></h3>
+                     <h2 class="news__title"><?php echo htmlspecialchars($news['title']); ?></h2>
+                     <p class="news__description">
+                        <?php echo substr(htmlspecialchars($news['content']), 0, 100); ?>...
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="news_detail.php?id=<?php echo $news['id']; ?>" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+            <?php endforeach; ?>
+         </div>
+      </section>
+
+      <!-- ==================== NEWS / BERITA ====================
+         <section class="news section" id="news">
+            <h2 class="section__title-1">
+               <span>Berita.</span>
+            </h2>
+
+            <div class="news__container container grid">
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/berita-1.jpg" alt="image" class="news__img">
+
+                     <a href="#" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle">18 Agustus 2024</h3>
+                     <h2 class="news__title">Dirgahayu SMK Negeri 1 Bolaang ke - 9</h2>
+
+                     <p class="news__description">
+                        Dirgahayu SMKN 1 Bolaang Ke-9 Tahun
+                        18 Agustus 2024
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/berita-2.jpg" alt="image" class="news__img">
+
+                     <a href="#" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle">18 Agustus 2024</h3>
+                     <h2 class="news__title">Pelaksanaan ANBK Tahun 2024</h2>
+
+                     <p class="news__description">
+                        Moda : Mandiri - Full Online di SMKN 1 Bolaang 
+                        Kunjungan Monev dari Pak Kacabdin Dikda Bolmong AGil Perwita dan 
+                        Pak Kasie SMK Mahyudin Gonibala 
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/berita-3.jpg" alt="image" class="news__img">
+
+                     <a href="#" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle">18 Agustus 2024</h3>
+                     <h2 class="news__title">Kunjungan Fasilitator CGP</h2>
+
+                     <p class="news__description">
+                        Kunjungan Fasilitator CGP pada Program F1 Pendidikan Calon Guru Penggerak Dasus Bolmong, di SMKN 1 Bolaang 
+                        #Persiapan PTM 3
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/berita-4.jpg" alt="image" class="news__img">
+
+                     <a href="#" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle">18 Agustus 2024</h3>
+                     <h2 class="news__title">Pelakasanaan Asessmen Diagnostik Kognitif & Nonkognitif SMKN 1 Bolaang</h2>
+
+                     <p class="news__description">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi voluptatum non, reprehenderit omnis recusandae dolorem.
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/berita-5.jpg" alt="image" class="news__img">
+
+                     <a href="#" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle">18 Agustus 2024</h3>
+                     <h2 class="news__title">Wakil Kepala Sekolah Bidang Kurikulum
+                     Ibu. Andini Mamonto, S.Pd</h2>
+
+                     <p class="news__description">
+                        Berpesan : Dalam Penyerahan Ijasah Kepada Seluruh Wisudawan agar tetap menjaga nama Baik Almamater SMKN 1 Bolaang Sebagai Keluarga Besar SMK yang akan tetap terpatri dalam hati sanubari kita semua. 
+                        Sukur Moanto 
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+
+               <article class="news__card">
+                  <div class="news__image">
+                     <img src="assets/img/berita-6.jpg" alt="image" class="news__img">
+
+                     <a href="#" class="news__button button">
+                        <i class="ri-arrow-right-up-line"></i>
+                     </a>
+                  </div>
+
+                  <div class="news__content">
+                     <h3 class="news__subtitle">31 Juli 2023</h3>
+                     <h2 class="news__title">Radit Mokoginta & Nelsandri Ginoga </h2>
+
+                     <p class="news__description">
+                        Menjadi Kebanggaan Bagi Keluarga Besar 
+                        SMKN 1 Bolaang  Karena Unggul & Berprestasi Selamat Buat : 
+                        Radit Mokoginta & Nelsandri Ginoga 
+                        Tetap Rendah Hati dan Bersyukur Selalu 
+                        Syukur Moanto
+                     </p>
+                  </div>
+
+                  <div class="news__buttons">
+                     <a href="" target="_blank" class="news__link">
+                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
+                     </a>
+                  </div>
+               </article>
+            </div>
+         </section> -->
+
+      <!--==================== SKILLS / KEAHLIAN ====================-->
+      <section class="skills section" id="skills">
+         <h2 class="section__title-2">
+            <span>Konsentrasi Keahlian.</span>
+         </h2>
+
+         <div class="skills__container container grid">
+
+            <article class="skills__card">
+               <div class="skills__border"></div>
+
+               <div class="skills__content">
+                  <div class="skills__icon">
+                     <div class="skills__box"></div>
+                     <i class="ri-shake-hands-line"></i>
+                  </div>
+
+                  <h2 class="skills__title">Bisnis Marketing</h2>
+
+                  <p class="skills__description">
+                     Mempelajari teknik pemasaran, strategi penjualan, serta manajemen keuangan dan akuntansi.
+                  </p>
+               </div>
+            </article>
+
+            <article class="skills__card">
+               <div class="skills__border"></div>
+
+               <div class="skills__content">
+                  <div class="skills__icon">
+                     <div class="skills__box"></div>
+                     <i class="ri-pen-nib-line"></i>
+                  </div>
+
+                  <h2 class="skills__title">Desain Komunikasi Visual</h2>
+
+                  <p class="skills__description">
+                     Mempelajari prinsip desain grafis, komunikasi visual, dan multimedia, serta teknik-teknik kreatif untuk merancang materi promosi, iklan, branding, dan media digital.
+                  </p>
+               </div>
+            </article>
+
+            <article class="skills__card">
+               <div class="skills__border"></div>
+
+               <div class="skills__content">
+                  <div class="skills__icon">
+                     <div class="skills__box"></div>
+                     <i class="ri-plant-line"></i>
+                  </div>
+
+                  <h2 class="skills__title">Agribisinis & Tanaman Pangan Holtikultura</h2>
+
+                  <p class="skills__description">
+                     Mempelajari teknik-teknik modern dalam budidaya tanaman, manajemen usaha pertanian, serta teknologi terbaru dalam pengolahan dan pemasaran hasil pertanian.
+                  </p>
+               </div>
+            </article>
+
+            <article class="skills__card">
+               <div class="skills__border"></div>
+
+               <div class="skills__content">
+                  <div class="skills__icon">
+                     <div class="skills__box"></div>
+                     <i class="ri-cake-3-line"></i>
+                  </div>
+
+                  <h2 class="skills__title">Kuliner</h2>
+
+                  <p class="skills__description">
+                     Mempersiapkan siswa untuk berkarir di industri makanan dengan mengajarkan teknik memasak, pengembangan resep, dan estetika penyajian makanan.
+                  </p>
+               </div>
+            </article>
+
+            <article class="skills__card">
+               <div class="skills__border"></div>
+
+               <div class="skills__content">
+                  <div class="skills__icon">
+                     <div class="skills__box"></div>
+                     <i class="ri-hospital-line"></i>
+                  </div>
+
+                  <h2 class="skills__title">Asisten Keperawatan</h2>
+
+                  <p class="skills__description">
+                     Mempersiapkan siswa untuk mendukung tenaga medis dalam perawatan pasien. Siswa mempelajari teknik dasar perawatan kesehatan, termasuk pengukuran tanda vital, pemberian obat, dan perawatan luka.
+                  </p>
+               </div>
+            </article>
+
+            <article class="skills__card">
+               <div class="skills__border"></div>
+
+               <div class="skills__content">
+                  <div class="skills__icon">
+                     <div class="skills__box"></div>
+                     <i class="ri-e-bike-2-line"></i>
+                  </div>
+
+                  <h2 class="skills__title">Teknik Sepeda Motor</h2>
+
+                  <p class="skills__description">
+                     Mempelajari teknik-teknik dasar dan lanjutan dalam diagnosis, servis mesin, sistem kelistrikan, dan sistem transmisi.
+                  </p>
+               </div>
+            </article>
+         </div>
+      </section>
+
+      <!--==================== GALERI ====================-->
+      <section class="galeri section" id="galeri">
+         <h2 class="section__title-2">
+            <span>Galeri.</span>
+         </h2>
+         <div class="galeri__container container">
+
+            <div class="container-image">
+               <div class="img-container">
+                  <div class="img"><span><img src="assets/img/berita-1 - Copy.jpg" alt=""></span></div>
+                  <div class="img"><span><img src="assets/img/berita-4 - Copy.jpg" alt=""></span></div>
+                  <div class="img"><span><img src="assets/img/berita-2 - Copy.jpg" alt=""></span></div>
+                  <div class="img"><span><img src="assets/img/berita-3 - Copy.jpg" alt=""></span></div>
+                  <div class="img"><span><img src="assets/img/berita-5 - Copy.jpg" alt=""></span></div>
+                  <div class="img"><span><img src="assets/img/berita-6 - Copy.jpg" alt=""></span></div>
+               </div>
+            </div>
+
+         </div>
+      </section>
+
+      <!--==================== CONTACT ====================-->
+
+      <section class="contact section" id="contact">
+         <div class="contact__container grid">
+
+            <div class="contact__data">
+               <h2 class="section__title-2">
+                  <span>Kontak & Saran.</span>
+               </h2>
+
+               <p class="contact__description-1">
+                  Kami akan membaca semua email masuk. Kirim kami pesan yang kamu inginkan.
+               </p>
+
+               <p class="contact__description-2">
+                  Kami minta <b>Nama</b> dan <b>Email</b> Kamu, untuk mengirimkan pesan.
+               </p>
+
+               <div class="geometric-box"></div>
+            </div>
+
+            <div class="contact__mail">
+               <h2 class="contact__title">
+                  Kirim Sebuah Pesan Atau Saran Anda
+               </h2>
+
+               <form action="" class="contact__form" id="contact-form">
+                  <div class="contact__group">
+                     <div class="contact__box">
+                        <input type="text" name="user_name" class="contact__input" id="name" required placeholder="Masukkan Nama">
+                        <label for="name" class="contact__label">Nama</label>
+                     </div>
+
+                     <div class="contact__box">
+                        <input type="email" name="user_email" class="contact__input" id="email" required placeholder="Masukkan Email">
+                        <label for="email" class="contact__label">Email</label>
+                     </div>
+                  </div>
+
+                  <div class="contact__box">
+                     <input type="text" name="user_subject" class="contact__input" id="subject" required placeholder="Subject">
+                     <label for="subject" class="contact__label">Subjek</label>
+                  </div>
+
+                  <div class="contact__box contact__area">
+                     <textarea name="user_message" id="message" class="contact__input" required placeholder="Pesan Anda"></textarea>
+                     <label for="message" class="contact__label">Masukkan Pesan</label>
+                  </div>
+
+                  <p class="contact__message" id="contact-message"></p>
+
+                  <button type="submit" class="contact__button button">
+                     <i class="ri-send-plane-line"></i>Kirim Pesan
+                  </button>
+               </form>
+            </div>
+
+            <div class="contact__social">
+               <img src="assets/img/curved-arrow.svg" alt="" class="contact__social-arrow">
+
+               <div class="contact__social-data">
+                  <div>
+                     <p class="contact__social-description-1">
+                        Jika tidak mengirimkan email
+                     </p>
+                     <p class="contact__social-description-2">
+                        Lihat kami di social media
+                     </p>
+                  </div>
+
+                  <div class="contact__social-links">
+                     <a href="https://www.facebook.com/smkn1bolaang" target="_blank" class="contact__social-link">
+                        <i class="ri-facebook-circle-line"></i>
+                     </a>
+
+                     <a href="" target="_blank" class="contact__social-link">
+                        <i class="ri-instagram-line"></i>
+                     </a>
+
+                     <a href="" target="_blank" class="contact__social-link">
+                        <i class="ri-youtube-line"></i>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </main>
+
+   <!--==================== MAPS ====================-->
+   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.3664564000965!2d124.1294927!3d0.8623211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x327e6d402993a729%3A0xae42902436ca6fbe!2sSMK%20Negeri%201%20Bolaang!5e0!3m2!1sen!2sid!4v1723741370300!5m2!1sen!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="map"></iframe>
+
+
+   <!--==================== FOOTER ====================-->
+   <footer class="footer">
+      <div class="footer__container container grid">
+         <div>
+            <a href="#" class="footer__logo">
+               <i class="ri-graduation-cap-line"></i>
+               <span>smkn1bolaang.</span>
+            </a>
+
+            <p class="footer__description">MATTOA SmeckONEBol</p>
+
+            <address class="footer__email">Email: smkn1bolaang@gmail.com</address>
+            <p class="footer__whatsapp">Whatsapp: 0811-437-795</p>
+         </div>
+
+         <div class="footer__content grid">
+            <div>
+               <h3 class="footer__title">Sekolah</h3>
+
+               <ul class="footer__links">
+                  <li>
+                     <a href="#about" class="footer__link">Tentang Kami</a>
+                  </li>
+
+                  <li>
+                     <a href="#skills" class="footer__link">Keahlian</a>
+                  </li>
+
+                  <li>
+                     <a href="#news" class="footer__link">Berita</a>
+                  </li>
+               </ul>
+            </div>
+
+            <div>
+               <h3 class="footer__title">Alamat</h3>
+
+               <ul class="footer__list">
+                  <li>
+                     <address class="footer__info">Jl. Inobonto - Kotamobagu,<br> Langangon</address>
+                  </li>
+
+                  <li>
+                     <address class="footer__info">Kabupaten Bolaang Mongondow, <br> Sulawesi Utara</address>
+                  </li>
+               </ul>
+            </div>
+
+            <div>
+               <h3 class="footer__title">Media Sosial
+
+                  <div class="footer__social">
+                     <a href="" target="_blank" class="footer__social-link">
+                        <i class="ri-facebook-circle-line"></i>
+                     </a>
+
+                     <a href="" target="_blank" class="footer__social-link">
+                        <i class="ri-instagram-line"></i>
+                     </a>
+
+                     <a href="" target="_blank" class="footer__social-link">
+                        <i class="ri-youtube-line"></i>
+                     </a>
+                  </div>
+            </div>
+         </div>
+      </div>
+
+      <span class="footer__copy">
+         Copyright &#169 2024. All Rights Reserved By
+         <a href="#">SMK Negeri 1 Bolaang.</a>
+      </span>
+   </footer>
+
+   <!--========== SCROLL UP ==========-->
+   <a href="#" class="scrollup" id="scroll-up">
+      <i class="ri-arrow-up-s-line"></i>
+   </a>
+
+   <!--=============== SCROLLREVEAL ===============-->
+   <script src="assets/js/scrollreveal.min.js"></script>
+
+   <!--=============== EMAIL JS ===============-->
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+
+   <!--=============== MAIN JS ===============-->
+   <script src="assets/js/main.js"></script>
+</body>
+
+</html>

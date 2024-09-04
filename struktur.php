@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+   <html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <!--=============== FAVICON ===============-->
+      <link rel="shortcut icon" href="assets/img/logo-smk.png" type="image/x-icon">
+
+      <!--=============== REMIXICONS ===============-->   
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.4.0/remixicon.css" crossorigin="">
+
+      <!--=============== CSS ===============-->
+      <link rel="stylesheet" href="assets/css/styles.css">
+
+      <title>SMK NEGERI 1 BOLAANG</title>
+   </head>
+   <body>
+      <!--==================== HEADER ====================-->
+      <header class="header" id="header">
+         <nav class="nav container">
+            <a href="#" class="nav__logo">
+               <span class="nav__logo-circle"><img src="/assets/img/logo-smk.png" alt=""></span>
+               <span class="nav__logo-name">smkn1bolaang</span>
+            </a>
+
+            <div class="nav__menu" id="nav-menu">
+               <span class="nav__title">Menu</span>
+
+               <!-- <h3 class="nav__name">Rian</h3> -->
+
+               <ul class="nav__list">
+                  <li class="nav__item">
+                     <a href="/index.html#home" class="nav__link">Beranda</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="/index.html#about" class="nav__link">Tentang Kami</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="/index.html#skills" class="nav__link">Keahlian</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="/index.html#news" class="nav__link">Berita</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="#" class="nav__link">Struktur</a>
+                  </li>
+
+                  <li class="nav__item">
+                     <a href="/index.html#contact" class="nav__link .nav__link-button" >Kontak</a>
+                  </li>
+               </ul>
+
+               <!-- Close button -->
+               <div class="nav__close" id="nav-close">
+                  <i class="ri-close-line"></i>
+               </div>
+            </div>
+
+            <div class="nav__buttons">
+               <!-- Theme Button -->
+               <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+               <!-- Toggle button -->
+               <div class="nav__toggle" id="nav-toggle">
+                  <i class="ri-menu-4-line"></i>
+               </div>
+            </div>
+         </nav>
+      </header>
+
+      <!--==================== MAIN ====================-->
+      <main class="main">
+         <!--==================== STRUKTUR ====================-->
+         <section class="struktur section" id="struktur">
+          <div class="struktur__container container grid">
+            <h2 class="section__title-1">
+              <span>Struktur Organisasi</span>
+            </h2>
+            <img class="img-struktur" src="/assets/img/struktur.jpg" alt="struktur">
+          </div>
+        </section>
+
+        <!--==================== PROFIL SEKOLAH ====================-->
+        <!-- <section class="profil section" id="profil">
+         <div class="profil__container container grid">
+            <h2 class="section__title-1">
+               <span>Profil Sekolah</span>
+
+            </h2>
+         </div>
+        </section> -->
+
+         <!--==================== CONTACT ====================-->
+         
+         <section class="contact section" id="contact">
+            <div class="contact__container grid">
+               
+               <div class="contact__data">
+                  <h2 class="section__title-2">
+                     <span>Kontak & Saran.</span>
+                  </h2>
+
+                  <p class="contact__description-1">
+                     Kami akan membaca semua email masuk. Kirim kami pesan yang kamu inginkan.
+                  </p>
+
+                  <p class="contact__description-2">
+                     Kami minta <b>Nama</b> dan <b>Email</b> Kamu, untuk mengirimkan pesan.
+                  </p>
+
+                  <div class="geometric-box"></div>
+               </div>
+
+               <div class="contact__mail">
+                  <h2 class="contact__title">
+                     Kirim Sebuah Pesan Atau Saran Anda
+                  </h2>
+
+                  <form action="" class="contact__form" id="contact-form">
+                     <div class="contact__group">
+                        <div class="contact__box">
+                           <input type="text" name="user_name" class="contact__input" id="name" required placeholder="Masukkan Nama">
+                           <label for="name" class="contact__label">Nama</label>
+                        </div>
+
+                        <div class="contact__box">
+                           <input type="email" name="user_email" class="contact__input" id="email" required placeholder="Masukkan Email">
+                           <label for="email" class="contact__label">Email</label>
+                        </div>
+                     </div>
+
+                     <div class="contact__box">
+                        <input type="text" name="user_subject" class="contact__input" id="subject" required placeholder="Subject">
+                        <label for="subject" class="contact__label">Subjek</label>
+                     </div>
+
+                     <div class="contact__box contact__area">
+                        <textarea name="user_message" id="message" class="contact__input" required placeholder="Pesan Anda"></textarea>
+                        <label for="message" class="contact__label">Masukkan Pesan</label>
+                     </div>
+
+                     <p class="contact__message" id="contact-message"></p>
+
+                     <button type="submit" class="contact__button button">
+                        <i class="ri-send-plane-line"></i>Kirim Pesan
+                     </button>
+                  </form>
+               </div>
+
+               <div class="contact__social">
+                  <img src="assets/img/curved-arrow.svg" alt="" class="contact__social-arrow">
+
+                  <div class="contact__social-data">
+                     <div>
+                        <p class="contact__social-description-1">
+                           Jika tidak mengirimkan email
+                        </p>
+                        <p class="contact__social-description-2">
+                           Lihat kami di social media
+                        </p>
+                     </div>
+
+                     <div class="contact__social-links">
+                        <a href="https://www.facebook.com/smkn1bolaang" target="_blank" class="contact__social-link">
+                           <i class="ri-facebook-circle-line"></i>
+                        </a>
+
+                        <a href="" target="_blank" class="contact__social-link">
+                           <i class="ri-instagram-line"></i>
+                        </a>
+
+                        <a href="" target="_blank" class="contact__social-link">
+                           <i class="ri-youtube-line"></i>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </main>
+
+      <!--==================== MAPS ====================-->
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.3664564000965!2d124.1294927!3d0.8623211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x327e6d402993a729%3A0xae42902436ca6fbe!2sSMK%20Negeri%201%20Bolaang!5e0!3m2!1sen!2sid!4v1723741370300!5m2!1sen!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="map"></iframe>
+      
+
+      <!--==================== FOOTER ====================-->
+      <footer class="footer">
+         <div class="footer__container container grid">
+            <div>
+               <a href="#" class="footer__logo">
+                  <i class="ri-graduation-cap-line"></i>
+                  <span>smkn1bolaang.</span>
+               </a>
+
+               <p class="footer__description">MATTOA SmeckONEBol</p>
+
+               <address class="footer__email">Email: smkn1bolaang@gmail.com</address>
+               <p class="footer__whatsapp">Whatsapp: 0811-437-795</p>
+            </div>
+
+            <div class="footer__content grid">
+               <div>
+                  <h3 class="footer__title">Sekolah</h3>
+
+                  <ul class="footer__links">
+                     <li>
+                        <a href="#about" class="footer__link">Tentang Kami</a>
+                     </li>
+
+                     <li>
+                        <a href="#skills" class="footer__link">Keahlian</a>
+                     </li>
+
+                     <li>
+                        <a href="#news" class="footer__link">Berita</a>
+                     </li>
+                  </ul>
+               </div>
+
+               <div>
+                  <h3 class="footer__title">Alamat</h3>
+
+                  <ul class="footer__list">
+                     <li>
+                        <address class="footer__info">Jl. Inobonto - Kotamobagu,<br> Langangon</address>
+                     </li>
+
+                     <li>
+                        <address class="footer__info">Kabupaten Bolaang Mongondow, <br> Sulawesi Utara</address>
+                     </li>
+                  </ul>
+               </div>
+
+               <div>
+                  <h3 class="footer__title">Media Sosial
+
+                  <div class="footer__social">
+                     <a href="" target="_blank" class="footer__social-link">
+                        <i class="ri-facebook-circle-line"></i>
+                     </a>
+
+                     <a href="" target="_blank" class="footer__social-link">
+                        <i class="ri-instagram-line"></i>
+                     </a>
+
+                     <a href="" target="_blank" class="footer__social-link">
+                        <i class="ri-youtube-line"></i>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         
+         <span class="footer__copy">
+            Copyright &#169 2024. All Rights Reserved By
+            <a href="#">SMK Negeri 1 Bolaang.</a>
+         </span>
+      </footer>
+
+      <!--========== SCROLL UP ==========-->
+      <a href="#" class="scrollup" id="scroll-up">
+         <i class="ri-arrow-up-s-line"></i>
+      </a>
+
+      <!--=============== SCROLLREVEAL ===============-->
+      <script src="assets/js/scrollreveal.min.js"></script>
+      
+      <!--=============== EMAIL JS ===============-->
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+
+      <!--=============== MAIN JS ===============-->
+      <script src="assets/js/main.js"></script>
+   </body>
+</html>
