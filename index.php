@@ -22,6 +22,19 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
    <!--=============== CSS ===============-->
    <link rel="stylesheet" href="assets/css/styles.css">
+   <style>
+      /* CSS untuk mengatur ukuran gambar */
+      .news__img {
+         width: 100%;
+         /* Menyesuaikan lebar gambar dengan lebar container */
+         height: 200px;
+         /* Ukuran tetap untuk tinggi gambar */
+         object-fit: cover;
+         /* Menjaga aspek rasio gambar dan mengisi area tanpa distorsi */
+         border-radius: 8px;
+         /* Menambahkan sudut yang melengkung pada gambar */
+      }
+   </style>
 
    <title>SMK NEGERI 1 BOLAANG</title>
 </head>
@@ -31,7 +44,7 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
    <header class="header" id="header">
       <nav class="nav container">
          <a href="#" class="nav__logo">
-            <span class="nav__logo-circle"><img src="/assets/img/logo-smk.png" alt=""></span>
+            <span class="nav__logo-circle"><img src="assets/img/logo-smk.png" alt=""></span>
             <span class="nav__logo-name">smkn1bolaang</span>
          </a>
 
@@ -207,7 +220,7 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($news_items as $news): ?>
                <article class="news__card">
                   <div class="news__image">
-                     <img src="assets/img/<?php echo htmlspecialchars($news['image']); ?>" alt="image" class="news__img">
+                     <img src="<?php echo htmlspecialchars($news['image']); ?>" alt="image" class="news__img">
                      <a href="news_detail.php?id=<?php echo $news['id']; ?>" class="news__button button">
                         <i class="ri-arrow-right-up-line"></i>
                      </a>
@@ -230,175 +243,6 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
          </div>
       </section>
-
-      <!-- ==================== NEWS / BERITA ====================
-         <section class="news section" id="news">
-            <h2 class="section__title-1">
-               <span>Berita.</span>
-            </h2>
-
-            <div class="news__container container grid">
-               <article class="news__card">
-                  <div class="news__image">
-                     <img src="assets/img/berita-1.jpg" alt="image" class="news__img">
-
-                     <a href="#" class="news__button button">
-                        <i class="ri-arrow-right-up-line"></i>
-                     </a>
-                  </div>
-
-                  <div class="news__content">
-                     <h3 class="news__subtitle">18 Agustus 2024</h3>
-                     <h2 class="news__title">Dirgahayu SMK Negeri 1 Bolaang ke - 9</h2>
-
-                     <p class="news__description">
-                        Dirgahayu SMKN 1 Bolaang Ke-9 Tahun
-                        18 Agustus 2024
-                     </p>
-                  </div>
-
-                  <div class="news__buttons">
-                     <a href="" target="_blank" class="news__link">
-                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
-                     </a>
-                  </div>
-               </article>
-
-               <article class="news__card">
-                  <div class="news__image">
-                     <img src="assets/img/berita-2.jpg" alt="image" class="news__img">
-
-                     <a href="#" class="news__button button">
-                        <i class="ri-arrow-right-up-line"></i>
-                     </a>
-                  </div>
-
-                  <div class="news__content">
-                     <h3 class="news__subtitle">18 Agustus 2024</h3>
-                     <h2 class="news__title">Pelaksanaan ANBK Tahun 2024</h2>
-
-                     <p class="news__description">
-                        Moda : Mandiri - Full Online di SMKN 1 Bolaang 
-                        Kunjungan Monev dari Pak Kacabdin Dikda Bolmong AGil Perwita dan 
-                        Pak Kasie SMK Mahyudin Gonibala 
-                     </p>
-                  </div>
-
-                  <div class="news__buttons">
-                     <a href="" target="_blank" class="news__link">
-                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
-                     </a>
-                  </div>
-               </article>
-
-               <article class="news__card">
-                  <div class="news__image">
-                     <img src="assets/img/berita-3.jpg" alt="image" class="news__img">
-
-                     <a href="#" class="news__button button">
-                        <i class="ri-arrow-right-up-line"></i>
-                     </a>
-                  </div>
-
-                  <div class="news__content">
-                     <h3 class="news__subtitle">18 Agustus 2024</h3>
-                     <h2 class="news__title">Kunjungan Fasilitator CGP</h2>
-
-                     <p class="news__description">
-                        Kunjungan Fasilitator CGP pada Program F1 Pendidikan Calon Guru Penggerak Dasus Bolmong, di SMKN 1 Bolaang 
-                        #Persiapan PTM 3
-                     </p>
-                  </div>
-
-                  <div class="news__buttons">
-                     <a href="" target="_blank" class="news__link">
-                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
-                     </a>
-                  </div>
-               </article>
-
-               <article class="news__card">
-                  <div class="news__image">
-                     <img src="assets/img/berita-4.jpg" alt="image" class="news__img">
-
-                     <a href="#" class="news__button button">
-                        <i class="ri-arrow-right-up-line"></i>
-                     </a>
-                  </div>
-
-                  <div class="news__content">
-                     <h3 class="news__subtitle">18 Agustus 2024</h3>
-                     <h2 class="news__title">Pelakasanaan Asessmen Diagnostik Kognitif & Nonkognitif SMKN 1 Bolaang</h2>
-
-                     <p class="news__description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi voluptatum non, reprehenderit omnis recusandae dolorem.
-                     </p>
-                  </div>
-
-                  <div class="news__buttons">
-                     <a href="" target="_blank" class="news__link">
-                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
-                     </a>
-                  </div>
-               </article>
-
-               <article class="news__card">
-                  <div class="news__image">
-                     <img src="assets/img/berita-5.jpg" alt="image" class="news__img">
-
-                     <a href="#" class="news__button button">
-                        <i class="ri-arrow-right-up-line"></i>
-                     </a>
-                  </div>
-
-                  <div class="news__content">
-                     <h3 class="news__subtitle">18 Agustus 2024</h3>
-                     <h2 class="news__title">Wakil Kepala Sekolah Bidang Kurikulum
-                     Ibu. Andini Mamonto, S.Pd</h2>
-
-                     <p class="news__description">
-                        Berpesan : Dalam Penyerahan Ijasah Kepada Seluruh Wisudawan agar tetap menjaga nama Baik Almamater SMKN 1 Bolaang Sebagai Keluarga Besar SMK yang akan tetap terpatri dalam hati sanubari kita semua. 
-                        Sukur Moanto 
-                     </p>
-                  </div>
-
-                  <div class="news__buttons">
-                     <a href="" target="_blank" class="news__link">
-                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
-                     </a>
-                  </div>
-               </article>
-
-               <article class="news__card">
-                  <div class="news__image">
-                     <img src="assets/img/berita-6.jpg" alt="image" class="news__img">
-
-                     <a href="#" class="news__button button">
-                        <i class="ri-arrow-right-up-line"></i>
-                     </a>
-                  </div>
-
-                  <div class="news__content">
-                     <h3 class="news__subtitle">31 Juli 2023</h3>
-                     <h2 class="news__title">Radit Mokoginta & Nelsandri Ginoga </h2>
-
-                     <p class="news__description">
-                        Menjadi Kebanggaan Bagi Keluarga Besar 
-                        SMKN 1 Bolaang  Karena Unggul & Berprestasi Selamat Buat : 
-                        Radit Mokoginta & Nelsandri Ginoga 
-                        Tetap Rendah Hati dan Bersyukur Selalu 
-                        Syukur Moanto
-                     </p>
-                  </div>
-
-                  <div class="news__buttons">
-                     <a href="" target="_blank" class="news__link">
-                        <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
-                     </a>
-                  </div>
-               </article>
-            </div>
-         </section> -->
 
       <!--==================== SKILLS / KEAHLIAN ====================-->
       <section class="skills section" id="skills">

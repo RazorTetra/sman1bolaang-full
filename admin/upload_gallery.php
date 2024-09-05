@@ -1,12 +1,7 @@
 <?php
-session_start();
 require_once('../config.php');
+include('../admin/auth.php'); // Mengimpor auth.php untuk pengecekan login
 
-// Periksa apakah user sudah login dan memiliki role admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
-    header("Location: ../loginPage.php");
-    exit();
-}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image'])) {
     $gallery_dir = '../assets/img/';
@@ -35,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['image'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Gambar Galeri</title>
-    <link rel="stylesheet" href="../assets/css/admin.css"> <!-- Ganti dengan path CSS Anda -->
+    <link rel="stylesheet" href="../assets/css/admin.css"> 
+    <link href="../assets/css/output.css" rel="stylesheet">
 </head>
 
 <body>

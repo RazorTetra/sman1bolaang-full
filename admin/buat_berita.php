@@ -1,16 +1,9 @@
 <?php
+include('../admin/auth.php'); // Mengimpor auth.php untuk pengecekan login
 include('../config.php');
-session_start();
-
-// Mengecek apakah user sudah login
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../functions/loginPage.php');
-    exit();
-}
 
 $message = ""; // Variabel untuk menyimpan pesan sukses atau error
 
-// Proses form jika ada data yang dikirimkan
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $judul = $_POST['judul'];
     $tanggal = $_POST['tanggal'];
@@ -21,19 +14,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     if (empty($judul) || empty($tanggal) || empty($konten) || $gambar['error'] !== UPLOAD_ERR_OK) {
         $message = "Semua kolom harus diisi dan gambar harus diupload.";
     } else {
-        // Upload gambar
-        $gambarPath = '../assets/img/' . basename($gambar['name']);
-        if (move_uploaded_file($gambar['tmp_name'], $gambarPath)) {
-            // Simpan artikel ke database
-            $stmt = $pdo->prepare("INSERT INTO articles (title, content, image, created_at, updated_at) VALUES (:title, :content, :image, NOW(), NOW())");
-            $stmt->execute([
-                'title' => $judul,
-                'content' => $konten,
-                'image' => $gambarPath
-            ]);
-            $message = "Artikel berhasil dibuat.";
+        // Cek apakah file adalah gambar
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($gambar['type'], $allowedTypes)) {
+            $message = "Hanya file gambar (JPG, PNG, GIF) yang diperbolehkan.";
         } else {
-            $message = "Gagal mengupload gambar.";
+            // Upload gambar
+            $gambarPath = 'assets/img/' . basename($gambar['name']);
+            if (move_uploaded_file($gambar['tmp_name'], '../' . $gambarPath)) {
+                // Simpan artikel ke database
+                $stmt = $pdo->prepare("INSERT INTO articles (title, content, image, created_at, updated_at) VALUES (:title, :content, :image, NOW(), NOW())");
+                $stmt->execute([
+                    'title' => $judul,
+                    'content' => $konten,
+                    'image' => $gambarPath
+                ]);
+                $message = "Artikel berhasil dibuat.";
+            } else {
+                $message = "Gagal mengupload gambar.";
+            }
         }
     }
 }
@@ -46,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Berita</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../assets/css/output.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 font-sans">

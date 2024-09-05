@@ -1,12 +1,7 @@
 <?php
-session_start();
 require_once('../config.php');
+include('../admin/auth.php'); // Mengimpor auth.php untuk pengecekan login
 
-// Periksa apakah user sudah login dan memiliki role admin
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin') {
-    header("Location: ../loginPage.php");
-    exit();
-}
 
 // Periksa apakah parameter 'image' ada di URL
 if (isset($_GET['image'])) {
