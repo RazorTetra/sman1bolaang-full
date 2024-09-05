@@ -1,24 +1,21 @@
 <?php
 require_once('../config.php');
-include('../admin/auth.php'); // Mengimpor auth.php untuk pengecekan login
+include('../admin/auth.php');
 
-
-// Periksa apakah parameter 'image' ada di URL
 if (isset($_GET['image'])) {
-    $image_name = basename($_GET['image']); // Ambil nama gambar dari parameter URL
-    $gallery_dir = '../assets/img/';
-    $image_path = $gallery_dir . $image_name;
+    $image_name = $_GET['image'];
+    $file_path = '../assets/img/' . $image_name;
 
-    // Periksa apakah file gambar ada
-    if (file_exists($image_path)) {
-        // Hapus file gambar
-        unlink($image_path);
-        header("Location: manage_gallery.php"); // Redirect kembali ke halaman galeri setelah penghapusan
-        exit();
-    } else {
-        echo "Gambar tidak ditemukan!";
+    // Hapus gambar dari folder
+    if (file_exists($file_path)) {
+        unlink($file_path);
+
+        // Hapus entri dari database
+        $stmt = $pdo->prepare("DELETE FROM gallery WHERE image = :image");
+        $stmt->execute(['image' => $image_name]);
+
+        header('Location: manage_gallery.php');
+        exit;
     }
-} else {
-    echo "Parameter gambar tidak ditemukan!";
 }
 ?>

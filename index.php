@@ -5,6 +5,11 @@ require_once('config.php'); // Koneksi database
 $stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC");
 $stmt->execute();
 $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Ambil gambar dari database
+$stmt = $pdo->prepare("SELECT image FROM gallery ORDER BY created_at DESC");
+$stmt->execute();
+$gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -362,18 +367,15 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <span>Galeri.</span>
          </h2>
          <div class="galeri__container container">
-
             <div class="container-image">
                <div class="img-container">
-                  <div class="img"><span><img src="assets/img/berita-1 - Copy.jpg" alt=""></span></div>
-                  <div class="img"><span><img src="assets/img/berita-4 - Copy.jpg" alt=""></span></div>
-                  <div class="img"><span><img src="assets/img/berita-2 - Copy.jpg" alt=""></span></div>
-                  <div class="img"><span><img src="assets/img/berita-3 - Copy.jpg" alt=""></span></div>
-                  <div class="img"><span><img src="assets/img/berita-5 - Copy.jpg" alt=""></span></div>
-                  <div class="img"><span><img src="assets/img/berita-6 - Copy.jpg" alt=""></span></div>
+                  <?php foreach ($gallery_images as $image): ?>
+                     <div class="img">
+                        <span><img src="assets/img/<?php echo htmlspecialchars($image['image']); ?>" alt="Galeri"></span>
+                     </div>
+                  <?php endforeach; ?>
                </div>
             </div>
-
          </div>
       </section>
 
