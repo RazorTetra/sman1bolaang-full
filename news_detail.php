@@ -23,7 +23,7 @@ $related_news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../assets/css/output.css" rel="stylesheet">
 
     <style>
         .news-container {
