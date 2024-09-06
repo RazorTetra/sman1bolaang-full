@@ -16,7 +16,16 @@ $stmt = $pdo->prepare("SELECT * FROM about_info LIMIT 1");
 $stmt->execute();
 $about = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Periksa apakah data ditemukan
+// ambil data dari tabel social media links
+try {
+   $stmt = $pdo->query("SELECT * FROM social_media_links WHERE is_active = TRUE");
+   $socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+   $socialLinks = [];
+   // error_log('Database error: ' . $e->getMessage());
+}
+
+// Periksa apakah data about jika ditemukan
 if ($about) {
    $description = $about['description'];
    $name = $about['name'];
@@ -456,15 +465,11 @@ if ($about) {
                      </p>
                   </div>
                   <div class="contact__social-links">
-                     <a href="https://www.facebook.com/smkn1bolaang" target="_blank" class="contact__social-link">
-                        <i class="ri-facebook-circle-line"></i>
-                     </a>
-                     <a href="#" target="_blank" class="contact__social-link">
-                        <i class="ri-instagram-line"></i>
-                     </a>
-                     <a href="#" target="_blank" class="contact__social-link">
-                        <i class="ri-youtube-line"></i>
-                     </a>
+                     <?php foreach ($socialLinks as $link): ?>
+                        <a href="<?php echo htmlspecialchars($link['url']); ?>" target="_blank" class="contact__social-link">
+                           <i class="<?php echo htmlspecialchars($link['icon']); ?>"></i>
+                        </a>
+                     <?php endforeach; ?>
                   </div>
                </div>
             </div>

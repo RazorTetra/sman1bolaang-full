@@ -37,6 +37,11 @@ function sortLink($column, $currentSort, $currentOrder)
     $newOrder = ($currentSort === $column && $currentOrder === 'ASC') ? 'DESC' : 'ASC';
     return "kotak_masukan.php?sort=$column&order=$newOrder";
 }
+
+// Fetch social media links
+$stmt = $pdo->query("SELECT * FROM social_media_links WHERE is_active = TRUE");
+$socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -56,31 +61,38 @@ function sortLink($column, $currentSort, $currentOrder)
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .table th,
         .table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #e5e7eb;
         }
+
         .table th {
             background-color: #f3f4f6;
             color: #4b5563;
         }
+
         .table tr:hover {
             background-color: #f9fafb;
         }
+
         .table a {
             color: #3b82f6;
             text-decoration: none;
         }
+
         .table a:hover {
             text-decoration: underline;
         }
+
         .pagination {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
+
         .pagination a {
             padding: 8px 16px;
             margin: 0 4px;
@@ -90,9 +102,11 @@ function sortLink($column, $currentSort, $currentOrder)
             text-decoration: none;
             font-weight: 600;
         }
+
         .pagination a:hover {
             background-color: #2563eb;
         }
+
         .modal {
             position: fixed;
             inset: 0;
@@ -104,10 +118,12 @@ function sortLink($column, $currentSort, $currentOrder)
             opacity: 0;
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
+
         .modal.show {
             visibility: visible;
             opacity: 1;
         }
+
         .modal-content {
             background-color: white;
             padding: 20px;
@@ -116,20 +132,24 @@ function sortLink($column, $currentSort, $currentOrder)
             width: 100%;
             position: relative;
         }
+
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-header h2 {
             margin: 0;
         }
+
         .modal-header button {
             background: none;
             border: none;
             font-size: 24px;
             cursor: pointer;
         }
+
         .modal-body {
             margin-top: 20px;
         }
@@ -191,17 +211,48 @@ function sortLink($column, $currentSort, $currentOrder)
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
 
-        <!-- Pagination -->
-        <div class="pagination">
-            <?php for ($i = 1; $i <= $pages; $i++): ?>
-                <a href="?page=<?php echo $i; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">
-                    <?php echo $i; ?>
-                </a>
-            <?php endfor; ?>
         </div>
     </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <?php for ($i = 1; $i <= $pages; $i++): ?>
+            <a href="?page=<?php echo $i; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">
+                <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+    </div>
+    </div>
+
+    <!-- Social Media Links Section -->
+    <div class="container mx-auto">
+        <h2 class="text-2xl font-bold mt-8 mb-4">Social Media Links</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Platform</th>
+                    <th>URL</th>
+                    <th>Icon</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($socialLinks as $link): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($link['platform']); ?></td>
+                        <td><?php echo htmlspecialchars($link['url']); ?></td>
+                        <td><i class="<?php echo htmlspecialchars($link['icon']); ?>"></i></td>
+                        <td>
+                            <!-- Add edit and delete buttons here -->
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 rounded text-xs">Edit</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
 
     <!-- Modal for showing full message -->
     <div id="messageModal" class="modal">
