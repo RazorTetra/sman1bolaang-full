@@ -10,6 +10,28 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $pdo->prepare("SELECT image FROM gallery ORDER BY created_at DESC");
 $stmt->execute();
 $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Ambil data dari tabel about_info
+$stmt = $pdo->prepare("SELECT * FROM about_info LIMIT 1");
+$stmt->execute();
+$about = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Periksa apakah data ditemukan
+if ($about) {
+   $description = $about['description'];
+   $name = $about['name'];
+   $image = $about['image'];
+   $facebook = $about['facebook'];
+   $instagram = $about['instagram'];
+   $youtube = $about['youtube'];
+} else {
+   $description = "Deskripsi tidak tersedia.";
+   $name = "Nama tidak tersedia.";
+   $image = "default-image.jpg"; // Gambar default jika tidak ada
+   $facebook = "#";
+   $instagram = "#";
+   $youtube = "#";
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +49,9 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
    <!--=============== CSS ===============-->
    <link rel="stylesheet" href="assets/css/styles.css">
+   <link href="/assets/css/output.css" rel="stylesheet">
+
+
    <style>
       /* CSS untuk mengatur ukuran gambar */
       .news__img {
@@ -167,53 +192,47 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="about__perfil">
                <div class="about__image">
-                  <img src="assets/img/about-perfil-1.jpg" alt="image" class="about__img">
-
+                  <img src="<?php echo htmlspecialchars($about['image']); ?>" alt="image" class="about__img">
                   <div class="about__shadow"></div>
-
                   <div class="geometric-box"></div>
-                  <!-- <img src="assets/img/random-lines.svg" alt="" class="about__line"> -->
                   <div class="about__box"></div>
                </div>
             </div>
 
             <div class="about__info">
-               <p class="about__description">
-                  <!-- <b>Selamat Datang di SMK Negeri 1 Bolaang!</b><br> --> Dengan penuh rasa syukur dan bangga menyambut Anda semua di platform website kami yang dirancang untuk menjadi jembatan informasi yang menghubungkan kami dengan seluruh siswa, serta masyarakat luas.
-                  <br><br>
-                  Mewujudkan visi dan misi sekolah dengan penuh dedikasi. Melalui slogan kami, MATTOA (Menjadikan Aku Tangguh Terampil Optimis Amanah).
-                  <br><br>
-                  Terima kasih telah mengunjungi website kami. Mari bersama-sama kita wujudkan pendidikan berkualitas dan membangun masa depan yang gemilang.
-               </p>
+               <div class="about__description">
+                  <?php echo $about['description']; ?>
+               </div>
 
-               <ul class="about__list">
-                  <li class="about__item">
-                     Sukur Moanto,
-                     <br><br>
-                     <b>Brusly Polakitan, S.Kom, M.Pd.</b>
-                     <br><br>
-                     Kepala Sekolah SMK Negeri 1 Bolaang
-                  </li>
-               </ul>
+               <div class="about__name">
+                  <?php echo $about['name']; ?>
+               </div>
 
-               <div class="about__buttons">
+               <div class="about__buttons mt-4">
                   <a href="#contact" class="button">
                      <i class="ri-whatsapp-line"></i> Kontak Saya
                   </a>
 
-                  <a href="https://www.facebook.com/bpolakitan" target="_blank" class="button__ghost">
+                  <a href="<?php echo htmlspecialchars($about['facebook']); ?>" target="_blank" class="button__ghost">
                      <i class="ri-facebook-box-line"></i>
                   </a>
-                  <a href="https://www.facebook.com/bpolakitan" target="_blank" class="button__ghost">
+                  <a href="<?php echo htmlspecialchars($about['instagram']); ?>" target="_blank" class="button__ghost">
                      <i class="ri-instagram-line"></i>
                   </a>
-                  <a href="https://www.facebook.com/bpolakitan" target="_blank" class="button__ghost">
+                  <a href="<?php echo htmlspecialchars($about['youtube']); ?>" target="_blank" class="button__ghost">
                      <i class="ri-youtube-line"></i>
                   </a>
                </div>
             </div>
          </div>
       </section>
+
+      <script>
+         function editContent(section) {
+            window.location.href = 'admin/manage_about.php';
+         }
+      </script>
+
 
       <!--==================== NEWS / BERITA ====================-->
       <section class="news section" id="news">
@@ -380,23 +399,18 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </section>
 
       <!--==================== CONTACT ====================-->
-
       <section class="contact section" id="contact">
          <div class="contact__container grid">
-
             <div class="contact__data">
                <h2 class="section__title-2">
                   <span>Kontak & Saran.</span>
                </h2>
-
                <p class="contact__description-1">
                   Kami akan membaca semua email masuk. Kirim kami pesan yang kamu inginkan.
                </p>
-
                <p class="contact__description-2">
                   Kami minta <b>Nama</b> dan <b>Email</b> Kamu, untuk mengirimkan pesan.
                </p>
-
                <div class="geometric-box"></div>
             </div>
 
@@ -404,32 +418,26 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
                <h2 class="contact__title">
                   Kirim Sebuah Pesan Atau Saran Anda
                </h2>
-
-               <form action="" class="contact__form" id="contact-form">
+               <form class="contact__form" id="contact-form">
                   <div class="contact__group">
                      <div class="contact__box">
                         <input type="text" name="user_name" class="contact__input" id="name" required placeholder="Masukkan Nama">
                         <label for="name" class="contact__label">Nama</label>
                      </div>
-
                      <div class="contact__box">
                         <input type="email" name="user_email" class="contact__input" id="email" required placeholder="Masukkan Email">
                         <label for="email" class="contact__label">Email</label>
                      </div>
                   </div>
-
                   <div class="contact__box">
-                     <input type="text" name="user_subject" class="contact__input" id="subject" required placeholder="Subject">
+                     <input type="text" name="user_subject" class="contact__input" id="subject" required placeholder="Subjek">
                      <label for="subject" class="contact__label">Subjek</label>
                   </div>
-
                   <div class="contact__box contact__area">
                      <textarea name="user_message" id="message" class="contact__input" required placeholder="Pesan Anda"></textarea>
                      <label for="message" class="contact__label">Masukkan Pesan</label>
                   </div>
-
                   <p class="contact__message" id="contact-message"></p>
-
                   <button type="submit" class="contact__button button">
                      <i class="ri-send-plane-line"></i>Kirim Pesan
                   </button>
@@ -438,7 +446,6 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="contact__social">
                <img src="assets/img/curved-arrow.svg" alt="" class="contact__social-arrow">
-
                <div class="contact__social-data">
                   <div>
                      <p class="contact__social-description-1">
@@ -448,17 +455,14 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         Lihat kami di social media
                      </p>
                   </div>
-
                   <div class="contact__social-links">
                      <a href="https://www.facebook.com/smkn1bolaang" target="_blank" class="contact__social-link">
                         <i class="ri-facebook-circle-line"></i>
                      </a>
-
-                     <a href="" target="_blank" class="contact__social-link">
+                     <a href="#" target="_blank" class="contact__social-link">
                         <i class="ri-instagram-line"></i>
                      </a>
-
-                     <a href="" target="_blank" class="contact__social-link">
+                     <a href="#" target="_blank" class="contact__social-link">
                         <i class="ri-youtube-line"></i>
                      </a>
                   </div>
@@ -560,6 +564,41 @@ $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
    <!--=============== MAIN JS ===============-->
    <script src="assets/js/main.js"></script>
+
+   <script>
+      document.addEventListener('DOMContentLoaded', function() {
+         const form = document.getElementById('contact-form');
+         const message = document.getElementById('contact-message');
+
+         form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            fetch('functions/send_feedback.php', {
+                  method: 'POST',
+                  body: formData
+               })
+               .then(response => response.json())
+               .then(data => {
+                  if (data.status === 'success') {
+                     message.textContent = data.message;
+                     message.style.color = 'green';
+                     form.reset();
+                  } else {
+                     message.textContent = data.message;
+                     message.style.color = 'red';
+                  }
+               })
+               .catch(error => {
+                  console.error('Error:', error);
+                  message.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
+                  message.style.color = 'red';
+               });
+         });
+      });
+   </script>
+
 </body>
 
 </html>
