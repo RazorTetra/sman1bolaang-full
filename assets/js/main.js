@@ -42,7 +42,7 @@ const sendEmail = (e) =>{
   emailjs.sendForm('service_rdyio9b', 'template_7u8d12n', '#contact-form', 'Lw9J8KAihTs_Skx6P')
   .then(() =>{
 
-    contactMessage.textContent = 'Message sent successfully!'
+    // contactMessage.textContent = 'Message sent successfully!'
 
     setTimeout(() => {
       contactMessage.textContent = ''
@@ -51,7 +51,7 @@ const sendEmail = (e) =>{
     contactForm.reset()
   }, () =>{
     // Show error message
-    contactMessage.textContent = 'Message not sent (service error)!'
+    // contactMessage.textContent = 'Message not sent (service error)!'
   })
 
 }

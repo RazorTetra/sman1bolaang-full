@@ -35,6 +35,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
+    if (strlen($message) < 10) {
+        echo json_encode(['status' => 'error', 'message' => 'Pesan harus minimal 10 karakter.']);
+        exit;
+    }
+
+    // Filter kata-kata kasar
+    $bad_words = ['kntl', 'kontol']; // Tambahkan kata-kata lain sesuai kebutuhan
+    $pattern = '/\b(' . implode('|', $bad_words) . ')\b/i';
+    if (preg_match($pattern, $message)) {
+        echo json_encode(['status' => 'error', 'message' => 'Pesan mengandung kata kasar.']);
+        exit;
+    }
+
     // SQL query
     $sql = "INSERT INTO feedback (name, email, subject, message) VALUES (:name, :email, :subject, :message)";
 
@@ -48,12 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             echo json_encode(['status' => 'success', 'message' => 'Pesan Anda telah dikirim. Terima kasih!']);
         } else {
+            error_log("Query failed: " . $stmt->queryString);
+            error_log("Bind Params: Name: $name, Email: $email, Subject: $subject, Message: $message");
             echo json_encode(['status' => 'error', 'message' => 'Gagal mengirim pesan. Coba lagi.']);
         }
     } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => 'Terjadi kesalahan database.']);
-        // Log error untuk debugging
         error_log("Database Error: " . $e->getMessage());
+        echo json_encode(['status' => 'error', 'message' => 'Terjadi kesalahan database.']);
     }
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Metode permintaan tidak valid.']);
