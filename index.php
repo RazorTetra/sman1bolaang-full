@@ -1,5 +1,6 @@
 <?php
 require_once('config.php'); // Koneksi database
+include ('functions/visitors.php');
 
 // Ambil data berita dari database
 $stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC");
@@ -77,6 +78,16 @@ if ($about) {
 
    <title>SMK NEGERI 1 BOLAANG</title>
 </head>
+
+<!-- Google tag (gtag.js) -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NN3BHD7T"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T4NN3BHD7T');
+</script> -->
 
 <body>
    <!--==================== HEADER ====================-->

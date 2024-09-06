@@ -64,6 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage About Section</title>
     <link href="../assets/css/output.css" rel="stylesheet">
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="../assets/img/logo-smk.png" type="image/x-icon">
+
     <style>
         .editor-toolbar button {
             background-color: #f0f0f0;

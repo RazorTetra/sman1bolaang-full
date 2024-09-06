@@ -65,6 +65,7 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,12 +73,17 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="../assets/img/logo-smk.png" type="image/x-icon">
+
     <style>
         .image-container {
             position: relative;
             width: 100%;
-            padding-top: 100%; /* 1:1 Aspect Ratio */
+            padding-top: 100%;
+            /* 1:1 Aspect Ratio */
         }
+
         .image-container img {
             position: absolute;
             top: 0;
@@ -86,15 +92,18 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             height: 100%;
             object-fit: cover;
         }
+
         .checkbox-container {
             position: absolute;
             top: 10px;
             right: 10px;
             z-index: 10;
         }
+
         .checkbox-container input[type="checkbox"] {
             display: none;
         }
+
         .checkbox-container .checkbox-label {
             display: inline-block;
             width: 24px;
@@ -105,10 +114,12 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .checkbox-container input[type="checkbox"]:checked + .checkbox-label {
+
+        .checkbox-container input[type="checkbox"]:checked+.checkbox-label {
             background-color: #4299e1;
             border-color: #4299e1;
         }
+
         .checkbox-container .checkbox-label::after {
             content: '\2714';
             display: none;
@@ -117,7 +128,8 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
             text-align: center;
             line-height: 20px;
         }
-        .checkbox-container input[type="checkbox"]:checked + .checkbox-label::after {
+
+        .checkbox-container input[type="checkbox"]:checked+.checkbox-label::after {
             display: block;
         }
     </style>
@@ -126,7 +138,9 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 <body class="bg-gray-100" x-data="{ 
     lightboxOpen: false, 
     lightboxImage: '', 
-    selectedCount: <?php echo count(array_filter($gallery_images, function($img) { return $img['is_displayed']; })); ?>
+    selectedCount: <?php echo count(array_filter($gallery_images, function ($img) {
+                        return $img['is_displayed'];
+                    })); ?>
 }">
     <?php include('../admin/components/navbar.php'); ?>
 
@@ -164,16 +178,16 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
                                     </div>
                                     <div class="checkbox-container">
                                         <input type="checkbox" id="display_<?php echo $image['id']; ?>" name="display_images[]" value="<?php echo $image['id']; ?>" checked
-                                               @change="selectedCount = document.querySelectorAll('input[name=\'display_images[]\']:checked').length">
+                                            @change="selectedCount = document.querySelectorAll('input[name=\'display_images[]\']:checked').length">
                                         <label for="display_<?php echo $image['id']; ?>" class="checkbox-label"></label>
                                     </div>
                                     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                         <button type="button" @click="lightboxOpen = true; lightboxImage = '../assets/img/<?php echo htmlspecialchars($image['image']); ?>'" class="bg-blue-500 text-white p-2 rounded-full mr-2">
                                             <i class="fas fa-search-plus"></i>
                                         </button>
-                                        <a href="manage_gallery.php?action=delete&id=<?php echo $image['id']; ?>" 
-                                           onclick="return confirm('Apakah Anda yakin ingin menghapus gambar ini?');"
-                                           class="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-red-600">
+                                        <a href="manage_gallery.php?action=delete&id=<?php echo $image['id']; ?>"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus gambar ini?');"
+                                            class="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-red-600">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </div>
@@ -194,16 +208,16 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
                                 </div>
                                 <div class="checkbox-container">
                                     <input type="checkbox" id="display_<?php echo $image['id']; ?>" name="display_images[]" value="<?php echo $image['id']; ?>"
-                                           @change="selectedCount = document.querySelectorAll('input[name=\'display_images[]\']:checked').length">
+                                        @change="selectedCount = document.querySelectorAll('input[name=\'display_images[]\']:checked').length">
                                     <label for="display_<?php echo $image['id']; ?>" class="checkbox-label"></label>
                                 </div>
                                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     <button type="button" @click="lightboxOpen = true; lightboxImage = '../assets/img/<?php echo htmlspecialchars($image['image']); ?>'" class="bg-blue-500 text-white p-2 rounded-full mr-2">
                                         <i class="fas fa-search-plus"></i>
                                     </button>
-                                    <a href="manage_gallery.php?action=delete&id=<?php echo $image['id']; ?>" 
-                                       onclick="return confirm('Apakah Anda yakin ingin menghapus gambar ini?');"
-                                       class="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-red-600">
+                                    <a href="manage_gallery.php?action=delete&id=<?php echo $image['id']; ?>"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus gambar ini?');"
+                                        class="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transition duration-300 hover:bg-red-600">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </div>
@@ -216,10 +230,10 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
                     <p class="text-lg text-gray-600">
                         <span x-text="selectedCount"></span> dari 6 gambar dipilih
                     </p>
-                    <button type="submit" 
-                            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 flex items-center"
-                            :disabled="selectedCount > 6"
-                            :class="{ 'opacity-50 cursor-not-allowed': selectedCount > 6 }">
+                    <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 flex items-center"
+                        :disabled="selectedCount > 6"
+                        :class="{ 'opacity-50 cursor-not-allowed': selectedCount > 6 }">
                         <i class="fas fa-save mr-2"></i> Simpan Perubahan
                     </button>
                 </div>
@@ -237,4 +251,5 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
         </div>
     </div>
 </body>
+
 </html>

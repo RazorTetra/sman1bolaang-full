@@ -46,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Berita</title>
     <link href="../assets/css/output.css" rel="stylesheet">
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="../assets/img/logo-smk.png" type="image/x-icon">
+
 </head>
 
 <body class="bg-gray-100 font-sans">
@@ -53,14 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
     <main class="p-6">
         <h2 class="text-2xl font-bold mb-4">Form Buat Berita</h2>
-        
+
         <!-- Menampilkan pesan sukses atau error -->
         <?php if (!empty($message)): ?>
             <div class="mb-4 p-4 text-white <?php echo strpos($message, 'berhasil') !== false ? 'bg-green-500' : 'bg-red-500'; ?> rounded">
                 <?php echo htmlspecialchars($message); ?>
             </div>
         <?php endif; ?>
-        
+
         <form action="" method="POST" enctype="multipart/form-data" class="max-w-4xl mx-auto bg-white p-6 rounded shadow-md">
             <div class="mb-4">
                 <label for="judul" class="block text-gray-700 font-semibold mb-2">Judul Berita</label>
@@ -82,4 +85,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         </form>
     </main>
 </body>
+
 </html>

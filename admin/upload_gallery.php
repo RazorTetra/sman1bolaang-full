@@ -4,7 +4,7 @@ include('../admin/auth.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $upload_dir = '../assets/img/';
-    
+
     // Hitung jumlah file yang diupload, maksimal 6 file
     $total_files = count($_FILES['images']['name']);
     if ($total_files > 6) {
@@ -33,12 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Gambar Galeri</title>
     <link href="../assets/css/output.css" rel="stylesheet">
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="../assets/img/logo-smk.png" type="image/x-icon">
+
 </head>
+
 <body class="bg-gray-100">
     <?php include('../admin/components/navbar.php'); ?>
 
@@ -53,4 +58,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </section>
     </main>
 </body>
+
 </html>
