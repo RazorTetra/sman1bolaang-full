@@ -1,6 +1,6 @@
 <?php
 require_once('config.php'); // Koneksi database
-include ('functions/visitors.php');
+include('functions/visitors.php');
 
 // Ambil data berita dari database
 $stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC");
@@ -541,27 +541,21 @@ if ($about) {
             </div>
 
             <div>
-               <h3 class="footer__title">Media Sosial
+               <h3 class="footer__title">Media Sosial</h3>
 
-                  <div class="footer__social">
-                     <a href="" target="_blank" class="footer__social-link">
-                        <i class="ri-facebook-circle-line"></i>
+               <div class="footer__social">
+                  <?php foreach ($socialLinks as $link): ?>
+                     <a href="<?php echo htmlspecialchars($link['url']); ?>" target="_blank" class="footer__social-link">
+                        <i class="<?php echo htmlspecialchars($link['icon']); ?>"></i>
                      </a>
-
-                     <a href="" target="_blank" class="footer__social-link">
-                        <i class="ri-instagram-line"></i>
-                     </a>
-
-                     <a href="" target="_blank" class="footer__social-link">
-                        <i class="ri-youtube-line"></i>
-                     </a>
-                  </div>
+                  <?php endforeach; ?>
+               </div>
             </div>
          </div>
       </div>
 
       <span class="footer__copy">
-         Copyright &#169 2024. All Rights Reserved By
+         Copyright &#169; 2024. All Rights Reserved By
          <a href="#">SMK Negeri 1 Bolaang.</a>
       </span>
    </footer>

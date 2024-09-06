@@ -38,10 +38,6 @@ function sortLink($column, $currentSort, $currentOrder)
     return "kotak_masukan.php?sort=$column&order=$newOrder";
 }
 
-// Fetch social media links
-$stmt = $pdo->query("SELECT * FROM social_media_links WHERE is_active = TRUE");
-$socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -214,7 +210,6 @@ $socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php endforeach; ?>
                 </tbody>
             </table>
-
         </div>
     </div>
 
@@ -226,36 +221,6 @@ $socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </a>
         <?php endfor; ?>
     </div>
-    </div>
-
-    <!-- Social Media Links Section -->
-    <div class="container mx-auto">
-        <h2 class="text-2xl font-bold mt-8 mb-4">Social Media Links</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Platform</th>
-                    <th>URL</th>
-                    <th>Icon</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($socialLinks as $link): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($link['platform']); ?></td>
-                        <td><?php echo htmlspecialchars($link['url']); ?></td>
-                        <td><i class="<?php echo htmlspecialchars($link['icon']); ?>"></i></td>
-                        <td>
-                            <!-- Add edit and delete buttons here -->
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 rounded text-xs">Edit</button>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-
 
     <!-- Modal for showing full message -->
     <div id="messageModal" class="modal">
