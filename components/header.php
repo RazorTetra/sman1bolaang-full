@@ -13,12 +13,7 @@
             .container {
                 margin-inline: 1rem;
             }
-            .nav__buttons {
-                position: fixed;
-                top: 1rem;
-                right: 1rem;
-                z-index: 1000;
-            }
+
             .nav__toggle {
                 display: flex;
                 padding: 0.25rem;
@@ -59,7 +54,7 @@
                     <a href="index.php#skills" class="nav__link">Keahlian</a>
                 </li>
                 <li class="nav__item">
-                    <a href="../struktur.php" class="nav__link">Struktur</a>
+                    <a href="struktur.php" class="nav__link">Struktur</a>
                 </li>
                 <li class="nav__item">
                     <a href="index.php#contact" class="nav__link">Kontak</a>

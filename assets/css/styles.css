@@ -367,6 +367,7 @@ body.dark-theme {
   top: 1rem;
   right: 1.5rem;
   cursor: pointer;
+  z-index: 1000;
 }
 
 /* Show menu */

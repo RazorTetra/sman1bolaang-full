@@ -14,6 +14,12 @@ try {
 $stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
 $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
 $image_path = $struktur['image_path'];
+
+function getContactInfo() {
+   global $pdo;
+   $stmt = $pdo->query("SELECT * FROM contact_info WHERE is_active = TRUE");
+   return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,62 +44,8 @@ $image_path = $struktur['image_path'];
 </head>
 
 <body>
-   <!--==================== HEADER ====================-->
-   <header class="header" id="header">
-      <nav class="nav container">
-         <a href="#" class="nav__logo">
-            <span class="nav__logo-circle"><img src="assets/img/logo-smk.png" alt=""></span>
-            <span class="nav__logo-name">smkn1bolaang</span>
-         </a>
-
-         <div class="nav__menu" id="nav-menu">
-            <span class="nav__title">Menu</span>
-
-            <!-- <h3 class="nav__name">Rian</h3> -->
-
-            <ul class="nav__list">
-               <li class="nav__item">
-                  <a href="index.php#home" class="nav__link">Beranda</a>
-               </li>
-
-               <li class="nav__item">
-                  <a href="index.php#about" class="nav__link">Tentang Kami</a>
-               </li>
-
-               <li class="nav__item">
-                  <a href="index.php#skills" class="nav__link">Keahlian</a>
-               </li>
-
-               <li class="nav__item">
-                  <a href="index.php#news" class="nav__link">Berita</a>
-               </li>
-
-               <li class="nav__item">
-                  <a href="#" class="nav__link">Struktur</a>
-               </li>
-
-               <li class="nav__item">
-                  <a href="index.php#contact" class="nav__link .nav__link-button">Kontak</a>
-               </li>
-            </ul>
-
-            <!-- Close button -->
-            <div class="nav__close" id="nav-close">
-               <i class="ri-close-line"></i>
-            </div>
-         </div>
-
-         <div class="nav__buttons">
-            <!-- Theme Button -->
-            <i class="ri-moon-line change-theme" id="theme-button"></i>
-
-            <!-- Toggle button -->
-            <div class="nav__toggle" id="nav-toggle">
-               <i class="ri-menu-4-line"></i>
-            </div>
-         </div>
-      </nav>
-   </header>
+    <!--==================== HEADER ====================-->
+    <?php include 'components/header.php'; ?>
 
    <!--==================== MAIN ====================-->
    <main class="main">
