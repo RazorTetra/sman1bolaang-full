@@ -126,3 +126,35 @@ sr.reveal(`.home__name, .home__info,
            .about__container .section__title-1, .about__info,
            .contact__social, .contact__data`, {origin: 'left'})
 sr.reveal(`.skills__card, .news__card, .map, .galeri__container, .img-struktur`, {interval: 100})
+
+// Lazy Load image untuk peforma memuat image lebih baik
+document.addEventListener("DOMContentLoaded", function() {
+  let lazyImages = [].slice.call(document.querySelectorAll(".lazy-load"));
+  let active = false;
+
+  const lazyLoad = function() {
+      if (active === false) {
+          active = true;
+
+          lazyImages.forEach(function(img) {
+              if (img.getBoundingClientRect().top <= window.innerHeight && img.getBoundingClientRect().bottom >= 0) {
+                  img.src = img.dataset.src;
+                  img.classList.remove("lazy-load");
+                  lazyImages = lazyImages.filter(function(image) {
+                      return image !== img;
+                  });
+                  if (lazyImages.length === 0) {
+                      document.removeEventListener("scroll", lazyLoad);
+                      window.removeEventListener("resize", lazyLoad);
+                  }
+              }
+          });
+
+          active = false;
+      }
+  };
+
+  document.addEventListener("scroll", lazyLoad);
+  window.addEventListener("resize", lazyLoad);
+  lazyLoad();
+});

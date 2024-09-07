@@ -68,6 +68,7 @@ body {
   background-color: var(--body-color);
   color: var(--text-color);
   transition: background-color 0.4s; /* Dark Mode*/
+  overflow-x: hidden;
 }
 
 h1,
@@ -1072,6 +1073,7 @@ body.dark-theme {
   background-color: var(--black-color);
   color: var(--text-color-light);
   padding-block: 3.5rem 2rem;
+  overflow-x: hidden; /* Pastikan tidak ada overflow horizontal */
 }
 
 .footer__container {
@@ -1084,31 +1086,33 @@ body.dark-theme {
   display: inline-flex;
   align-items: center;
   column-gap: 0.25rem;
+  white-space: nowrap; /* Mencegah teks memecah di titik yang tidak diinginkan */
 }
 
 .footer__logo span {
   color: var(--white-color);
   font-size: var(--h3-font-size);
   font-weight: var(--font-semi-bold);
-}
-
-.footer__logo i {
-  color: var(--first-color);
-  font-size: 1.5rem;
+  max-width: 100%; /* Membatasi lebar agar tetap dalam container */
+  overflow-wrap: break-word; /* Membungkus teks yang terlalu panjang */
 }
 
 .footer__description {
   margin-block: 1rem;
+  max-width: 100%; /* Membatasi lebar */
+  overflow-wrap: break-word; /* Membungkus teks panjang */
 }
 
 .footer__email,
 .footer__info,
 .footer__whatsapp {
   font-style: normal;
+  max-width: 100%; /* Pastikan elemen tidak melebihi layar */
+  overflow-wrap: break-word; /* Mencegah teks memanjang keluar */
 }
 
 .footer__content {
-  grid-template-columns: repeat(2, max-content);
+  /* grid-template-columns: repeat(2, 1fr); Gunakan fraksi untuk responsif */
   gap: 4rem 3rem;
 }
 
@@ -1209,7 +1213,7 @@ body.dark-theme {
 
 /*=============== BREAKPOINTS ===============*/
 /* For small devices */
-@media screen and (max-width: 340px) {
+@media screen and (max-width: 450px) {
   .container {
     margin-inline: 1rem;
   }

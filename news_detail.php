@@ -5,6 +5,22 @@ require_once('config.php'); // Koneksi database
 $stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC LIMIT 3");
 $stmt->execute();
 $related_news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+function getContactInfo()
+{
+    global $pdo;
+    $stmt = $pdo->query("SELECT * FROM contact_info WHERE is_active = TRUE");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// ambil data dari tabel social media links
+try {
+    $stmt = $pdo->query("SELECT * FROM social_media_links WHERE is_active = TRUE");
+    $socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $socialLinks = [];
+    // error_log('Database error: ' . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,11 +39,12 @@ $related_news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
 
-    <link href="../assets/css/output.css" rel="stylesheet">
+    <link href="assets/css/output.css" rel="stylesheet">
 
     <style>
         .news-container {
-            max-width: 1200px;
+            max-width: 1120px;
+            margin-inline: 1.5rem;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -146,12 +163,11 @@ $related_news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         }
     </style>
-    </style>
     <title>Detail Berita</title>
 </head>
 
 <body>
-    <!-- Header -->
+    <!--==================== HEADER ====================-->
     <?php include 'components/header.php'; ?>
 
     <!-- Content of news_detail.php -->
@@ -209,8 +225,81 @@ $related_news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <!-- Footer -->
-    <?php include 'components/footer.php'; ?>
+    <!--==================== FOOTER ====================-->
+    <footer class="footer">
+        <div class="footer__container container grid">
+            <div>
+                <a href="#" class="footer__logo">
+                    <i class="ri-graduation-cap-line"></i>
+                    <span>smkn1bolaang.</span>
+                </a>
+
+                <p class="footer__description">MATTOA SmeckONEBol</p>
+
+                <?php
+                $contactInfo = getContactInfo();
+                foreach ($contactInfo as $info) {
+                    if ($info['type'] == 'email') {
+                        echo "<address class='footer__email'>Email: {$info['value']}</address>";
+                    } elseif ($info['type'] == 'whatsapp') {
+                        echo "<p class='footer__whatsapp'>Whatsapp: {$info['value']}</p>";
+                    }
+                }
+                ?>
+            </div>
+
+            <div class="footer__content grid">
+                <div>
+                    <h3 class="footer__title">Sekolah</h3>
+
+                    <ul class="footer__links">
+                        <li>
+                            <a href="#about" class="footer__link">Tentang Kami</a>
+                        </li>
+
+                        <li>
+                            <a href="#skills" class="footer__link">Keahlian</a>
+                        </li>
+
+                        <li>
+                            <a href="#news" class="footer__link">Berita</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer__title">Alamat</h3>
+
+                    <ul class="footer__list">
+                        <li>
+                            <address class="footer__info">Jl. Inobonto - Kotamobagu,<br> Langangon</address>
+                        </li>
+
+                        <li>
+                            <address class="footer__info">Kabupaten Bolaang Mongondow, <br> Sulawesi Utara</address>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="footer__title">Media Sosial</h3>
+
+                    <div class="footer__social">
+                        <?php foreach ($socialLinks as $link): ?>
+                            <a href="<?php echo htmlspecialchars($link['url']); ?>" target="_blank" class="footer__social-link">
+                                <i class="<?php echo htmlspecialchars($link['icon']); ?>"></i>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span class="footer__copy">
+            Copyright &#169; 2024. All Rights Reserved By
+            <a href="#">SMK Negeri 1 Bolaang.</a>
+        </span>
+    </footer>
 
     <!--========== SCROLL UP ==========-->
     <a href="#" class="scrollup" id="scroll-up">
