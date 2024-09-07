@@ -59,7 +59,7 @@
                     <a href="index.php#skills" class="nav__link">Keahlian</a>
                 </li>
                 <li class="nav__item">
-                    <a href="index.php#struktur" class="nav__link">Struktur</a>
+                    <a href="../struktur.php" class="nav__link">Struktur</a>
                 </li>
                 <li class="nav__item">
                     <a href="index.php#contact" class="nav__link">Kontak</a>
