@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2024 at 11:42 PM
+-- Generation Time: Sep 07, 2024 at 07:40 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -88,7 +88,8 @@ CREATE TABLE `feedback` (
 
 INSERT INTO `feedback` (`id`, `name`, `email`, `subject`, `message`, `created_at`) VALUES
 (2, 'asdf', 'admin@gmail.com', 'addf', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2024-09-06 15:14:33'),
-(3, 'asdf', 'asdf@gmail.com', 'asdf', 'asdf', '2024-09-06 19:14:29');
+(3, 'asdf', 'asdf@gmail.com', 'asdf', 'asdf', '2024-09-06 19:14:29'),
+(4, 'asdf', 'asdf@gmail.com', 'asdf', 'jhfhgdfghdgf', '2024-09-07 05:25:38');
 
 -- --------------------------------------------------------
 
@@ -137,9 +138,27 @@ CREATE TABLE `social_media_links` (
 --
 
 INSERT INTO `social_media_links` (`id`, `platform`, `url`, `icon`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'Facebook', 'https://www.facebook.com/smkn1bolaang', 'ri-facebook-circle-line', 1, '2024-09-06 18:16:33', '2024-09-06 18:16:33'),
+(1, 'Facebook', 'https://www.facebook.com/', 'ri-facebook-circle-line', 1, '2024-09-06 18:16:33', '2024-09-07 05:11:37'),
 (2, 'Instagram', '#', 'ri-instagram-line', 1, '2024-09-06 18:16:33', '2024-09-06 18:16:33'),
 (3, 'YouTube', '#', 'ri-youtube-line', 1, '2024-09-06 18:16:33', '2024-09-06 18:16:33');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `struktur_organisasi`
+--
+
+CREATE TABLE `struktur_organisasi` (
+  `id` int(11) NOT NULL,
+  `image_path` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `struktur_organisasi`
+--
+
+INSERT INTO `struktur_organisasi` (`id`, `image_path`) VALUES
+(1, 'assets/img/struktur_1725686425.jpg');
 
 -- --------------------------------------------------------
 
@@ -178,6 +197,26 @@ CREATE TABLE `visitors` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `visitors`
+--
+
+INSERT INTO `visitors` (`id`, `ip_address`, `visit_time`) VALUES
+(1, '::1', '2024-09-06 22:06:31'),
+(2, '::1', '2024-09-06 22:06:51'),
+(3, '::1', '2024-09-06 22:11:22'),
+(4, '::1', '2024-09-06 22:39:41'),
+(5, '::1', '2024-09-06 22:42:43'),
+(6, '::1', '2024-09-07 04:18:50'),
+(7, '::1', '2024-09-07 04:22:59'),
+(8, '::1', '2024-09-07 04:24:37'),
+(9, '::1', '2024-09-07 05:23:42'),
+(10, '::1', '2024-09-07 05:25:21'),
+(11, '::1', '2024-09-07 05:28:01'),
+(12, '::1', '2024-09-07 05:28:36'),
+(13, '::1', '2024-09-07 05:28:47'),
+(14, '::1', '2024-09-07 05:29:03');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -212,6 +251,12 @@ ALTER TABLE `social_media_links`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `struktur_organisasi`
+--
+ALTER TABLE `struktur_organisasi`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -243,7 +288,7 @@ ALTER TABLE `articles`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `gallery`
@@ -258,6 +303,12 @@ ALTER TABLE `social_media_links`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `struktur_organisasi`
+--
+ALTER TABLE `struktur_organisasi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -267,7 +318,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `visitors`
 --
 ALTER TABLE `visitors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -121,7 +121,7 @@ if ($about) {
                </li>
 
                <li class="nav__item">
-                  <a href="/struktur.html" class="nav__link">Struktur</a>
+                  <a href="struktur.php" class="nav__link">Struktur</a>
                </li>
 
                <li class="nav__item">
@@ -575,6 +575,7 @@ if ($about) {
    <!--=============== MAIN JS ===============-->
    <script src="assets/js/main.js"></script>
 
+   <!-- Script Contact -->
    <script>
       document.addEventListener('DOMContentLoaded', function() {
          const form = document.getElementById('contact-form');

@@ -25,6 +25,7 @@
                     <li><a href="../admin/manage_gallery.php" class="hover:text-gray-400">Kelola Galeri</a></li>
                     <li><a href="../admin/kotak_masukan.php" class="hover:text-gray-400">Kotak Masukan</a></li>
                     <li><a href="../admin/manage_sosmed.php" class="hover:text-gray-400">Kelola Link</a></li>
+                    <li><a href="../admin/manage_struktur.php" class="hover:text-gray-400">Kelola Struktur</a></li>
                     <li><a href="../functions/logout.php" class="hover:text-gray-400">Logout</a></li>
                 </ul>
             </nav>
@@ -42,6 +43,7 @@
                 <li><a href="../admin/manage_gallery.php" class="hover:text-gray-400">Kelola Galeri</a></li>
                 <li><a href="../admin/kotak_masukan.php" class="hover:text-gray-400">Kotak Masukan</a></li>
                 <li><a href="../admin/manage_sosmed.php" class="hover:text-gray-400">Kelola Link</a></li>
+                <li><a href="../admin/manage_struktur.php" class="hover:text-gray-400">Kelola Struktur</a></li>
                 <li><a href="../functions/logout.php" class="hover:text-gray-400">Logout</a></li>
             </ul>
         </div>
