@@ -58,6 +58,28 @@ function getContactInfo() {
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- SEO Meta Tags -->
+  <title>SMK NEGERI 1 BOLAANG - Pendidikan Kejuruan Berkualitas</title>
+   <meta name="description" content="SMK NEGERI 1 BOLAANG menyediakan pendidikan kejuruan berkualitas untuk mempersiapkan siswa menghadapi dunia kerja dan industri. Temukan program studi dan fasilitas unggulan kami.">
+   <meta name="keywords" content="SMK NEGERI 1 BOLAANG, pendidikan kejuruan, sekolah menengah kejuruan, Bolaang, program studi, fasilitas sekolah">
+   <meta name="author" content="SMK NEGERI 1 BOLAANG">
+   <meta name="robots" content="index, follow">
+
+   <!-- Open Graph / Facebook -->
+   <meta property="og:type" content="website">
+   <meta property="og:url" content="https://www.smkn1bolaang.sch.id/">
+   <meta property="og:title" content="SMK NEGERI 1 BOLAANG - Pendidikan Kejuruan Berkualitas">
+   <meta property="og:description" content="SMK NEGERI 1 BOLAANG menyediakan pendidikan kejuruan berkualitas untuk mempersiapkan siswa menghadapi dunia kerja dan industri.">
+   <meta property="og:image" content="https://www.smkn1bolaang.sch.id/assets/img/logo-smk.png">
+
+   <!-- Twitter -->
+   <meta property="twitter:card" content="summary_large_image">
+   <meta property="twitter:url" content="https://www.smkn1bolaang.sch.id/">
+   <meta property="twitter:title" content="SMK NEGERI 1 BOLAANG - Pendidikan Kejuruan Berkualitas">
+   <meta property="twitter:description" content="SMK NEGERI 1 BOLAANG menyediakan pendidikan kejuruan berkualitas untuk mempersiapkan siswa menghadapi dunia kerja dan industri.">
+   <meta property="twitter:image" content="https://www.smkn1bolaang.sch.id/assets/img/logo-smk.png">
+
+
    <!--=============== FAVICON ===============-->
    <link rel="shortcut icon" href="assets/img/logo-smk.png" type="image/x-icon">
 
