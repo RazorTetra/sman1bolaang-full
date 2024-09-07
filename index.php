@@ -42,6 +42,13 @@ if ($about) {
    $instagram = "#";
    $youtube = "#";
 }
+
+function getContactInfo() {
+   global $pdo;
+   $stmt = $pdo->query("SELECT * FROM contact_info WHERE is_active = TRUE");
+   return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -503,8 +510,16 @@ if ($about) {
 
             <p class="footer__description">MATTOA SmeckONEBol</p>
 
-            <address class="footer__email">Email: smkn1bolaang@gmail.com</address>
-            <p class="footer__whatsapp">Whatsapp: 0811-437-795</p>
+            <?php
+            $contactInfo = getContactInfo();
+            foreach ($contactInfo as $info) {
+               if ($info['type'] == 'email') {
+                  echo "<address class='footer__email'>Email: {$info['value']}</address>";
+               } elseif ($info['type'] == 'whatsapp') {
+                  echo "<p class='footer__whatsapp'>Whatsapp: {$info['value']}</p>";
+               }
+            }
+            ?>
          </div>
 
          <div class="footer__content grid">
