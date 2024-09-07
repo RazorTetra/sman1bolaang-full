@@ -50,6 +50,20 @@ try {
             flex-direction: column;
         }
 
+        .nav__buttons {
+            padding-right: 20px;
+        }
+
+        .nav__toggle {
+            display: flex;
+            padding: 0.25rem;
+            background-color: var(--container-color);
+            border-radius: 50%;
+            font-size: 1.25rem;
+            color: var(--title-color);
+            box-shadow: 0 4px 12px hsla(0, 0%, 20%, .1);
+        }
+
         .main-article {
             margin-bottom: 2rem;
         }
@@ -147,6 +161,7 @@ try {
             text-decoration: underline;
         }
 
+
         @media (min-width: 768px) {
             .news-container {
                 flex-direction: row;
@@ -160,6 +175,12 @@ try {
 
             .related-articles {
                 flex: 1;
+            }
+
+            @media (min-width: 1150px) {
+                .nav__toggle {
+                    display: none;
+                }
             }
         }
     </style>
