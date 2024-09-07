@@ -8,7 +8,12 @@ $stmt->execute();
 $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Ambil gambar dari database
-$stmt = $pdo->prepare("SELECT image FROM gallery ORDER BY created_at DESC");
+// $stmt = $pdo->prepare("SELECT image FROM gallery ORDER BY created_at DESC");
+// $stmt->execute();
+// $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Ambil gambar dari database yang ditandai untuk ditampilkan
+$stmt = $pdo->prepare("SELECT image FROM gallery WHERE is_displayed = 1 ORDER BY created_at DESC LIMIT 6");
 $stmt->execute();
 $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
