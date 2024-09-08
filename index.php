@@ -13,7 +13,7 @@ $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Ambil gambar dari database yang ditandai untuk ditampilkan
-$stmt = $pdo->prepare("SELECT image FROM gallery WHERE is_displayed = 1 ORDER BY created_at DESC LIMIT 6");
+$stmt = $pdo->prepare("SELECT image FROM gallery WHERE is_displayed = 1 ORDER BY created_at DESC LIMIT 9");
 $stmt->execute();
 $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -48,7 +48,8 @@ if ($about) {
    $youtube = "#";
 }
 
-function getContactInfo() {
+function getContactInfo()
+{
    global $pdo;
    $stmt = $pdo->query("SELECT * FROM contact_info WHERE is_active = TRUE");
    return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -63,8 +64,8 @@ function getContactInfo() {
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO Meta Tags -->
-  <title>SMK NEGERI 1 BOLAANG - Pendidikan Kejuruan Berkualitas</title>
+   <!-- SEO Meta Tags -->
+   <title>SMK NEGERI 1 BOLAANG - Pendidikan Kejuruan Berkualitas</title>
    <meta name="description" content="SMK NEGERI 1 BOLAANG menyediakan pendidikan kejuruan berkualitas untuk mempersiapkan siswa menghadapi dunia kerja dan industri. Temukan program studi dan fasilitas unggulan kami.">
    <meta name="keywords" content="SMK NEGERI 1 BOLAANG, pendidikan kejuruan, sekolah menengah kejuruan, Bolaang, program studi, fasilitas sekolah">
    <meta name="author" content="SMK NEGERI 1 BOLAANG">
@@ -441,10 +442,10 @@ function getContactInfo() {
          </h2>
          <div class="galeri__container container">
             <div class="container-image">
-               <div class="img-container">
+               <div class="img-container grid grid-cols-3 gap-4">
                   <?php foreach ($gallery_images as $image): ?>
                      <div class="img">
-                        <span><img src="assets/img/<?php echo htmlspecialchars($image['image']); ?>" alt="Galeri"></span>
+                        <span><img src="assets/img/<?php echo htmlspecialchars($image['image']); ?>" alt="Galeri" class="w-full h-full object-cover"></span>
                      </div>
                   <?php endforeach; ?>
                </div>

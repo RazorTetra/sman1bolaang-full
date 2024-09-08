@@ -228,12 +228,12 @@ unset($_SESSION['success_message'], $_SESSION['error_message']);
 
                 <div class="mt-10 flex items-center justify-between">
                     <p class="text-lg text-gray-600">
-                        <span x-text="selectedCount"></span> dari 6 gambar dipilih
+                        <span x-text="selectedCount"></span> dari 9 gambar dipilih
                     </p>
                     <button type="submit"
                         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 flex items-center"
-                        :disabled="selectedCount > 6"
-                        :class="{ 'opacity-50 cursor-not-allowed': selectedCount > 6 }">
+                        :disabled="selectedCount > 9"
+                        :class="{ 'opacity-50 cursor-not-allowed': selectedCount > 9 }">
                         <i class="fas fa-save mr-2"></i> Simpan Perubahan
                     </button>
                 </div>
