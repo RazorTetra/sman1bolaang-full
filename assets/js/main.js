@@ -67,26 +67,45 @@ const scrollUp = () =>{
 }
 window.addEventListener('scroll', scrollUp)
 
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-const sections = document.querySelectorAll('section[id]')
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM fully loaded');
 
-const scrollActive = () =>{
-    const scrollDown = window.scrollY
+  const navLinks = document.querySelectorAll('.nav__list a');
+  const sections = document.querySelectorAll('section');
 
-    sections.forEach(current =>{
-      const sectionHeight = current.offsetHeight,
-            sectionTop = current.offsetTop - 58,
-            sectionId = current.getAttribute('id'),
-            sectionsClass = document.querySelector('.nav__list a[href+=' + sectionId + ']')
+  console.log('Nav links found:', navLinks.length);
+  console.log('Sections found:', sections.length);
 
-      if(scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight){
-          sectionsClass.classList.add('active-link')
-      } else {
-          sectionsClass.classList.remove('active-link')
-      }
-    })
-}
-window.addEventListener('scroll', scrollActive)
+  function updateActiveLink() {
+      const scrollPosition = window.scrollY;
+      console.log('Current scroll position:', scrollPosition);
+
+      sections.forEach((section, index) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+
+          console.log(`Section ${section.id}: top=${sectionTop}, height=${sectionHeight}`);
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+              console.log(`Activating section: ${section.id}`);
+              navLinks.forEach((link) => {
+                  link.classList.remove('active-link');
+                  console.log(`Removed active-link from: ${link.getAttribute('href')}`);
+              });
+              navLinks[index].classList.add('active-link');
+              console.log(`Added active-link to: ${navLinks[index].getAttribute('href')}`);
+          }
+      });
+  }
+
+  window.addEventListener('scroll', function() {
+      console.log('Scroll event detected');
+      updateActiveLink();
+  });
+
+  // Initial call to set active link on page load
+  updateActiveLink();
+});
 
 /*=============== DARK LIGHT THEME ===============*/ 
 const themeButton = document.getElementById('theme-button')

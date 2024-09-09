@@ -94,7 +94,7 @@ function getContactInfo()
 
    <!--=============== CSS ===============-->
    <link rel="stylesheet" href="assets/css/styles.css">
-   <link href="/assets/css/output.css" rel="stylesheet">
+   <link href="assets/css/output.css" rel="stylesheet">
 
 
    <style>
@@ -155,15 +155,16 @@ function getContactInfo()
                   <a href="#skills" class="nav__link">Keahlian</a>
                </li>
 
-               <li class="nav__item">
-                  <a href="struktur.php" class="nav__link">Struktur</a>
-               </li>
-
+               
                <li class="nav__item">
                   <a href="#contact" class="nav__link .nav__link-button">Kontak</a>
                </li>
-            </ul>
 
+               <li class="nav__item">
+                  <a href="struktur.php" class="nav__link">Struktur</a>
+               </li>
+            </ul>
+            
             <!-- Close button -->
             <div class="nav__close" id="nav-close">
                <i class="ri-close-line"></i>
