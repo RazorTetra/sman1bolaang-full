@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 07, 2024 at 08:51 AM
+-- Generation Time: Sep 09, 2024 at 02:38 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -141,6 +141,33 @@ INSERT INTO `gallery` (`id`, `image`, `created_at`, `is_displayed`, `display_ord
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `skills`
+--
+
+CREATE TABLE `skills` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `icon` varchar(50) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `skills`
+--
+
+INSERT INTO `skills` (`id`, `title`, `icon`, `image`, `description`) VALUES
+(1, 'Bisnis Marketing', 'ri-shake-hands-line', '66dedc334e843.jpg', 'Mempelajari teknik pemasaran, strategi penjualan, serta manajemen keuangan dan akuntansi.'),
+(2, 'Desain Komunikasi Visual', 'ri-pen-nib-line', NULL, 'Mempelajari prinsip desain grafis, komunikasi visual, dan multimedia, serta teknik-teknik kreatif untuk merancang materi promosi, iklan, branding, dan media digital.'),
+(3, 'Agribisinis & Tanaman Pangan Holtikultura', 'ri-plant-line', NULL, 'Mempelajari teknik-teknik modern dalam budidaya tanaman, manajemen usaha pertanian, serta teknologi terbaru dalam pengolahan dan pemasaran hasil pertanian.'),
+(4, 'Kuliner', 'ri-cake-3-line', NULL, 'Mempersiapkan siswa untuk berkarir di industri makanan dengan mengajarkan teknik memasak, pengembangan resep, dan estetika penyajian makanan.'),
+(5, 'Asisten Keperawatan', 'ri-hospital-line', NULL, 'Mempersiapkan siswa untuk mendukung tenaga medis dalam perawatan pasien. Siswa mempelajari teknik dasar perawatan kesehatan, termasuk pengukuran tanda vital, pemberian obat, dan perawatan luka.'),
+(6, 'Teknik Sepeda Motor', 'ri-e-bike-2-line', NULL, 'Mempelajari teknik-teknik dasar dan lanjutan dalam diagnosis, servis mesin, sistem kelistrikan, dan sistem transmisi.'),
+(8, 'Belajar Bersama Guru 4', 'ri-message-2-line', '66dee685270c4.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `social_media_links`
 --
 
@@ -240,7 +267,107 @@ INSERT INTO `visitors` (`id`, `ip_address`, `visit_time`) VALUES
 (16, '::1', '2024-09-07 06:43:45'),
 (17, '::1', '2024-09-07 06:44:22'),
 (18, '::1', '2024-09-07 06:49:43'),
-(19, '::1', '2024-09-07 06:50:58');
+(19, '::1', '2024-09-07 06:50:58'),
+(20, '::1', '2024-09-07 10:56:45'),
+(21, '::1', '2024-09-07 10:56:56'),
+(22, '::1', '2024-09-07 10:57:11'),
+(23, '::1', '2024-09-07 10:57:11'),
+(24, '::1', '2024-09-07 10:57:26'),
+(25, '::1', '2024-09-07 10:59:29'),
+(26, '::1', '2024-09-07 13:29:08'),
+(27, '::1', '2024-09-07 13:29:09'),
+(28, '::1', '2024-09-07 13:29:23'),
+(29, '::1', '2024-09-07 13:30:45'),
+(30, '::1', '2024-09-07 13:30:45'),
+(31, '::1', '2024-09-07 13:31:07'),
+(32, '::1', '2024-09-07 13:37:08'),
+(33, '::1', '2024-09-07 13:54:30'),
+(34, '::1', '2024-09-07 13:57:06'),
+(35, '::1', '2024-09-07 13:57:26'),
+(36, '::1', '2024-09-07 14:08:16'),
+(37, '::1', '2024-09-07 14:37:16'),
+(38, '::1', '2024-09-07 14:37:16'),
+(39, '::1', '2024-09-07 14:41:32'),
+(40, '::1', '2024-09-07 15:21:52'),
+(41, '::1', '2024-09-07 15:21:55'),
+(42, '::1', '2024-09-07 15:23:44'),
+(43, '::1', '2024-09-07 15:28:49'),
+(44, '::1', '2024-09-07 15:28:59'),
+(45, '::1', '2024-09-07 15:30:12'),
+(46, '::1', '2024-09-07 15:52:12'),
+(47, '::1', '2024-09-07 16:04:55'),
+(48, '::1', '2024-09-07 16:06:18'),
+(49, '::1', '2024-09-07 16:07:18'),
+(50, '::1', '2024-09-07 16:26:56'),
+(51, '::1', '2024-09-07 16:28:53'),
+(52, '::1', '2024-09-07 16:29:01'),
+(53, '::1', '2024-09-07 16:30:50'),
+(54, '::1', '2024-09-07 16:30:55'),
+(55, '::1', '2024-09-07 16:32:35'),
+(56, '::1', '2024-09-07 16:32:37'),
+(57, '::1', '2024-09-07 16:32:41'),
+(58, '::1', '2024-09-07 16:32:46'),
+(59, '::1', '2024-09-07 16:33:27'),
+(60, '::1', '2024-09-07 16:33:31'),
+(61, '::1', '2024-09-07 16:33:45'),
+(62, '::1', '2024-09-07 16:34:24'),
+(63, '::1', '2024-09-07 16:35:57'),
+(64, '::1', '2024-09-07 16:36:14'),
+(65, '::1', '2024-09-07 16:36:40'),
+(66, '::1', '2024-09-07 16:36:53'),
+(67, '::1', '2024-09-07 16:38:02'),
+(68, '::1', '2024-09-07 16:38:32'),
+(69, '::1', '2024-09-07 16:38:55'),
+(70, '::1', '2024-09-07 16:39:00'),
+(71, '::1', '2024-09-07 16:39:35'),
+(72, '::1', '2024-09-07 16:44:23'),
+(73, '::1', '2024-09-08 16:46:39'),
+(74, '::1', '2024-09-08 17:00:36'),
+(75, '::1', '2024-09-08 17:01:28'),
+(76, '::1', '2024-09-08 17:01:32'),
+(77, '::1', '2024-09-08 17:07:41'),
+(78, '::1', '2024-09-08 17:08:20'),
+(79, '::1', '2024-09-08 17:10:11'),
+(80, '::1', '2024-09-08 17:10:15'),
+(81, '::1', '2024-09-08 17:45:07'),
+(82, '::1', '2024-09-08 17:49:50'),
+(83, '::1', '2024-09-08 17:51:59'),
+(84, '::1', '2024-09-08 17:53:26'),
+(85, '::1', '2024-09-08 17:54:40'),
+(86, '::1', '2024-09-08 17:56:52'),
+(87, '::1', '2024-09-08 17:57:06'),
+(88, '::1', '2024-09-08 17:57:08'),
+(89, '::1', '2024-09-08 17:57:12'),
+(90, '::1', '2024-09-08 17:58:49'),
+(91, '::1', '2024-09-08 17:58:51'),
+(92, '::1', '2024-09-08 17:59:52'),
+(93, '::1', '2024-09-08 18:02:21'),
+(94, '::1', '2024-09-08 18:04:28'),
+(95, '::1', '2024-09-08 18:04:33'),
+(96, '::1', '2024-09-08 18:05:48'),
+(97, '::1', '2024-09-08 18:06:04'),
+(98, '::1', '2024-09-08 18:06:35'),
+(99, '::1', '2024-09-08 18:08:19'),
+(100, '::1', '2024-09-08 18:10:05'),
+(101, '::1', '2024-09-08 18:11:03'),
+(102, '127.0.0.1', '2024-09-09 04:33:19'),
+(103, '::1', '2024-09-09 04:56:01'),
+(104, '::1', '2024-09-09 05:00:01'),
+(105, '::1', '2024-09-09 05:04:40'),
+(106, '::1', '2024-09-09 05:04:58'),
+(107, '::1', '2024-09-09 05:08:49'),
+(108, '::1', '2024-09-09 05:08:54'),
+(109, '::1', '2024-09-09 05:11:22'),
+(110, '::1', '2024-09-09 05:11:27'),
+(111, '::1', '2024-09-09 11:01:57'),
+(112, '::1', '2024-09-09 11:31:48'),
+(113, '::1', '2024-09-09 11:31:56'),
+(114, '::1', '2024-09-09 11:32:59'),
+(115, '::1', '2024-09-09 12:14:00'),
+(116, '::1', '2024-09-09 12:15:36'),
+(117, '::1', '2024-09-09 12:16:15'),
+(118, '::1', '2024-09-09 12:35:07'),
+(119, '::1', '2024-09-09 12:35:10');
 
 --
 -- Indexes for dumped tables
@@ -274,6 +401,12 @@ ALTER TABLE `feedback`
 -- Indexes for table `gallery`
 --
 ALTER TABLE `gallery`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `skills`
+--
+ALTER TABLE `skills`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -335,6 +468,12 @@ ALTER TABLE `gallery`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- AUTO_INCREMENT for table `skills`
+--
+ALTER TABLE `skills`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `social_media_links`
 --
 ALTER TABLE `social_media_links`
@@ -356,7 +495,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `visitors`
 --
 ALTER TABLE `visitors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

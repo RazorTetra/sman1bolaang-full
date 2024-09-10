@@ -13,11 +13,10 @@ function getCount($pdo, $table)
     return $stmt->fetchColumn();
 }
 
-// Fungsi untuk menghitung jumlah pengunjung unik
-function getUniqueVisitorsCount($pdo)
+// Fungsi untuk mendapatkan total pengunjung dari tabel visitor_count
+function getTotalVisitors($pdo)
 {
-    $stmt = $pdo->prepare("SELECT COUNT(DISTINCT ip_address) FROM visitors");
-    $stmt->execute();
+    $stmt = $pdo->query("SELECT total_count FROM visitor_count WHERE id = 1");
     return $stmt->fetchColumn();
 }
 
@@ -25,7 +24,7 @@ function getUniqueVisitorsCount($pdo)
 try {
     $total_articles = getCount($pdo, 'articles');
     $total_images = getCount($pdo, 'gallery'); // Ganti 'gallery' dengan nama tabel gambar Anda
-    $unique_visitors = getUniqueVisitorsCount($pdo);
+    $total_visitors = getTotalVisitors($pdo);
 } catch (PDOException $e) {
     die('Error: ' . $e->getMessage());
 }
@@ -64,10 +63,10 @@ try {
                 <p class="text-gray-600 text-2xl"><?php echo $total_images; ?> Gambar</p>
             </div>
 
-            <!-- Jumlah Pengunjung Unik -->
+            <!-- Total Pengunjung -->
             <div class="bg-white shadow rounded-lg p-4">
-                <h2 class="text-lg font-semibold text-gray-800">Jumlah Pengunjung Unik</h2>
-                <p class="text-gray-600 text-2xl"><?php echo $unique_visitors; ?> Pengunjung</p>
+                <h2 class="text-lg font-semibold text-gray-800">Total Pengunjung</h2>
+                <p class="text-gray-600 text-2xl"><?php echo $total_visitors; ?> Pengunjung</p>
             </div>
         </div>
     </main>

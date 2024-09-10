@@ -55,6 +55,15 @@ function getContactInfo()
    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Query untuk mengambil semua skills dari database menggunakan PDO
+try {
+   $stmt = $pdo->prepare("SELECT * FROM skills ORDER BY id ASC");
+   $stmt->execute();
+   $skills = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+   die("Query failed: " . $e->getMessage());
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -94,7 +103,7 @@ function getContactInfo()
 
    <!--=============== CSS ===============-->
    <link rel="stylesheet" href="assets/css/styles.css">
-   <link href="assets/css/output.css" rel="stylesheet">
+   <!-- <link href="assets/css/output.css" rel="stylesheet"> Tailwind CSS  -->
 
 
    <style>
@@ -155,7 +164,7 @@ function getContactInfo()
                   <a href="#skills" class="nav__link">Keahlian</a>
                </li>
 
-               
+
                <li class="nav__item">
                   <a href="#contact" class="nav__link .nav__link-button">Kontak</a>
                </li>
@@ -164,7 +173,7 @@ function getContactInfo()
                   <a href="struktur.php" class="nav__link">Struktur</a>
                </li>
             </ul>
-            
+
             <!-- Close button -->
             <div class="nav__close" id="nav-close">
                <i class="ri-close-line"></i>
@@ -331,108 +340,27 @@ function getContactInfo()
          </h2>
 
          <div class="skills__container container grid">
+            <?php foreach ($skills as $row) : ?>
+               <article class="skills__card" onclick="window.location.href='skill_detail.php?id=<?php echo $row['id']; ?>'">
+                  <div class="skills__border"></div>
 
-            <article class="skills__card">
-               <div class="skills__border"></div>
+                  <div class="skills__content">
+                     <div class="skills__icon">
+                        <div class="skills__box"></div>
+                        <i class="<?php echo htmlspecialchars($row['icon']); ?>"></i>
+                     </div>
 
-               <div class="skills__content">
-                  <div class="skills__icon">
-                     <div class="skills__box"></div>
-                     <i class="ri-shake-hands-line"></i>
+                     <h2 class="skills__title"><?php echo htmlspecialchars($row['title']); ?></h2>
+
+                     <p class="skills__description">
+                        <?php
+                        $description = htmlspecialchars($row['description']);
+                        echo (strlen($description) > 100) ? substr($description, 0, 100) . '...' : $description;
+                        ?>
+                     </p>
                   </div>
-
-                  <h2 class="skills__title">Bisnis Marketing</h2>
-
-                  <p class="skills__description">
-                     Mempelajari teknik pemasaran, strategi penjualan, serta manajemen keuangan dan akuntansi.
-                  </p>
-               </div>
-            </article>
-
-            <article class="skills__card">
-               <div class="skills__border"></div>
-
-               <div class="skills__content">
-                  <div class="skills__icon">
-                     <div class="skills__box"></div>
-                     <i class="ri-pen-nib-line"></i>
-                  </div>
-
-                  <h2 class="skills__title">Desain Komunikasi Visual</h2>
-
-                  <p class="skills__description">
-                     Mempelajari prinsip desain grafis, komunikasi visual, dan multimedia, serta teknik-teknik kreatif untuk merancang materi promosi, iklan, branding, dan media digital.
-                  </p>
-               </div>
-            </article>
-
-            <article class="skills__card">
-               <div class="skills__border"></div>
-
-               <div class="skills__content">
-                  <div class="skills__icon">
-                     <div class="skills__box"></div>
-                     <i class="ri-plant-line"></i>
-                  </div>
-
-                  <h2 class="skills__title">Agribisinis & Tanaman Pangan Holtikultura</h2>
-
-                  <p class="skills__description">
-                     Mempelajari teknik-teknik modern dalam budidaya tanaman, manajemen usaha pertanian, serta teknologi terbaru dalam pengolahan dan pemasaran hasil pertanian.
-                  </p>
-               </div>
-            </article>
-
-            <article class="skills__card">
-               <div class="skills__border"></div>
-
-               <div class="skills__content">
-                  <div class="skills__icon">
-                     <div class="skills__box"></div>
-                     <i class="ri-cake-3-line"></i>
-                  </div>
-
-                  <h2 class="skills__title">Kuliner</h2>
-
-                  <p class="skills__description">
-                     Mempersiapkan siswa untuk berkarir di industri makanan dengan mengajarkan teknik memasak, pengembangan resep, dan estetika penyajian makanan.
-                  </p>
-               </div>
-            </article>
-
-            <article class="skills__card">
-               <div class="skills__border"></div>
-
-               <div class="skills__content">
-                  <div class="skills__icon">
-                     <div class="skills__box"></div>
-                     <i class="ri-hospital-line"></i>
-                  </div>
-
-                  <h2 class="skills__title">Asisten Keperawatan</h2>
-
-                  <p class="skills__description">
-                     Mempersiapkan siswa untuk mendukung tenaga medis dalam perawatan pasien. Siswa mempelajari teknik dasar perawatan kesehatan, termasuk pengukuran tanda vital, pemberian obat, dan perawatan luka.
-                  </p>
-               </div>
-            </article>
-
-            <article class="skills__card">
-               <div class="skills__border"></div>
-
-               <div class="skills__content">
-                  <div class="skills__icon">
-                     <div class="skills__box"></div>
-                     <i class="ri-e-bike-2-line"></i>
-                  </div>
-
-                  <h2 class="skills__title">Teknik Sepeda Motor</h2>
-
-                  <p class="skills__description">
-                     Mempelajari teknik-teknik dasar dan lanjutan dalam diagnosis, servis mesin, sistem kelistrikan, dan sistem transmisi.
-                  </p>
-               </div>
-            </article>
+               </article>
+            <?php endforeach; ?>
          </div>
       </section>
 

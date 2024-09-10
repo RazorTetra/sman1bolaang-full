@@ -68,38 +68,38 @@ const scrollUp = () =>{
 window.addEventListener('scroll', scrollUp)
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM fully loaded');
+  // console.log('DOM fully loaded');
 
   const navLinks = document.querySelectorAll('.nav__list a');
   const sections = document.querySelectorAll('section');
 
-  console.log('Nav links found:', navLinks.length);
-  console.log('Sections found:', sections.length);
+  // console.log('Nav links found:', navLinks.length);
+  // console.log('Sections found:', sections.length);
 
   function updateActiveLink() {
       const scrollPosition = window.scrollY;
-      console.log('Current scroll position:', scrollPosition);
+      // console.log('Current scroll position:', scrollPosition);
 
       sections.forEach((section, index) => {
           const sectionTop = section.offsetTop;
           const sectionHeight = section.offsetHeight;
 
-          console.log(`Section ${section.id}: top=${sectionTop}, height=${sectionHeight}`);
+          // console.log(`Section ${section.id}: top=${sectionTop}, height=${sectionHeight}`);
 
           if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-              console.log(`Activating section: ${section.id}`);
+              // console.log(`Activating section: ${section.id}`);
               navLinks.forEach((link) => {
                   link.classList.remove('active-link');
-                  console.log(`Removed active-link from: ${link.getAttribute('href')}`);
+                  // console.log(`Removed active-link from: ${link.getAttribute('href')}`);
               });
               navLinks[index].classList.add('active-link');
-              console.log(`Added active-link to: ${navLinks[index].getAttribute('href')}`);
+              // console.log(`Added active-link to: ${navLinks[index].getAttribute('href')}`);
           }
       });
   }
 
   window.addEventListener('scroll', function() {
-      console.log('Scroll event detected');
+      // console.log('Scroll event detected');
       updateActiveLink();
   });
 

@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet"> <!-- Remix Icon CDN -->
     <title>News Detail</title>
     <style>
-        @media screen and (max-width: 640px) {
+        @media screen and (max-width: 960px) {
             .container {
                 margin-inline: 1rem;
             }
