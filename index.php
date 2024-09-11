@@ -215,9 +215,9 @@ try {
                      Struktur <i class="ri-arrow-down-s-line"></i>
                   </a>
                   <ul class="dropdown__menu">
-                     <li><a href="struktur.php#organisasi" class="dropdown__link">Struktur Organisasi</a></li>
-                     <li><a href="struktur.php#kurikulum" class="dropdown__link">Tupoksi Staff</a></li>
-                     <li><a href="struktur.php#kesiswaan" class="dropdown__link">Profil Staff</a></li>
+                     <li><a href="struktur.php#struktur" class="dropdown__link">Struktur Organisasi</a></li>
+                     <li><a href="struktur.php#tupoksi" class="dropdown__link">Tupoksi Staff</a></li>
+                     <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
                   </ul>
                </li>
             </ul>

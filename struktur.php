@@ -136,9 +136,9 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                      Struktur <i class="ri-arrow-down-s-line"></i>
                   </a>
                   <ul class="dropdown__menu">
-                     <li><a href="struktur.php#organisasi" class="dropdown__link">Struktur Organisasi</a></li>
-                     <li><a href="struktur.php#kurikulum" class="dropdown__link">Tupoksi Staff</a></li>
-                     <li><a href="struktur.php#kesiswaan" class="dropdown__link">Profil Staff</a></li>
+                     <li><a href="struktur.php#struktur" class="dropdown__link">Struktur struktur</a></li>
+                     <li><a href="struktur.php#tupoksi" class="dropdown__link">Tupoksi Staff</a></li>
+                     <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
                   </ul>
                </li>
             </ul>
@@ -175,7 +175,7 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </section>
 
       <!-- Tupoksi Section -->
-      <section class="struktur section-container" id="kurikulum">
+      <section class="struktur section-container" id="tupoksi">
          <h2 class="section__title-1">Tupoksi Staff</h2>
          <?php if ($tupoksi_path): ?>
             <embed src="assets/pdf/<?php echo htmlspecialchars($tupoksi_path); ?>" type="application/pdf" width="100%" height="600px" />
@@ -185,7 +185,7 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </section>
 
       <!-- Profil Staff Section -->
-      <section class="struktur section-container" id="kesiswaan">
+      <section class="struktur section-container" id="profil-staff">
          <h2 class="section__title-1">Profil Staff</h2>
          <div class="staff-grid">
             <?php foreach ($staff_profiles as $staff): ?>
