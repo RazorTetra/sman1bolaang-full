@@ -118,6 +118,50 @@ try {
          border-radius: 8px;
          /* Menambahkan sudut yang melengkung pada gambar */
       }
+
+      .dropdown__menu {
+         display: none;
+         position: absolute;
+         background-color: var(--container-color);
+         min-width: 160px;
+         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+         z-index: 1;
+      }
+
+      .dropdown__menu.show {
+         display: block;
+      }
+
+      .dropdown__link {
+         color: var(--text-color);
+         padding: 12px 16px;
+         text-decoration: none;
+         display: block;
+      }
+
+      .dropdown__link:hover {
+         background-color: var(--first-color-lighten);
+         color: orange;
+      }
+
+      /* Untuk tampilan mobile */
+      @media screen and (max-width: 767px) {
+         .dropdown__menu {
+            position: static;
+            background-color: transparent;
+            box-shadow: none;
+            display: none;
+         }
+
+         .dropdown__menu.show {
+            display: block;
+         }
+
+         .dropdown__link {
+            padding-left: 2rem;
+            /* Memberikan indentasi pada item dropdown */
+         }
+      }
    </style>
 
    <title>SMK NEGERI 1 BOLAANG</title>
@@ -145,8 +189,6 @@ try {
          <div class="nav__menu" id="nav-menu">
             <span class="nav__title">Menu</span>
 
-            <!-- <h3 class="nav__name">Rian</h3> -->
-
             <ul class="nav__list">
                <li class="nav__item">
                   <a href="#home" class="nav__link">Beranda</a>
@@ -164,13 +206,19 @@ try {
                   <a href="#skills" class="nav__link">Keahlian</a>
                </li>
 
-
                <li class="nav__item">
-                  <a href="#contact" class="nav__link .nav__link-button">Kontak</a>
+                  <a href="#contact" class="nav__link">Kontak</a>
                </li>
 
-               <li class="nav__item">
-                  <a href="struktur.php" class="nav__link">Struktur</a>
+               <li class="nav__item dropdown">
+                  <a href="javascript:void(0)" class="nav__link dropdown__toggle">
+                     Struktur <i class="ri-arrow-down-s-line"></i>
+                  </a>
+                  <ul class="dropdown__menu">
+                     <li><a href="struktur.php#organisasi" class="dropdown__link">Struktur Organisasi</a></li>
+                     <li><a href="struktur.php#kurikulum" class="dropdown__link">Tupoksi Staff</a></li>
+                     <li><a href="struktur.php#kesiswaan" class="dropdown__link">Profil Staff</a></li>
+                  </ul>
                </li>
             </ul>
 
@@ -582,6 +630,67 @@ try {
       });
    </script>
 
+   <script>
+      document.addEventListener('DOMContentLoaded', function() {
+         const navMenu = document.getElementById('nav-menu');
+         const navToggle = document.getElementById('nav-toggle');
+         const navClose = document.getElementById('nav-close');
+         const dropdownToggles = document.querySelectorAll('.dropdown__toggle');
+         const navLinks = document.querySelectorAll('.nav__link:not(.dropdown__toggle)');
+
+         // Toggle menu
+         if (navToggle) {
+            navToggle.addEventListener('click', () => {
+               navMenu.classList.add('show-menu');
+            });
+         }
+
+         if (navClose) {
+            navClose.addEventListener('click', () => {
+               navMenu.classList.remove('show-menu');
+            });
+         }
+
+         // Handle dropdown toggles
+         dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+               e.preventDefault();
+               e.stopPropagation();
+               const dropdownMenu = this.nextElementSibling;
+               dropdownMenu.classList.toggle('show');
+               // console.log('Dropdown clicked'); // Debugging
+            });
+         });
+
+         // Handle regular nav links (close menu on mobile)
+         navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+               if (window.innerWidth <= 767) { // Adjust this breakpoint as needed
+                  navMenu.classList.remove('show-menu');
+               }
+            });
+         });
+
+         // Close dropdowns when clicking outside
+         document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+               document.querySelectorAll('.dropdown__menu.show').forEach(menu => {
+                  menu.classList.remove('show');
+               });
+            }
+         });
+
+         // Close menu when clicking dropdown items on mobile
+         const dropdownLinks = document.querySelectorAll('.dropdown__link');
+         dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+               if (window.innerWidth <= 767) {
+                  navMenu.classList.remove('show-menu');
+               }
+            });
+         });
+      });
+   </script>
 </body>
 
 </html>

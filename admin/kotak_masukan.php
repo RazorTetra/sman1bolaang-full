@@ -237,7 +237,6 @@ function sortLink($column, $currentSort, $currentOrder)
         function showFullMessage(id, name, email, subject, message, createdAt) {
             const contentDiv = document.getElementById('messageContent');
             contentDiv.innerHTML = `
-                <p><strong>ID:</strong> ${id}</p>
                 <p><strong>Nama:</strong> ${name}</p>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Subjek:</strong> ${subject}</p>

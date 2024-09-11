@@ -15,11 +15,27 @@ $stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
 $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
 $image_path = $struktur['image_path'];
 
-function getContactInfo() {
+function getContactInfo()
+{
    global $pdo;
    $stmt = $pdo->query("SELECT * FROM contact_info WHERE is_active = TRUE");
    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// Fetch struktur organisasi image path
+$stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
+$struktur = $stmt->fetch(PDO::FETCH_ASSOC);
+$image_path = $struktur['image_path'];
+
+// Fetch Tupoksi PDF
+$stmt = $pdo->query("SELECT lokasi_file FROM tupoksi_staff ORDER BY id DESC LIMIT 1");
+$tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
+$tupoksi_path = $tupoksi ? $tupoksi['lokasi_file'] : '';
+
+// Fetch staff profiles
+$stmt = $pdo->query("SELECT * FROM profil_staff ORDER BY id");
+$staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -37,15 +53,113 @@ function getContactInfo() {
 
    <!--=============== CSS ===============-->
    <link rel="stylesheet" href="assets/css/styles.css">
-   <link href="/assets/css/output.css" rel="stylesheet">
+   <link rel="stylesheet" href="assets/css/dropdown.css">
+   <style>
+      .glassmorphism {
+         background: rgba(255, 255, 255, 0.25);
+         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+         backdrop-filter: blur(4px);
+         -webkit-backdrop-filter: blur(4px);
+         border-radius: 10px;
+         border: 1px solid rgba(255, 255, 255, 0.18);
+      }
 
+      .section-container {
+         padding: 2rem;
+         max-width: 1120px;
+         margin-bottom: 2rem;
+         margin-left: auto;
+         margin-right: auto;
+      }
+
+      .staff-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+         gap: 1rem;
+      }
+
+      .staff-card {
+         padding: 1rem;
+         text-align: center;
+      }
+
+      .staff-image {
+         width: 150px;
+         height: 150px;
+         border-radius: 50%;
+         object-fit: cover;
+         margin: 0 auto 1rem;
+      }
+   </style>
 
    <title>SMK NEGERI 1 BOLAANG</title>
 </head>
 
 <body>
-    <!--==================== HEADER ====================-->
-    <?php include 'components/header.php'; ?>
+   <!--==================== HEADER ====================-->
+
+
+   <!--==================== HEADER ====================-->
+   <header class="header" id="header">
+      <nav class="nav container">
+         <a href="index.php" class="nav__logo">
+            <span class="nav__logo-circle"><img src="assets/img/logo-smk.png" alt=""></span>
+            <span class="nav__logo-name">smkn1bolaang</span>
+         </a>
+
+         <div class="nav__menu" id="nav-menu">
+            <span class="nav__title">Menu</span>
+
+            <ul class="nav__list">
+               <li class="nav__item">
+                  <a href="index.php#home" class="nav__link">Beranda</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="index.php#about" class="nav__link">Tentang Kami</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="index.php#news" class="nav__link">Berita</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="index.php#skills" class="nav__link">Keahlian</a>
+               </li>
+
+               <li class="nav__item">
+                  <a href="index.php#contact" class="nav__link">Kontak</a>
+               </li>
+
+               <li class="nav__item dropdown">
+                  <a href="javascript:void(0)" class="nav__link dropdown__toggle">
+                     Struktur <i class="ri-arrow-down-s-line"></i>
+                  </a>
+                  <ul class="dropdown__menu">
+                     <li><a href="struktur.php#organisasi" class="dropdown__link">Struktur Organisasi</a></li>
+                     <li><a href="struktur.php#kurikulum" class="dropdown__link">Tupoksi Staff</a></li>
+                     <li><a href="struktur.php#kesiswaan" class="dropdown__link">Profil Staff</a></li>
+                  </ul>
+               </li>
+            </ul>
+
+            <!-- Close button -->
+            <div class="nav__close" id="nav-close">
+               <i class="ri-close-line"></i>
+            </div>
+         </div>
+
+         <div class="nav__buttons">
+            <!-- Theme Button -->
+            <i class="ri-moon-line change-theme" id="theme-button"></i>
+
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+               <i class="ri-menu-4-line"></i>
+            </div>
+         </div>
+      </nav>
+   </header>
 
    <!--==================== MAIN ====================-->
    <main class="main">
@@ -60,15 +174,35 @@ function getContactInfo() {
          </div>
       </section>
 
-      <!--==================== PROFIL SEKOLAH ====================-->
-      <!-- <section class="profil section" id="profil">
-         <div class="profil__container container grid">
-            <h2 class="section__title-1">
-               <span>Profil Sekolah</span>
+      <!-- Tupoksi Section -->
+      <section class="struktur section-container" id="kurikulum">
+         <h2 class="section__title-1">Tupoksi Staff</h2>
+         <?php if ($tupoksi_path): ?>
+            <embed src="assets/pdf/<?php echo htmlspecialchars($tupoksi_path); ?>" type="application/pdf" width="100%" height="600px" />
+         <?php else: ?>
+            <p>Dokumen Tupoksi belum tersedia.</p>
+         <?php endif; ?>
+      </section>
 
-            </h2>
+      <!-- Profil Staff Section -->
+      <section class="struktur section-container" id="kesiswaan">
+         <h2 class="section__title-1">Profil Staff</h2>
+         <div class="staff-grid">
+            <?php foreach ($staff_profiles as $staff): ?>
+               <div class="staff-card">
+                  <img src="assets/img/<?php echo htmlspecialchars($staff['lokasi_foto']); ?>" alt="<?php echo htmlspecialchars($staff['nama']); ?>" class="staff-image">
+                  <div class="staff-info">
+                     <h3><?php echo htmlspecialchars($staff['nama']); ?></h3>
+                     <p><strong><?php echo htmlspecialchars($staff['jabatan']); ?></strong></p>
+                     <p>Status: <?php echo htmlspecialchars($staff['status']); ?></p>
+                     <p>Mata Pelajaran: <?php echo htmlspecialchars($staff['mata_pelajaran']); ?></p>
+                     <p>Lama Mengajar: <?php echo htmlspecialchars($staff['lama_mengajar']); ?> tahun</p>
+                     <p>Pangkat: <?php echo htmlspecialchars($staff['pangkat']); ?></p>
+                  </div>
+               </div>
+            <?php endforeach; ?>
          </div>
-        </section> -->
+      </section>
 
       <!--==================== CONTACT ====================-->
       <section class="contact section" id="contact">
@@ -234,8 +368,17 @@ function getContactInfo() {
 
    <!--=============== MAIN JS ===============-->
    <script src="assets/js/main.js"></script>
-
+   <script src="assets/js/dropdown.js"></script>
    <script>
+      ScrollReveal().reveal('.section-container', {
+         delay: 300,
+         distance: '50px'
+      });
+      ScrollReveal().reveal('.staff-card', {
+         delay: 300,
+         interval: 100
+      });
+
       document.addEventListener('DOMContentLoaded', function() {
          const form = document.getElementById('contact-form');
          const message = document.getElementById('contact-message');

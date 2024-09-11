@@ -15,15 +15,61 @@ if(navClose) {
   })
 }
 
-/*=============== REMOVE MENU MOBILE ===============*/
-const navLink = document.querySelectorAll('.nav__link')
+/*=============== DROPDOWN FUNCTIONALITY ===============*/
+const dropdownToggles = document.querySelectorAll('.dropdown__toggle');
+const navLinks = document.querySelectorAll('.nav__link');
 
-const linkAction = () => {
-  const navMenu = document.getElementById('nav-menu')
-  navMenu.classList.remove('show-menu')
+function toggleDropdown(toggle, event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const dropdownMenu = toggle.nextElementSibling;
+  dropdownMenu.classList.toggle('show');
+  toggle.setAttribute('aria-expanded', dropdownMenu.classList.contains('show'));
 }
-navLink.forEach(n => n.addEventListener('click', linkAction))
 
+function closeAllDropdowns() {
+  dropdownToggles.forEach(toggle => {
+    const dropdownMenu = toggle.nextElementSibling;
+    dropdownMenu.classList.remove('show');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+}
+
+dropdownToggles.forEach(toggle => {
+  toggle.addEventListener('click', (e) => toggleDropdown(toggle, e));
+});
+
+/*=============== REMOVE MENU MOBILE ===============*/
+const linkAction = (e) => {
+  const navMenu = document.getElementById('nav-menu');
+  
+  // Jika yang diklik adalah dropdown toggle, jangan tutup menu
+  if (e.target.classList.contains('dropdown__toggle')) {
+    return;
+  }
+  
+  // Jika yang diklik adalah dropdown link, tutup menu
+  if (e.target.classList.contains('dropdown__link')) {
+    navMenu.classList.remove('show-menu');
+    closeAllDropdowns();
+    return;
+  }
+  
+  // Untuk link lainnya, tutup menu
+  if (!e.target.closest('.dropdown')) {
+    navMenu.classList.remove('show-menu');
+    closeAllDropdowns();
+  }
+}
+
+navLinks.forEach(n => n.addEventListener('click', linkAction));
+
+// Menutup dropdown saat klik di luar
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.dropdown') && !e.target.closest('.nav__menu')) {
+    closeAllDropdowns();
+  }
+});
 /*=============== SHADOW HEADER ===============*/
 const shadowHeader = () =>{
   const header = document.getElementById('header')
@@ -176,4 +222,27 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener("scroll", lazyLoad);
   window.addEventListener("resize", lazyLoad);
   lazyLoad();
+});
+/*=============== DROPDOWN FUNCTIONALITY ===============*/
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownToggles = document.querySelectorAll('.dropdown__toggle');
+
+  dropdownToggles.forEach(toggle => {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const dropdownMenu = this.nextElementSibling;
+      dropdownMenu.classList.toggle('show');
+      // console.log('Dropdown clicked'); // Untuk debugging
+    });
+  });
+
+  // Menutup dropdown saat mengklik di luar
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown__menu.show').forEach(menu => {
+        menu.classList.remove('show');
+      });
+    }
+  });
 });
