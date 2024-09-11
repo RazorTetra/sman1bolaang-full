@@ -145,7 +145,7 @@ try {
       }
 
       /* Untuk tampilan mobile */
-      @media screen and (max-width: 767px) {
+      @media screen and (max-width: 1150px) {
          .dropdown__menu {
             position: static;
             background-color: transparent;
