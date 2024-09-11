@@ -72,23 +72,142 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
          margin-right: auto;
       }
 
+      /* Styles for mobile view */
+      .mobile-view {
+         display: block;
+      }
+
+      .desktop-view {
+         display: none;
+      }
+
       .staff-grid {
          display: grid;
          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
          gap: 1rem;
       }
 
-      .staff-card {
-         padding: 1rem;
-         text-align: center;
-      }
-
       .staff-image {
          width: 150px;
          height: 150px;
-         border-radius: 50%;
+         border-radius: 10%;
          object-fit: cover;
          margin: 0 auto 1rem;
+      }
+
+      /* Tambahan untuk memperbaiki tampilan teks */
+      .staff-info h3 {
+         text-align: center;
+         margin-bottom: 0.5rem;
+      }
+
+      .staff-info p {
+         margin: 0.25rem 0;
+         text-align: center;
+      }
+
+      @media (max-width: 768px) {
+         .staff-grid {
+            grid-template-columns: 1fr;
+         }
+      }
+
+      /* Styles for desktop view */
+      @media (min-width: 769px) {
+         .mobile-view {
+            display: none;
+         }
+
+         .desktop-view {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+         }
+
+         .staff-member {
+            width: 30%;
+            margin-bottom: 2rem;
+         }
+
+         .staff-image-container {
+            margin-bottom: 1rem;
+         }
+
+         .staff-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+         }
+
+         .staff-image:hover {
+            filter: grayscale(0%);
+         }
+
+         .staff-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+         }
+
+         .staff-position {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+         }
+
+         .staff-info p {
+            margin: 0.25rem 0;
+         }
+
+         .staff-container.desktop-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+         }
+
+         .staff-member.kepala-sekolah {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 2rem;
+         }
+
+         .staff-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 2rem;
+         }
+
+         .staff-row .staff-member {
+            width: calc(50% - 1rem);
+            max-width: 400px;
+         }
+      }
+
+      /* Styles PDF Viewer */
+      .pdf-container {
+         width: 100%;
+         max-width: 800px;
+         margin: 0 auto;
+         background: #f0f0f0;
+         padding: 20px;
+         border-radius: 8px;
+         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .pdf-container iframe {
+         border: none;
+      }
+
+      @media (max-width: 768px) {
+         .pdf-container {
+            padding: 10px;
+         }
+
+         .pdf-container iframe {
+            height: 500px;
+         }
       }
    </style>
 
@@ -96,9 +215,6 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-   <!--==================== HEADER ====================-->
-
-
    <!--==================== HEADER ====================-->
    <header class="header" id="header">
       <nav class="nav container">
@@ -177,30 +293,99 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <!-- Tupoksi Section -->
       <section class="struktur section-container" id="tupoksi">
          <h2 class="section__title-1">Tupoksi Staff</h2>
-         <?php if ($tupoksi_path): ?>
-            <embed src="assets/pdf/<?php echo htmlspecialchars($tupoksi_path); ?>" type="application/pdf" width="100%" height="600px" />
-         <?php else: ?>
-            <p>Dokumen Tupoksi belum tersedia.</p>
-         <?php endif; ?>
+         <div class="pdf-container">
+            <?php if ($tupoksi_path): ?>
+               <iframe
+                  src="viewerjs-0.5.8/viewerjs-0.5.8/ViewerJS/#../../../assets/pdf/<?php echo htmlspecialchars($tupoksi_path); ?>"
+                  width="100%"
+                  height="600"
+                  allowfullscreen
+                  webkitallowfullscreen>
+               </iframe>
+            <?php else: ?>
+               <p>Dokumen Tupoksi belum tersedia.</p>
+            <?php endif; ?>
+         </div>
       </section>
 
       <!-- Profil Staff Section -->
       <section class="struktur section-container" id="profil-staff">
-         <h2 class="section__title-1">Profil Staff</h2>
-         <div class="staff-grid">
-            <?php foreach ($staff_profiles as $staff): ?>
-               <div class="staff-card">
-                  <img src="assets/img/<?php echo htmlspecialchars($staff['lokasi_foto']); ?>" alt="<?php echo htmlspecialchars($staff['nama']); ?>" class="staff-image">
+         <h2 class="section__title-1">Profil Staff Manajemen</h2>
+
+         <!-- Tampilan Mobile -->
+         <div class="staff-container mobile-view">
+            <div class="staff-grid">
+               <?php foreach ($staff_profiles as $staff): ?>
+                  <div class="">
+                     <img src="assets/img/<?php echo htmlspecialchars($staff['lokasi_foto']); ?>" alt="<?php echo htmlspecialchars($staff['nama']); ?>" class="staff-image">
+                     <div class="staff-info">
+                        <h3><?php echo htmlspecialchars($staff['nama']); ?></h3>
+                        <p><strong><?php echo htmlspecialchars($staff['jabatan']); ?></strong></p>
+                        <p>Status: <?php echo htmlspecialchars($staff['status']); ?></p>
+                        <p>Mata Pelajaran: <?php echo htmlspecialchars($staff['mata_pelajaran']); ?></p>
+                        <p>Lama Mengajar: <?php echo htmlspecialchars($staff['lama_mengajar']); ?> tahun</p>
+                        <p>Pangkat: <?php echo htmlspecialchars($staff['pangkat']); ?></p>
+                     </div>
+                  </div>
+               <?php endforeach; ?>
+            </div>
+         </div>
+
+         <!-- Tampilan Desktop -->
+         <div class="staff-container desktop-view">
+            <?php
+            $kepala_sekolah = null;
+            $other_staff = [];
+            foreach ($staff_profiles as $staff) {
+               if (strtolower($staff['jabatan']) === 'kepala sekolah') {
+                  $kepala_sekolah = $staff;
+               } else {
+                  $other_staff[] = $staff;
+               }
+            }
+            ?>
+
+            <?php if ($kepala_sekolah): ?>
+               <!-- Kepala Sekolah -->
+               <div class="staff-member kepala-sekolah">
+                  <div class="staff-image-container">
+                     <img src="assets/img/<?php echo htmlspecialchars($kepala_sekolah['lokasi_foto']); ?>" alt="<?php echo htmlspecialchars($kepala_sekolah['nama']); ?>" class="staff-image">
+                  </div>
                   <div class="staff-info">
-                     <h3><?php echo htmlspecialchars($staff['nama']); ?></h3>
-                     <p><strong><?php echo htmlspecialchars($staff['jabatan']); ?></strong></p>
-                     <p>Status: <?php echo htmlspecialchars($staff['status']); ?></p>
+                     <h3 class="staff-name"><?php echo htmlspecialchars($kepala_sekolah['nama']); ?></h3>
+                     <p class="staff-position"><?php echo htmlspecialchars($kepala_sekolah['jabatan']); ?></p>
+                     <p><?php echo htmlspecialchars($kepala_sekolah['status']); ?></p>
+                     <p>Mata Pelajaran: <?php echo htmlspecialchars($kepala_sekolah['mata_pelajaran']); ?></p>
+                     <p>Lama Mengajar: <?php echo htmlspecialchars($kepala_sekolah['lama_mengajar']); ?> Tahun</p>
+                     <p>Pangkat: <?php echo htmlspecialchars($kepala_sekolah['pangkat']); ?></p>
+                  </div>
+               </div>
+            <?php endif; ?>
+
+            <!-- Staff Lainnya -->
+            <?php
+            $count = 0;
+            foreach ($other_staff as $staff):
+               if ($count % 2 == 0) echo '<div class="staff-row">';
+            ?>
+               <div class="staff-member">
+                  <div class="staff-image-container">
+                     <img src="assets/img/<?php echo htmlspecialchars($staff['lokasi_foto']); ?>" alt="<?php echo htmlspecialchars($staff['nama']); ?>" class="staff-image">
+                  </div>
+                  <div class="staff-info">
+                     <h3 class="staff-name"><?php echo htmlspecialchars($staff['nama']); ?></h3>
+                     <p class="staff-position"><?php echo htmlspecialchars($staff['jabatan']); ?></p>
+                     <p><?php echo htmlspecialchars($staff['status']); ?></p>
                      <p>Mata Pelajaran: <?php echo htmlspecialchars($staff['mata_pelajaran']); ?></p>
-                     <p>Lama Mengajar: <?php echo htmlspecialchars($staff['lama_mengajar']); ?> tahun</p>
+                     <p>Lama Mengajar: <?php echo htmlspecialchars($staff['lama_mengajar']); ?> Tahun</p>
                      <p>Pangkat: <?php echo htmlspecialchars($staff['pangkat']); ?></p>
                   </div>
                </div>
-            <?php endforeach; ?>
+            <?php
+               $count++;
+               if ($count % 2 == 0 || $count == count($other_staff)) echo '</div>';
+            endforeach;
+            ?>
          </div>
       </section>
 
@@ -369,12 +554,14 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
    <!--=============== MAIN JS ===============-->
    <script src="assets/js/main.js"></script>
    <script src="assets/js/dropdown.js"></script>
+
+   <!-- Script Contact -->
    <script>
       ScrollReveal().reveal('.section-container', {
          delay: 300,
          distance: '50px'
       });
-      ScrollReveal().reveal('.staff-card', {
+      ScrollReveal().reveal('.', {
          delay: 300,
          interval: 100
       });
@@ -411,6 +598,7 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
          });
       });
    </script>
+
 </body>
 
 </html>
