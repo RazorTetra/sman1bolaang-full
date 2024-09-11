@@ -211,6 +211,89 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       }
    </style>
 
+   <!-- style pop up image -->
+   <style>
+      /* Gallery pop-up styles */
+      .image-popup {
+         display: none;
+         position: fixed;
+         z-index: 1000;
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         background-color: rgba(0, 0, 0, 0.9);
+         opacity: 0;
+         transition: opacity 0.3s ease;
+      }
+
+      .image-popup.show {
+         opacity: 1;
+      }
+
+      .popup-inner {
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         max-width: 90%;
+         max-height: 90%;
+         width: auto;
+         height: auto;
+      }
+
+      .popup-content {
+         display: block;
+         max-width: 100%;
+         max-height: 90vh;
+         width: auto;
+         height: auto;
+         object-fit: contain;
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+         border-radius: 4px;
+         transform: scale(0.9);
+         transition: transform 0.3s ease;
+      }
+
+      .show .popup-content {
+         transform: scale(1);
+      }
+
+      .close {
+         position: absolute;
+         top: -40px;
+         right: 0;
+         color: #f1f1f1;
+         font-size: 40px;
+         font-weight: bold;
+         transition: 0.3s;
+         background: none;
+         border: none;
+         cursor: pointer;
+         outline: none;
+         padding: 0;
+         z-index: 1001;
+      }
+
+      .close:hover,
+      .close:focus {
+         color: #bbb;
+         text-decoration: none;
+      }
+
+      /* Responsive adjustments */
+      @media screen and (max-width: 768px) {
+         .popup-inner {
+            width: 90%;
+         }
+
+         .popup-content {
+            width: 100%;
+            height: auto;
+         }
+      }
+   </style>
+
    <title>SMK NEGERI 1 BOLAANG</title>
 </head>
 
@@ -286,9 +369,16 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
                <span>Struktur Organisasi</span>
             </h2>
 
-            <img class="img-struktur mx-auto" src="<?php echo htmlspecialchars($image_path); ?>" alt="struktur">
+            <img class="img-struktur mx-auto popup-trigger" src="<?php echo htmlspecialchars($image_path); ?>" alt="struktur">
          </div>
       </section>
+      <!-- Pop-up container -->
+      <div id="imagePopup" class="image-popup">
+         <div class="popup-inner">
+            <img class="popup-content" id="popupImage">
+            <button class="close">&times;</button>
+         </div>
+      </div>
 
       <!-- Tupoksi Section -->
       <section class="struktur section-container" id="tupoksi">
@@ -598,6 +688,61 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
          });
       });
    </script>
+
+   <script>
+      // Get all gallery images and structure image
+      const popupTriggers = document.querySelectorAll('.gallery-img, .popup-trigger');
+      const popup = document.getElementById('imagePopup');
+      const popupImg = document.getElementById('popupImage');
+      const closeBtn = document.querySelector('.close');
+
+      // Function to open popup
+      function openPopup(imageSrc) {
+         popupImg.src = imageSrc;
+         popup.style.display = 'block';
+         setTimeout(() => {
+            popup.classList.add('show');
+         }, 50);
+      }
+
+      // Function to close popup
+      function closePopup() {
+         popup.classList.remove('show');
+         setTimeout(() => {
+            popup.style.display = 'none';
+         }, 300);
+      }
+
+      // Add click event to each popup trigger (gallery images and structure image)
+      popupTriggers.forEach(img => {
+         img.addEventListener('click', function() {
+            openPopup(this.src);
+         });
+      });
+
+      // Close the popup when clicking the close button
+      closeBtn.addEventListener('click', closePopup);
+
+      // Close the popup when clicking outside the image
+      popup.addEventListener('click', function(event) {
+         if (event.target === popup) {
+            closePopup();
+         }
+      });
+
+      // Prevent closing when clicking on the image
+      popupImg.addEventListener('click', function(event) {
+         event.stopPropagation();
+      });
+
+      // Close popup when pressing ESC key
+      document.addEventListener('keydown', function(event) {
+         if (event.key === 'Escape') {
+            closePopup();
+         }
+      });
+   </script>
+
 
 </body>
 
