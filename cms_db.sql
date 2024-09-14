@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2024 at 02:38 PM
+-- Generation Time: Sep 14, 2024 at 03:49 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -131,12 +131,43 @@ CREATE TABLE `gallery` (
 --
 
 INSERT INTO `gallery` (`id`, `image`, `created_at`, `is_displayed`, `display_order`) VALUES
-(16, 'berita-1 - Copy.jpg', '2024-09-05 10:13:48', 0, 0),
-(17, 'berita-2 - Copy.jpg', '2024-09-05 10:13:48', 0, 0),
-(18, 'berita-3 - Copy.jpg', '2024-09-05 10:13:48', 0, 0),
-(19, 'berita-4 - Copy.jpg', '2024-09-05 10:13:48', 0, 0),
-(20, 'berita-5 - Copy.jpg', '2024-09-05 10:13:48', 0, 0),
-(21, 'berita-6 - Copy.jpg', '2024-09-05 10:13:48', 0, 0);
+(16, 'berita-1 - Copy.jpg', '2024-09-05 10:13:48', 1, 0),
+(17, 'berita-2 - Copy.jpg', '2024-09-05 10:13:48', 1, 0),
+(18, 'berita-3 - Copy.jpg', '2024-09-05 10:13:48', 1, 0),
+(19, 'berita-4 - Copy.jpg', '2024-09-05 10:13:48', 1, 0),
+(20, 'berita-5 - Copy.jpg', '2024-09-05 10:13:48', 1, 0),
+(21, 'berita-6 - Copy.jpg', '2024-09-05 10:13:48', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profil_staff`
+--
+
+CREATE TABLE `profil_staff` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `riwayat_pendidikan` text DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `mata_pelajaran` varchar(255) DEFAULT NULL,
+  `lama_mengajar` int(11) DEFAULT NULL,
+  `pangkat` varchar(255) DEFAULT NULL,
+  `alamat` text DEFAULT NULL,
+  `motto` text DEFAULT NULL,
+  `lokasi_foto` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `profil_staff`
+--
+
+INSERT INTO `profil_staff` (`id`, `nama`, `jabatan`, `riwayat_pendidikan`, `status`, `mata_pelajaran`, `lama_mengajar`, `pangkat`, `alamat`, `motto`, `lokasi_foto`) VALUES
+(13, 'Brusly P. Polakitan, S.Kom, M.Pd', 'Kepala Sekolah', 'S1. Teknik Informatika\r\nS2. Manajemen Pendidikan \r\n', 'PNS Daerah Prov. Sulut ', 'Informatika / TKJ', 14, 'Penata Tkt. I / IIID ', 'Kinilow Satu Kec. Tomohon Utara', 'Knowing Is Not Enough, But Playing Is Everything', 'staff_1726026331.png'),
+(14, 'Siti Saraswati Tegela, S.Pd', 'Wakil Kepala Sekolah Bidang Akademik ', 'S1. Matematika ', 'PPPK Daerah Prov. Sulut ', 'Matematika', 4, '-', '-', '-', 'staff_1726028352.jpg'),
+(15, 'Andini Mamonto, S.Pd', 'Wakil Kepala Sekolah Bidang Sarana Prasarana ', 'S1. Bahasa Indonesia ', 'PPPK Daerah Prov. Sulut ', 'Matematika', 4, '-', '-', '-', 'staff_1726028553.jpg'),
+(16, 'Fitra Sugeha, S.P', 'Wakil Kepala Sekolah Bidang Hubmas HKI ', 'S1. Pertanian ', 'PPPK Daerah Prov. Sulut ', 'Pertanian', 4, '-', '-', '-', 'staff_1726028596.jpg'),
+(17, 'Risnawati Tunggali, S.Pd', 'Bendahara', 'S1. Sejarah ', 'PPPK Daerah Prov. Sulut ', 'Sejarah ', 4, '-', '-', '-', 'staff_1726028632.jpg');
 
 -- --------------------------------------------------------
 
@@ -157,13 +188,13 @@ CREATE TABLE `skills` (
 --
 
 INSERT INTO `skills` (`id`, `title`, `icon`, `image`, `description`) VALUES
-(1, 'Bisnis Marketing', 'ri-shake-hands-line', '66dedc334e843.jpg', 'Mempelajari teknik pemasaran, strategi penjualan, serta manajemen keuangan dan akuntansi.'),
+(1, 'Bisnis Marketing', 'ri-shake-hands-line', '', 'Mempelajari teknik pemasaran, strategi penjualan, serta manajemen keuangan dan akuntansi.'),
 (2, 'Desain Komunikasi Visual', 'ri-pen-nib-line', NULL, 'Mempelajari prinsip desain grafis, komunikasi visual, dan multimedia, serta teknik-teknik kreatif untuk merancang materi promosi, iklan, branding, dan media digital.'),
 (3, 'Agribisinis & Tanaman Pangan Holtikultura', 'ri-plant-line', NULL, 'Mempelajari teknik-teknik modern dalam budidaya tanaman, manajemen usaha pertanian, serta teknologi terbaru dalam pengolahan dan pemasaran hasil pertanian.'),
 (4, 'Kuliner', 'ri-cake-3-line', NULL, 'Mempersiapkan siswa untuk berkarir di industri makanan dengan mengajarkan teknik memasak, pengembangan resep, dan estetika penyajian makanan.'),
 (5, 'Asisten Keperawatan', 'ri-hospital-line', NULL, 'Mempersiapkan siswa untuk mendukung tenaga medis dalam perawatan pasien. Siswa mempelajari teknik dasar perawatan kesehatan, termasuk pengukuran tanda vital, pemberian obat, dan perawatan luka.'),
 (6, 'Teknik Sepeda Motor', 'ri-e-bike-2-line', NULL, 'Mempelajari teknik-teknik dasar dan lanjutan dalam diagnosis, servis mesin, sistem kelistrikan, dan sistem transmisi.'),
-(8, 'Belajar Bersama Guru 4', 'ri-message-2-line', '66dee685270c4.jpg', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.');
+(8, 'Belajar Bersama Guru 4', 'ri-message-2-line', '', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&amp;#039;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.');
 
 -- --------------------------------------------------------
 
@@ -206,7 +237,29 @@ CREATE TABLE `struktur_organisasi` (
 --
 
 INSERT INTO `struktur_organisasi` (`id`, `image_path`) VALUES
-(1, 'assets/img/struktur_1725686425.jpg');
+(1, 'assets/img/struktur_1726021965.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tupoksi_staff`
+--
+
+CREATE TABLE `tupoksi_staff` (
+  `id` int(11) NOT NULL,
+  `tanggal_upload` timestamp NOT NULL DEFAULT current_timestamp(),
+  `google_drive_link` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tupoksi_staff`
+--
+
+INSERT INTO `tupoksi_staff` (`id`, `tanggal_upload`, `google_drive_link`) VALUES
+(20, '2024-09-11 04:45:04', ''),
+(21, '2024-09-14 13:05:01', 'https://drive.google.com/file/d/1RY5uzeCGuer6PrzEz04-jar8x9nD0kHE/view?usp=sharing'),
+(22, '2024-09-14 13:12:21', 'https://drive.google.com/file/d/1WfHBfydo_93JgN42LM1abyFYT5k_w_qR/view?usp=sharing'),
+(23, '2024-09-14 13:12:55', 'https://drive.google.com/file/d/1RY5uzeCGuer6PrzEz04-jar8x9nD0kHE/view?usp=sharing');
 
 -- --------------------------------------------------------
 
@@ -249,125 +302,70 @@ CREATE TABLE `visitors` (
 --
 
 INSERT INTO `visitors` (`id`, `ip_address`, `visit_time`) VALUES
-(1, '::1', '2024-09-06 22:06:31'),
-(2, '::1', '2024-09-06 22:06:51'),
-(3, '::1', '2024-09-06 22:11:22'),
-(4, '::1', '2024-09-06 22:39:41'),
-(5, '::1', '2024-09-06 22:42:43'),
-(6, '::1', '2024-09-07 04:18:50'),
-(7, '::1', '2024-09-07 04:22:59'),
-(8, '::1', '2024-09-07 04:24:37'),
-(9, '::1', '2024-09-07 05:23:42'),
-(10, '::1', '2024-09-07 05:25:21'),
-(11, '::1', '2024-09-07 05:28:01'),
-(12, '::1', '2024-09-07 05:28:36'),
-(13, '::1', '2024-09-07 05:28:47'),
-(14, '::1', '2024-09-07 05:29:03'),
-(15, '::1', '2024-09-07 06:42:25'),
-(16, '::1', '2024-09-07 06:43:45'),
-(17, '::1', '2024-09-07 06:44:22'),
-(18, '::1', '2024-09-07 06:49:43'),
-(19, '::1', '2024-09-07 06:50:58'),
-(20, '::1', '2024-09-07 10:56:45'),
-(21, '::1', '2024-09-07 10:56:56'),
-(22, '::1', '2024-09-07 10:57:11'),
-(23, '::1', '2024-09-07 10:57:11'),
-(24, '::1', '2024-09-07 10:57:26'),
-(25, '::1', '2024-09-07 10:59:29'),
-(26, '::1', '2024-09-07 13:29:08'),
-(27, '::1', '2024-09-07 13:29:09'),
-(28, '::1', '2024-09-07 13:29:23'),
-(29, '::1', '2024-09-07 13:30:45'),
-(30, '::1', '2024-09-07 13:30:45'),
-(31, '::1', '2024-09-07 13:31:07'),
-(32, '::1', '2024-09-07 13:37:08'),
-(33, '::1', '2024-09-07 13:54:30'),
-(34, '::1', '2024-09-07 13:57:06'),
-(35, '::1', '2024-09-07 13:57:26'),
-(36, '::1', '2024-09-07 14:08:16'),
-(37, '::1', '2024-09-07 14:37:16'),
-(38, '::1', '2024-09-07 14:37:16'),
-(39, '::1', '2024-09-07 14:41:32'),
-(40, '::1', '2024-09-07 15:21:52'),
-(41, '::1', '2024-09-07 15:21:55'),
-(42, '::1', '2024-09-07 15:23:44'),
-(43, '::1', '2024-09-07 15:28:49'),
-(44, '::1', '2024-09-07 15:28:59'),
-(45, '::1', '2024-09-07 15:30:12'),
-(46, '::1', '2024-09-07 15:52:12'),
-(47, '::1', '2024-09-07 16:04:55'),
-(48, '::1', '2024-09-07 16:06:18'),
-(49, '::1', '2024-09-07 16:07:18'),
-(50, '::1', '2024-09-07 16:26:56'),
-(51, '::1', '2024-09-07 16:28:53'),
-(52, '::1', '2024-09-07 16:29:01'),
-(53, '::1', '2024-09-07 16:30:50'),
-(54, '::1', '2024-09-07 16:30:55'),
-(55, '::1', '2024-09-07 16:32:35'),
-(56, '::1', '2024-09-07 16:32:37'),
-(57, '::1', '2024-09-07 16:32:41'),
-(58, '::1', '2024-09-07 16:32:46'),
-(59, '::1', '2024-09-07 16:33:27'),
-(60, '::1', '2024-09-07 16:33:31'),
-(61, '::1', '2024-09-07 16:33:45'),
-(62, '::1', '2024-09-07 16:34:24'),
-(63, '::1', '2024-09-07 16:35:57'),
-(64, '::1', '2024-09-07 16:36:14'),
-(65, '::1', '2024-09-07 16:36:40'),
-(66, '::1', '2024-09-07 16:36:53'),
-(67, '::1', '2024-09-07 16:38:02'),
-(68, '::1', '2024-09-07 16:38:32'),
-(69, '::1', '2024-09-07 16:38:55'),
-(70, '::1', '2024-09-07 16:39:00'),
-(71, '::1', '2024-09-07 16:39:35'),
-(72, '::1', '2024-09-07 16:44:23'),
-(73, '::1', '2024-09-08 16:46:39'),
-(74, '::1', '2024-09-08 17:00:36'),
-(75, '::1', '2024-09-08 17:01:28'),
-(76, '::1', '2024-09-08 17:01:32'),
-(77, '::1', '2024-09-08 17:07:41'),
-(78, '::1', '2024-09-08 17:08:20'),
-(79, '::1', '2024-09-08 17:10:11'),
-(80, '::1', '2024-09-08 17:10:15'),
-(81, '::1', '2024-09-08 17:45:07'),
-(82, '::1', '2024-09-08 17:49:50'),
-(83, '::1', '2024-09-08 17:51:59'),
-(84, '::1', '2024-09-08 17:53:26'),
-(85, '::1', '2024-09-08 17:54:40'),
-(86, '::1', '2024-09-08 17:56:52'),
-(87, '::1', '2024-09-08 17:57:06'),
-(88, '::1', '2024-09-08 17:57:08'),
-(89, '::1', '2024-09-08 17:57:12'),
-(90, '::1', '2024-09-08 17:58:49'),
-(91, '::1', '2024-09-08 17:58:51'),
-(92, '::1', '2024-09-08 17:59:52'),
-(93, '::1', '2024-09-08 18:02:21'),
-(94, '::1', '2024-09-08 18:04:28'),
-(95, '::1', '2024-09-08 18:04:33'),
-(96, '::1', '2024-09-08 18:05:48'),
-(97, '::1', '2024-09-08 18:06:04'),
-(98, '::1', '2024-09-08 18:06:35'),
-(99, '::1', '2024-09-08 18:08:19'),
-(100, '::1', '2024-09-08 18:10:05'),
-(101, '::1', '2024-09-08 18:11:03'),
-(102, '127.0.0.1', '2024-09-09 04:33:19'),
-(103, '::1', '2024-09-09 04:56:01'),
-(104, '::1', '2024-09-09 05:00:01'),
-(105, '::1', '2024-09-09 05:04:40'),
-(106, '::1', '2024-09-09 05:04:58'),
-(107, '::1', '2024-09-09 05:08:49'),
-(108, '::1', '2024-09-09 05:08:54'),
-(109, '::1', '2024-09-09 05:11:22'),
-(110, '::1', '2024-09-09 05:11:27'),
-(111, '::1', '2024-09-09 11:01:57'),
-(112, '::1', '2024-09-09 11:31:48'),
-(113, '::1', '2024-09-09 11:31:56'),
-(114, '::1', '2024-09-09 11:32:59'),
-(115, '::1', '2024-09-09 12:14:00'),
-(116, '::1', '2024-09-09 12:15:36'),
-(117, '::1', '2024-09-09 12:16:15'),
-(118, '::1', '2024-09-09 12:35:07'),
-(119, '::1', '2024-09-09 12:35:10');
+(1, '::1', '2024-09-11 12:20:36'),
+(2, '::1', '2024-09-11 12:20:45'),
+(3, '::1', '2024-09-11 12:26:47'),
+(4, '::1', '2024-09-11 12:31:13'),
+(5, '::1', '2024-09-11 12:33:11'),
+(6, '::1', '2024-09-11 12:35:05'),
+(7, '::1', '2024-09-11 12:36:59'),
+(8, '::1', '2024-09-11 12:37:18'),
+(9, '::1', '2024-09-11 12:40:40'),
+(10, '::1', '2024-09-11 12:41:03'),
+(11, '::1', '2024-09-11 12:41:36'),
+(12, '::1', '2024-09-11 12:41:41'),
+(13, '::1', '2024-09-11 12:42:19'),
+(14, '::1', '2024-09-11 12:43:15'),
+(15, '::1', '2024-09-11 12:43:35'),
+(16, '::1', '2024-09-11 12:44:01'),
+(17, '::1', '2024-09-14 12:01:06'),
+(18, '::1', '2024-09-14 12:02:23'),
+(19, '::1', '2024-09-14 12:10:39'),
+(20, '::1', '2024-09-14 12:10:55'),
+(21, '::1', '2024-09-14 12:25:13'),
+(22, '::1', '2024-09-14 12:25:33'),
+(23, '::1', '2024-09-14 12:26:16'),
+(24, '::1', '2024-09-14 12:26:58'),
+(25, '::1', '2024-09-14 12:27:09'),
+(26, '::1', '2024-09-14 12:27:43'),
+(27, '::1', '2024-09-14 12:30:03'),
+(28, '::1', '2024-09-14 12:38:28'),
+(29, '::1', '2024-09-14 12:38:50'),
+(30, '::1', '2024-09-14 12:40:55'),
+(31, '::1', '2024-09-14 12:41:19'),
+(32, '::1', '2024-09-14 12:41:34'),
+(33, '::1', '2024-09-14 12:41:54'),
+(34, '::1', '2024-09-14 13:03:15'),
+(35, '::1', '2024-09-14 13:03:45'),
+(36, '::1', '2024-09-14 13:05:21'),
+(37, '::1', '2024-09-14 13:06:48'),
+(38, '::1', '2024-09-14 13:09:36'),
+(39, '::1', '2024-09-14 13:10:25'),
+(40, '::1', '2024-09-14 13:12:38'),
+(41, '::1', '2024-09-14 13:12:59'),
+(42, '::1', '2024-09-14 13:36:35'),
+(43, '::1', '2024-09-14 13:43:17'),
+(44, '::1', '2024-09-14 13:44:50'),
+(45, '::1', '2024-09-14 13:45:01'),
+(46, '::1', '2024-09-14 13:47:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `visitor_count`
+--
+
+CREATE TABLE `visitor_count` (
+  `id` int(11) NOT NULL,
+  `total_count` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `visitor_count`
+--
+
+INSERT INTO `visitor_count` (`id`, `total_count`) VALUES
+(1, 118);
 
 --
 -- Indexes for dumped tables
@@ -404,6 +402,12 @@ ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `profil_staff`
+--
+ALTER TABLE `profil_staff`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `skills`
 --
 ALTER TABLE `skills`
@@ -422,6 +426,12 @@ ALTER TABLE `struktur_organisasi`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tupoksi_staff`
+--
+ALTER TABLE `tupoksi_staff`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -431,6 +441,12 @@ ALTER TABLE `users`
 -- Indexes for table `visitors`
 --
 ALTER TABLE `visitors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `visitor_count`
+--
+ALTER TABLE `visitor_count`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -468,6 +484,12 @@ ALTER TABLE `gallery`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
+-- AUTO_INCREMENT for table `profil_staff`
+--
+ALTER TABLE `profil_staff`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
 -- AUTO_INCREMENT for table `skills`
 --
 ALTER TABLE `skills`
@@ -486,6 +508,12 @@ ALTER TABLE `struktur_organisasi`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `tupoksi_staff`
+--
+ALTER TABLE `tupoksi_staff`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -495,7 +523,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `visitors`
 --
 ALTER TABLE `visitors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
+--
+-- AUTO_INCREMENT for table `visitor_count`
+--
+ALTER TABLE `visitor_count`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

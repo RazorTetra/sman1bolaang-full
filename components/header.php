@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/dropdown.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet"> <!-- Remix Icon CDN -->
-    <title>News Detail</title>
+    <title><?php echo $pageTitle ?? 'SMKN 1 Bolaang'; ?></title>
     <style>
         @media screen and (max-width: 960px) {
             .container {
@@ -86,7 +86,7 @@
 
             <ul class="nav__list">
                <li class="nav__item">
-                  <a href="index.php#home" class="nav__link">Beranda</a>
+                  <a href="index.php" class="nav__link">Beranda</a>
                </li>
 
                <li class="nav__item">
@@ -110,7 +110,7 @@
                      Struktur <i class="ri-arrow-down-s-line"></i>
                   </a>
                   <ul class="dropdown__menu">
-                     <li><a href="struktur.php#struktur" class="dropdown__link">Struktur struktur</a></li>
+                     <li><a href="struktur.php#struktur" class="dropdown__link">Struktur Organisasi</a></li>
                      <li><a href="struktur.php#tupoksi" class="dropdown__link">Tupoksi Staff</a></li>
                      <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
                   </ul>
@@ -194,8 +194,6 @@
         })
     </script>
 
-    <!--=============== MAIN JS ===============-->
-    <script src="assets/js/main.js"></script>
     <script src="assets/js/dropdown.js"></script>
 
 </body>

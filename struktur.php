@@ -15,6 +15,14 @@ $stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
 $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
 $image_path = $struktur['image_path'];
 
+// Take link from google drive
+function extractDriveFileId($url)
+{
+   preg_match('/\/d\/([a-zA-Z0-9-_]+)/', $url, $matches);
+   return isset($matches[1]) ? $matches[1] : '';
+}
+
+
 function getContactInfo()
 {
    global $pdo;
@@ -28,13 +36,15 @@ $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
 $image_path = $struktur['image_path'];
 
 // Fetch Tupoksi PDF
-$stmt = $pdo->query("SELECT lokasi_file FROM tupoksi_staff ORDER BY id DESC LIMIT 1");
+$stmt = $pdo->query("SELECT google_drive_link FROM tupoksi_staff ORDER BY tanggal_upload DESC LIMIT 1");
 $tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
-$tupoksi_path = $tupoksi ? $tupoksi['lokasi_file'] : '';
+$tupoksi_link = $tupoksi ? $tupoksi['google_drive_link'] : '';
 
 // Fetch staff profiles
 $stmt = $pdo->query("SELECT * FROM profil_staff ORDER BY id");
 $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 ?>
 
@@ -213,7 +223,6 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
    <!-- style pop up image -->
    <style>
-      /* Gallery pop-up styles */
       .image-popup {
          display: none;
          position: fixed;
@@ -223,40 +232,22 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
          width: 100%;
          height: 100%;
          background-color: rgba(0, 0, 0, 0.9);
-         opacity: 0;
-         transition: opacity 0.3s ease;
-      }
-
-      .image-popup.show {
-         opacity: 1;
+         justify-content: center;
+         align-items: center;
       }
 
       .popup-inner {
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
+         position: relative;
          max-width: 90%;
          max-height: 90%;
-         width: auto;
-         height: auto;
       }
 
       .popup-content {
          display: block;
          max-width: 100%;
          max-height: 90vh;
-         width: auto;
-         height: auto;
          object-fit: contain;
-         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-         border-radius: 4px;
-         transform: scale(0.9);
          transition: transform 0.3s ease;
-      }
-
-      .show .popup-content {
-         transform: scale(1);
       }
 
       .close {
@@ -266,30 +257,41 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
          color: #f1f1f1;
          font-size: 40px;
          font-weight: bold;
-         transition: 0.3s;
+         cursor: pointer;
          background: none;
          border: none;
-         cursor: pointer;
          outline: none;
-         padding: 0;
-         z-index: 1001;
       }
 
       .close:hover,
       .close:focus {
          color: #bbb;
-         text-decoration: none;
+      }
+   </style>
+
+   <!-- Style pdf i-frame -->
+   <style>
+      .pdf-container {
+         position: relative;
+         padding-bottom: 56.25%;
+         /* 16:9 Aspect Ratio */
+         height: 0;
+         overflow: hidden;
       }
 
-      /* Responsive adjustments */
-      @media screen and (max-width: 768px) {
-         .popup-inner {
-            width: 90%;
-         }
+      .pdf-container iframe {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         border: 0;
+      }
 
-         .popup-content {
-            width: 100%;
-            height: auto;
+      @media (max-width: 768px) {
+         .pdf-container {
+            padding-bottom: 75%;
+            /* Adjust for mobile, closer to 4:3 ratio */
          }
       }
    </style>
@@ -311,34 +313,19 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <ul class="nav__list">
                <li class="nav__item">
-                  <a href="index.php#home" class="nav__link">Beranda</a>
+                  <a href="#struktur" class="nav__link active-link">Struktur Organisasi</a>
                </li>
 
                <li class="nav__item">
-                  <a href="index.php#about" class="nav__link">Tentang Kami</a>
+                  <a href="#tupoksi" class="nav__link">Tupoksi Staff</a>
                </li>
 
                <li class="nav__item">
-                  <a href="index.php#news" class="nav__link">Berita</a>
+                  <a href="#profil-staff" class="nav__link">Profil Staff</a>
                </li>
 
                <li class="nav__item">
-                  <a href="index.php#skills" class="nav__link">Keahlian</a>
-               </li>
-
-               <li class="nav__item">
-                  <a href="index.php#contact" class="nav__link">Kontak</a>
-               </li>
-
-               <li class="nav__item dropdown">
-                  <a href="javascript:void(0)" class="nav__link dropdown__toggle">
-                     Struktur <i class="ri-arrow-down-s-line"></i>
-                  </a>
-                  <ul class="dropdown__menu">
-                     <li><a href="struktur.php#struktur" class="dropdown__link">Struktur struktur</a></li>
-                     <li><a href="struktur.php#tupoksi" class="dropdown__link">Tupoksi Staff</a></li>
-                     <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
-                  </ul>
+                  <a href="#contact" class="nav__link">Kontak</a>
                </li>
             </ul>
 
@@ -368,11 +355,10 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h2 class="section__title-1">
                <span>Struktur Organisasi</span>
             </h2>
-
-            <img class="img-struktur mx-auto popup-trigger" src="<?php echo htmlspecialchars($image_path); ?>" alt="struktur">
+            <img class="img-struktur mx-auto popup-trigger" src="<?php echo htmlspecialchars($image_path); ?>" alt="struktur" id="strukturImage">
          </div>
       </section>
-      <!-- Pop-up container -->
+
       <div id="imagePopup" class="image-popup">
          <div class="popup-inner">
             <img class="popup-content" id="popupImage">
@@ -384,13 +370,12 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <section class="struktur section-container" id="tupoksi">
          <h2 class="section__title-1">Tupoksi Staff</h2>
          <div class="pdf-container">
-            <?php if ($tupoksi_path): ?>
-               <iframe
-                  src="viewerjs-0.5.8/viewerjs-0.5.8/ViewerJS/#../../../assets/pdf/<?php echo htmlspecialchars($tupoksi_path); ?>"
+            <?php if ($tupoksi_link): ?>
+               <iframe src="https://drive.google.com/file/d/<?php echo extractDriveFileId($tupoksi_link); ?>/preview"
                   width="100%"
                   height="600"
-                  allowfullscreen
-                  webkitallowfullscreen>
+                  allow="autoplay"
+                  class="w-full max-w-4xl mx-auto">
                </iframe>
             <?php else: ?>
                <p>Dokumen Tupoksi belum tersedia.</p>
@@ -639,6 +624,7 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
    <!--=============== EMAIL JS ===============-->
    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script>
 
 
    <!--=============== MAIN JS ===============-->
@@ -688,58 +674,93 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
          });
       });
    </script>
-
+   <!-- Script Popup Image -->
    <script>
-      // Get all gallery images and structure image
-      const popupTriggers = document.querySelectorAll('.gallery-img, .popup-trigger');
-      const popup = document.getElementById('imagePopup');
-      const popupImg = document.getElementById('popupImage');
-      const closeBtn = document.querySelector('.close');
+      document.addEventListener('DOMContentLoaded', function() {
+         const strukturImage = document.getElementById('strukturImage');
+         const popup = document.getElementById('imagePopup');
+         const popupImg = document.getElementById('popupImage');
+         const closeBtn = document.querySelector('.close');
 
-      // Function to open popup
-      function openPopup(imageSrc) {
-         popupImg.src = imageSrc;
-         popup.style.display = 'block';
-         setTimeout(() => {
-            popup.classList.add('show');
-         }, 50);
-      }
+         let scale = 1;
 
-      // Function to close popup
-      function closePopup() {
-         popup.classList.remove('show');
-         setTimeout(() => {
+         function setTransform() {
+            popupImg.style.transform = `scale(${scale})`;
+         }
+
+         function openPopup(imageSrc) {
+            popupImg.src = imageSrc;
+            popup.style.display = 'flex';
+            scale = 1;
+            setTransform();
+         }
+
+         function closePopup() {
             popup.style.display = 'none';
-         }, 300);
-      }
+            scale = 1;
+         }
 
-      // Add click event to each popup trigger (gallery images and structure image)
-      popupTriggers.forEach(img => {
-         img.addEventListener('click', function() {
+         strukturImage.addEventListener('click', function() {
             openPopup(this.src);
          });
+
+         closeBtn.addEventListener('click', closePopup);
+
+         popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+               closePopup();
+            }
+         });
+
+         popupImg.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            const delta = Math.sign(e.deltaY);
+            scale += delta * -0.1;
+            scale = Math.min(Math.max(0.5, scale), 3);
+            setTransform();
+         });
+
+         document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+               closePopup();
+            }
+         });
       });
+   </script>
+   <!-- Script Navbar -->
+   <script>
+      document.addEventListener('DOMContentLoaded', function() {
+         const sections = document.querySelectorAll('section[id]');
+         const navLinks = document.querySelectorAll('.nav__link');
 
-      // Close the popup when clicking the close button
-      closeBtn.addEventListener('click', closePopup);
+         function changeLinkState() {
+            let index = sections.length;
 
-      // Close the popup when clicking outside the image
-      popup.addEventListener('click', function(event) {
-         if (event.target === popup) {
-            closePopup();
+            while (--index && window.scrollY + 50 < sections[index].offsetTop) {}
+
+            navLinks.forEach((link) => link.classList.remove('active-link'));
+            navLinks[index].classList.add('active-link');
          }
-      });
 
-      // Prevent closing when clicking on the image
-      popupImg.addEventListener('click', function(event) {
-         event.stopPropagation();
-      });
+         window.addEventListener('scroll', changeLinkState);
 
-      // Close popup when pressing ESC key
-      document.addEventListener('keydown', function(event) {
-         if (event.key === 'Escape') {
-            closePopup();
-         }
+         // Smooth scrolling for internal links
+         navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+               e.preventDefault();
+               const targetId = this.getAttribute('href').substring(1);
+               const targetSection = document.getElementById(targetId);
+
+               if (targetSection) {
+                  targetSection.scrollIntoView({
+                     behavior: 'smooth'
+                  });
+               }
+            });
+         });
+
+         // Initial call to set active link on page load
+         changeLinkState();
       });
    </script>
 

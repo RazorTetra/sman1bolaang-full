@@ -246,6 +246,17 @@ try {
       }
    </style>
 
+   <style>
+      /* Tambahkan padding-top pada setiap section */
+      section {
+         padding-top: calc(var(--header-height) + 2rem);
+      }
+
+      /* Sesuaikan posisi anchor untuk smooth scrolling */
+      html {
+         scroll-padding-top: var(--header-height);
+      }
+   </style>
    <title>SMK NEGERI 1 BOLAANG</title>
 </head>
 
@@ -273,7 +284,7 @@ try {
 
             <ul class="nav__list">
                <li class="nav__item">
-                  <a href="#home" class="nav__link">Beranda</a>
+                  <a href="#home" class="nav__link active-link">Beranda</a>
                </li>
 
                <li class="nav__item">
@@ -834,6 +845,41 @@ try {
          if (event.key === 'Escape') {
             closePopup();
          }
+      });
+   </script>
+
+   <script>
+      document.addEventListener('DOMContentLoaded', function() {
+         // Smooth scrolling
+         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+               e.preventDefault();
+
+               const targetId = this.getAttribute('href').substring(1);
+               const targetElement = document.getElementById(targetId);
+
+               if (targetElement) {
+                  window.scrollTo({
+                     top: targetElement.offsetTop - document.querySelector('.header').offsetHeight,
+                     behavior: 'smooth'
+                  });
+               }
+            });
+         });
+
+         // Active link
+         const sections = document.querySelectorAll('section[id]');
+
+         function changeLinkState() {
+            let index = sections.length;
+
+            while (--index && window.scrollY + 100 < sections[index].offsetTop) {}
+
+            document.querySelectorAll('.nav__link').forEach((link) => link.classList.remove('active-link'));
+            document.querySelector(`.nav__link[href*="${sections[index].id}"]`)?.classList.add('active-link');
+         }
+
+         window.addEventListener('scroll', changeLinkState);
       });
    </script>
 </body>

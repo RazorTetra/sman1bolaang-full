@@ -70,13 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } elseif (isset($_POST['aksi'])) {
-        // Handle other form submissions (staff management)
+        // Handle other form submissions (staff management and tupoksi)
         switch ($_POST['aksi']) {
-            case 'unggah_tupoksi':
-                if (isset($_FILES['tupoksi_pdf'])) {
-                    $response = json_decode(unggahTupoksiPDF($_FILES['tupoksi_pdf']), true);
+            case 'update_tupoksi':
+                if (isset($_POST['google_drive_link'])) {
+                    $response = json_decode(updateTupoksi($_POST['google_drive_link']), true);
                 } else {
-                    $response = ['success' => false, 'message' => "File PDF Tupoksi tidak ditemukan."];
+                    $response = ['success' => false, 'message' => "Link Google Drive Tupoksi tidak ditemukan."];
                 }
                 header('Content-Type: application/json');
                 echo json_encode($response);
@@ -97,33 +97,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // ==================== HELPER FUNCTIONS ====================
 
-// Function to upload Tupoksi PDF
-function unggahTupoksiPDF($file)
+// Function to update Tupoksi link
+function updateTupoksi($link)
 {
     global $pdo;
-    $target_dir = "../assets/pdf/";
-    $file_extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-    $new_file_name = "tupoksi_" . time() . "." . $file_extension;
-    $target_file = $target_dir . $new_file_name;
-
-    if ($file_extension != "pdf") {
-        return json_encode(['success' => false, 'message' => "Hanya file PDF yang diizinkan."]);
-    }
-
-    if ($file["size"] > 5000000) {
-        return json_encode(['success' => false, 'message' => "Maaf, file terlalu besar. Maksimum 5MB."]);
-    }
-
-    if (move_uploaded_file($file["tmp_name"], $target_file)) {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO tupoksi_staff (nama_file, lokasi_file) VALUES (?, ?)");
-            $stmt->execute([$new_file_name, $new_file_name]);
-            return json_encode(['success' => true, 'message' => "File PDF Tupoksi berhasil diunggah."]);
-        } catch (PDOException $e) {
-            return json_encode(['success' => false, 'message' => "Terjadi kesalahan saat menyimpan data ke database: " . $e->getMessage()]);
-        }
-    } else {
-        return json_encode(['success' => false, 'message' => "Maaf, terjadi kesalahan saat mengunggah file."]);
+    try {
+        $stmt = $pdo->prepare("INSERT INTO tupoksi_staff (google_drive_link) VALUES (?)");
+        $stmt->execute([$link]);
+        return json_encode(['success' => true, 'message' => "Link Tupoksi berhasil diperbarui."]);
+    } catch (PDOException $e) {
+        return json_encode(['success' => false, 'message' => "Terjadi kesalahan saat menyimpan data ke database: " . $e->getMessage()]);
     }
 }
 
@@ -202,8 +185,8 @@ $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
 $stmt = $pdo->query("SELECT * FROM profil_staff ORDER BY jabatan");
 $result_staff = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch current Tupoksi PDF
-$stmt = $pdo->query("SELECT * FROM tupoksi_staff ORDER BY id DESC LIMIT 1");
+// Fetch current Tupoksi link
+$stmt = $pdo->query("SELECT * FROM tupoksi_staff ORDER BY tanggal_upload DESC LIMIT 1");
 $current_tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // ==================== HTML OUTPUT ====================
@@ -257,22 +240,22 @@ $current_tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
             </form>
         </div>
 
-        <!-- Tupoksi PDF Section -->
+        <!-- Tupoksi Section -->
         <div class="bg-white p-6 rounded-lg shadow-md mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-gray-700">Kelola Tupoksi PDF</h2>
             <?php if ($current_tupoksi): ?>
-                <p class="mb-2">File Tupoksi saat ini: <span class="font-medium"><?php echo htmlspecialchars($current_tupoksi['nama_file']); ?></span></p>
-                <a href="../assets/pdf/<?php echo htmlspecialchars($current_tupoksi['lokasi_file']); ?>" target="_blank" class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg mb-4 transition duration-300">Lihat PDF</a>
+                <p class="mb-2">Link Tupoksi saat ini: <a href="<?php echo htmlspecialchars($current_tupoksi['google_drive_link']); ?>" target="_blank" class="text-blue-500 hover:underline"><?php echo htmlspecialchars($current_tupoksi['google_drive_link']); ?></a></p>
+                <p class="mb-4">Tanggal Upload: <?php echo htmlspecialchars($current_tupoksi['tanggal_upload']); ?></p>
             <?php else: ?>
-                <p class="mb-4 text-gray-600">Belum ada file Tupoksi.</p>
+                <p class="mb-4 text-gray-600">Belum ada link Tupoksi.</p>
             <?php endif; ?>
-            <form id="tupoksiForm" action="" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="aksi" value="unggah_tupoksi">
+            <form id="tupoksiForm" action="" method="POST">
+                <input type="hidden" name="aksi" value="update_tupoksi">
                 <div class="mb-4">
-                    <label for="tupoksi_pdf" class="block text-sm font-medium text-gray-700 mb-2">Upload File Tupoksi Baru (PDF)</label>
-                    <input type="file" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" id="tupoksi_pdf" name="tupoksi_pdf" accept=".pdf" required>
+                    <label for="google_drive_link" class="block text-sm font-medium text-gray-700 mb-2">Link Google Drive Tupoksi PDF</label>
+                    <input type="url" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" id="google_drive_link" name="google_drive_link" required placeholder="https://drive.google.com/file/d/...">
                 </div>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300">Unggah Tupoksi PDF</button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300">Update Link Tupoksi</button>
             </form>
         </div>
 
