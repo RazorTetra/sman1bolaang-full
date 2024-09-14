@@ -1,3 +1,6 @@
 node_modules
 viewerjs-0.5.8
 *.zip
+.env
+manage_model.php
+bubblechat.php
