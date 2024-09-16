@@ -17,6 +17,10 @@ $stmt = $pdo->prepare("SELECT image FROM gallery WHERE is_displayed = 1 ORDER BY
 $stmt->execute();
 $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Fetch beranda data
+$stmt = $pdo->query("SELECT * FROM beranda LIMIT 1");
+$beranda = $stmt->fetch(PDO::FETCH_ASSOC);
+
 // Ambil data dari tabel about_info
 $stmt = $pdo->prepare("SELECT * FROM about_info LIMIT 1");
 $stmt->execute();
@@ -339,43 +343,28 @@ try {
       <section class="home section" id="home">
          <div class="home__container container grid">
             <h1 class="home__name">
-               SMKN 1 Bolaang
+               <?php echo htmlspecialchars($beranda['title'] ?? 'SMKN 1 Bolaang'); ?>
             </h1>
 
             <div class="home__perfil">
                <div class="home__image">
-                  <!-- <img src="assets/img/home-perfil-3.jpg" alt="image" class="home__img"> -->
-                  <!-- <div class="home__shadow"></div> -->
-                  <iframe src="https://www.youtube.com/embed/p48DjKj-JyI?si=c-O2boxorz6np0Vr" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-                  <!-- <img src="assets/img/curved-arrow.svg" alt="" class="home__arrow">
-                     <img src="assets/img/random-lines.svg" alt="" class="home__line"> -->
+                  <iframe src="<?php echo htmlspecialchars($beranda['youtube_link'] ?? 'https://www.youtube.com/embed/p48DjKj-JyI?si=c-O2boxorz6np0Vr'); ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
                   <div class="geometric-box"></div>
                </div>
 
                <div class="home__social">
-                  <a href="https://www.facebook.com/smkn1bolaang" target="_blank" class="home__social-link">
-                     <i class="ri-facebook-circle-line"></i>
-                  </a>
-
-                  <a href="https://instagram.com/smkn1.bolaang" target="_blank" class="home__social-link">
-                     <i class="ri-instagram-line"></i>
-                  </a>
-
-                  <a href="https://www.youtube.com/@SMKN1BolaangMattoa" target="_blank" class="home__social-link">
-                     <i class="ri-youtube-line"></i>
-                  </a>
+                  <?php foreach ($socialLinks as $link): ?>
+                     <a href="<?php echo htmlspecialchars($link['url']); ?>" target="_blank" class="home__social-link">
+                        <i class="<?php echo htmlspecialchars($link['icon']); ?>"></i>
+                     </a>
+                  <?php endforeach; ?>
                </div>
             </div>
 
             <div class="home__info">
                <p class="home__description">
-                  <!-- <b>Lorem, ipsum.</b> -->
-                  <b>MATTOA SmeckONEBol</b>
-                  <br>
-                  <b>" Menjadikan Aku Tangguh Terampil <br> Optimis Amanah "</b>
-
+                  <?php echo nl2br(htmlspecialchars($beranda['description'] ?? '')); ?>
                </p>
 
                <a href="#about" class="home__scroll">
