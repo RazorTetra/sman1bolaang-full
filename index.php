@@ -382,7 +382,7 @@ try {
       <section class="about section" id="about">
          <div class="about__container container grid">
             <h2 class="section__title-1">
-               <span>Tabea !</span>
+               <span><?php echo htmlspecialchars($about['tabea_text']); ?></span>
             </h2>
 
             <div class="about__perfil">
@@ -404,7 +404,7 @@ try {
                </div>
 
                <div class="about__buttons mt-4">
-                  <a href="#contact" class="button">
+                  <a href="https://wa.me/<?php echo htmlspecialchars(str_replace('+', '', $about['whatsapp'])); ?>" target="_blank" class="button">
                      <i class="ri-whatsapp-line"></i> Kontak Saya
                   </a>
 

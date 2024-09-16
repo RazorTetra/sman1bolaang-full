@@ -15,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $facebook = !empty($_POST['facebook']) ? $_POST['facebook'] : $about['facebook'];
     $instagram = !empty($_POST['instagram']) ? $_POST['instagram'] : $about['instagram'];
     $youtube = !empty($_POST['youtube']) ? $_POST['youtube'] : $about['youtube'];
+    $whatsapp = !empty($_POST['whatsapp']) ? $_POST['whatsapp'] : $about['whatsapp'];
+    $tabea_text = !empty($_POST['tabea_text']) ? $_POST['tabea_text'] : $about['tabea_text'];
 
     // Tangani upload gambar dengan pengecekan apakah ada file yang diupload
     $image_path = $_FILES['image']['name'] ? 'assets/img/' . $_FILES['image']['name'] : $about['image'];
@@ -33,14 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Update data di database
-    $stmt = $pdo->prepare("UPDATE about_info SET description = :description, name = :name, image = :image, facebook = :facebook, instagram = :instagram, youtube = :youtube WHERE id = 1");
+    $stmt = $pdo->prepare("UPDATE about_info SET description = :description, name = :name, image = :image, facebook = :facebook, instagram = :instagram, youtube = :youtube, whatsapp = :whatsapp, tabea_text = :tabea_text WHERE id = 1");
     $stmt->execute([
         'description' => $description,
         'name' => $name,
         'image' => $image_path,
         'facebook' => $facebook,
         'instagram' => $instagram,
-        'youtube' => $youtube
+        'youtube' => $youtube,
+        'whatsapp' => $whatsapp,
+        'tabea_text' => $tabea_text
     ]);
 
     // Jika request melalui AJAX, kirim respons JSON
@@ -129,6 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div id="notification" class="notification"></div>
 
         <form id="aboutForm" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow">
+            <!-- Judul Text field -->
+            <label class="block mb-2 text-lg font-semibold">Title:</label>
+            <input type="text" name="tabea_text" value="<?php echo htmlspecialchars($about['tabea_text']); ?>" class="w-full p-2 border rounded mb-4">
+
             <!-- Name field with reduced size -->
             <label class="block mb-2 text-lg font-semibold">Name:</label>
             <div class="editor-toolbar mb-2">
@@ -162,6 +170,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label class="block mb-2 text-lg font-semibold">YouTube:</label>
             <input type="text" name="youtube" value="<?php echo htmlspecialchars($about['youtube']); ?>" class="w-full p-2 border rounded mb-4">
+
+            <!-- Kontak Saya field -->
+            <label class="block mb-2 text-lg font-semibold">Kontak Saya:</label>
+            <input type="text" name="whatsapp" value="<?php echo htmlspecialchars($about['whatsapp']); ?>" class="w-full p-2 border rounded mb-4" placeholder="Format: +628123456789">
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
         </form>
@@ -220,10 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         try {
                             let res = JSON.parse(response);
                             if (res.success) {
-                                // Update notifikasi
                                 $('#notification').text(res.message).fadeIn().delay(2000).fadeOut();
-
-                                // Cek apakah gambar di-update dan refresh gambar
                                 if (formData.get('image').name) {
                                     let newImagePath = 'assets/img/' + formData.get('image').name;
                                     $('img[alt="Current Image"]').attr('src', '../' + newImagePath + '?' + new Date().getTime());
