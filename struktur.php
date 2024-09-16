@@ -313,6 +313,10 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <ul class="nav__list">
                <li class="nav__item">
+                  <a href="index.php" class="nav__link">Beranda</a>
+               </li>
+
+               <li class="nav__item">
                   <a href="#struktur" class="nav__link active-link">Struktur Organisasi</a>
                </li>
 
@@ -739,28 +743,41 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             while (--index && window.scrollY + 50 < sections[index].offsetTop) {}
 
             navLinks.forEach((link) => link.classList.remove('active-link'));
-            navLinks[index].classList.add('active-link');
+
+            // Cari link yang sesuai dengan section saat ini
+            const currentSectionId = sections[index] ? sections[index].id : null;
+            const currentLink = Array.from(navLinks).find(link => link.getAttribute('href') === `#${currentSectionId}`);
+
+            if (currentLink) {
+               currentLink.classList.add('active-link');
+            } else if (index === 0) {
+               // Jika di atas semua section, aktifkan link Struktur Organisasi
+               navLinks[1].classList.add('active-link'); // Indeks 1 karena 0 adalah Beranda
+            }
          }
 
          window.addEventListener('scroll', changeLinkState);
 
-         // Smooth scrolling for internal links
+         // Smooth scrolling untuk link internal
          navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
-               e.preventDefault();
-               const targetId = this.getAttribute('href').substring(1);
-               const targetSection = document.getElementById(targetId);
+               const href = this.getAttribute('href');
 
-               if (targetSection) {
-                  targetSection.scrollIntoView({
-                     behavior: 'smooth'
-                  });
+               if (href.startsWith('#')) {
+                  e.preventDefault();
+                  const targetSection = document.querySelector(href);
+
+                  if (targetSection) {
+                     targetSection.scrollIntoView({
+                        behavior: 'smooth'
+                     });
+                  }
                }
             });
          });
 
-         // Initial call to set active link on page load
-         changeLinkState();
+         // Set Struktur Organisasi sebagai aktif saat halaman dimuat
+         navLinks[1].classList.add('active-link');
       });
    </script>
 

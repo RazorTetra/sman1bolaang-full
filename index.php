@@ -599,6 +599,7 @@ try {
             </div>
          </div>
       </section>
+      <?php include 'components/bubblechat.php'; ?>
    </main>
 
    <!--==================== MAPS ====================-->
