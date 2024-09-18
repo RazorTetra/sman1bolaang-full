@@ -75,7 +75,7 @@
                         <div x-show="dropdown" class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                             <a href="../admin/manage_sosmed.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('manage_sosmed.php')}">Kelola Link</a>
                             <a href="../admin/kotak_masukan.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('kotak_masukan.php')}">Kotak Masukan</a>
-                            <a href="../admin/kelola_ai.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('kotak_masukan.php')}">AI Gemini1.0 Pro</a>
+                            <a href="../admin/kelola_ai.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('kelola-ai.php')}">AI Gemini1.0 Pro</a>
                         </div>
                     </div>
 
@@ -96,7 +96,7 @@
                 <a href="../admin/manage_gallery.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_gallery.php')}">Kelola Gallery</a>
                 <a href="../admin/manage_sosmed.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_sosmed.php')}">Kelola Link</a>
                 <a href="../admin/kotak_masukan.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('kotak_masukan.php')}">Kotak Masukan</a>
-                <a href="../admin/kelola_ai.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('kotak_masukan.php')}">AI Gemini 1.0 Pro</a>
+                <a href="../admin/kelola_ai.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('kelola-ai.php')}">AI Gemini 1.0 Pro</a>
                 <a href="../functions/logout.php" class="block px-3 py-2 rounded-md text-base font-medium bg-red-600 hover:bg-red-700 transition duration-150 ease-in-out">Logout</a>
             </div>
         </div>
