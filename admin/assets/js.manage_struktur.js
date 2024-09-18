@@ -139,36 +139,3 @@ document
     document.getElementById("messageModal").classList.add("hidden");
   });
 
-// Bagian Upload Tupoksi
-document.getElementById('tupoksiForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-
-    fetch('manage_struktur.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        showNotification(data.message);
-        if (data.success) {
-            // Refresh halaman setelah beberapa detik jika sukses
-            setTimeout(() => {
-                location.reload();
-            }, 2000);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Terjadi kesalahan saat mengunggah file.');
-    });
-});
-
-function showNotification(message) {
-    document.getElementById('notificationMessage').textContent = message;
-    document.getElementById('notificationModal').classList.remove('hidden');
-}
-
-document.getElementById('closeNotificationModal').addEventListener('click', function() {
-    document.getElementById('notificationModal').classList.add('hidden');
-});

@@ -21,9 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event listener untuk form tupoksi
+    let isSubmitting = false;
+
     document.getElementById('tupoksiForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        if (isSubmitting) return; // Prevent double submission
+        isSubmitting = true;
+    
         const formData = new FormData(this);
     
         fetch('manage_struktur.php', {
@@ -40,6 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             alert('Terjadi kesalahan saat menyimpan data tupoksi.');
+        })
+        .finally(() => {
+            isSubmitting = false;
         });
     });
 });

@@ -187,6 +187,8 @@ function deleteStruktur($id)
 function handleTupoksiSubmission($data)
 {
     global $pdo;
+    error_log("handleTupoksiSubmission called with data: " . print_r($data, true));
+    
     $id = isset($data['id']) ? $data['id'] : null;
     $judul = $data['judul'];
     $google_drive_link = $data['google_drive_link'];
@@ -204,6 +206,7 @@ function handleTupoksiSubmission($data)
         $stmt->execute($params);
         return ['success' => true, 'message' => ($id ? 'Tupoksi berhasil diperbarui.' : 'Tupoksi baru berhasil ditambahkan.')];
     } catch (PDOException $e) {
+        error_log("Error in handleTupoksiSubmission: " . $e->getMessage());
         return ['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()];
     }
 }
