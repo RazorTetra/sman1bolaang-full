@@ -1,5 +1,5 @@
 <?php
-include('../admin/auth.php'); 
+include('../admin/auth.php');
 include('../config.php');
 
 // Fungsi untuk mendapatkan nilai dari database
@@ -58,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $updateMessage = "Custom Knowledge berhasil diperbarui.";
         }
     }
-    
+
     // Simpan pesan dalam session
     $_SESSION['update_message'] = $updateMessage;
-    
+
     // Redirect untuk menghindari pengiriman ulang form
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
@@ -81,17 +81,33 @@ $customKnowledge = getValue('custom_knowledge');
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola AI - Admin Panel</title>
     <link href="../assets/css/output.css" rel="stylesheet">
     <style>
-        .bg-primary { background-color: #3490dc; }
-        .bg-secondary { background-color: #f6f9fc; }
-        .text-primary { color: #3490dc; }
-        .border-primary { border-color: #3490dc; }
-        .hover\:bg-primary-dark:hover { background-color: #2779bd; }
+        .bg-primary {
+            background-color: #3490dc;
+        }
+
+        .bg-secondary {
+            background-color: #f6f9fc;
+        }
+
+        .text-primary {
+            color: #3490dc;
+        }
+
+        .border-primary {
+            border-color: #3490dc;
+        }
+
+        .hover\:bg-primary-dark:hover {
+            background-color: #2779bd;
+        }
+
         .warning-box {
             background-color: #fff3cd;
             border: 1px solid #ffeeba;
@@ -102,6 +118,7 @@ $customKnowledge = getValue('custom_knowledge');
         }
     </style>
 </head>
+
 <body class="bg-secondary">
     <?php include('../admin/components/navbar.php'); ?>
 
@@ -126,22 +143,6 @@ $customKnowledge = getValue('custom_knowledge');
         </div>
 
         <div class="grid lg:grid-cols-2 gap-8">
-            <!-- API Key Section -->
-            <div class="bg-white p-6 rounded-lg shadow-md border border-primary">
-                <h2 class="text-xl font-semibold mb-4 text-primary">API Key Gemini</h2>
-                <form method="POST" class="space-y-4">
-                    <div>
-                        <label for="api_key" class="block text-sm font-medium text-gray-700">API Key</label>
-                        <input type="text" id="api_key" name="api_key" value="<?php echo htmlspecialchars($apiKey); ?>" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
-                    </div>
-                    <button type="submit" name="update_api_key"
-                        class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-                        Update API Key
-                    </button>
-                </form>
-            </div>
-
             <!-- Base Knowledge Section -->
             <div class="bg-white p-6 rounded-lg shadow-md border border-primary">
                 <h2 class="text-xl font-semibold mb-4 text-primary">Base Knowledge</h2>
@@ -161,7 +162,7 @@ $customKnowledge = getValue('custom_knowledge');
             </div>
 
             <!-- Custom Knowledge Section -->
-            <div class="bg-white p-6 rounded-lg shadow-md border border-primary lg:col-span-2">
+            <div class="bg-white p-6 rounded-lg shadow-md border border-primary ">
                 <h2 class="text-xl font-semibold mb-4 text-primary">Custom Knowledge</h2>
                 <p class="text-sm text-gray-600 mb-2">Tambahkan informasi khusus atau petunjuk tambahan untuk AI.</p>
                 <form method="POST" class="space-y-4">
@@ -174,6 +175,22 @@ $customKnowledge = getValue('custom_knowledge');
                     <button type="submit" name="update_custom_knowledge"
                         class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
                         Update Custom Knowledge
+                    </button>
+                </form>
+            </div>
+
+            <!-- API Key Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md border border-primary lg:col-span-2">
+                <h2 class="text-xl font-semibold mb-4 text-primary">API Key Gemini</h2>
+                <form method="POST" class="space-y-4">
+                    <div>
+                        <label for="api_key" class="block text-sm font-medium text-gray-700">API Key</label>
+                        <input type="text" id="api_key" name="api_key" value="<?php echo htmlspecialchars($apiKey); ?>" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50">
+                    </div>
+                    <button type="submit" name="update_api_key"
+                        class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                        Update API Key
                     </button>
                 </form>
             </div>
@@ -203,4 +220,5 @@ $customKnowledge = getValue('custom_knowledge');
         updateCharCount('custom_knowledge', 'custom_knowledge_count', 2000);
     </script>
 </body>
+
 </html>
