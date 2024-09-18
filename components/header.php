@@ -1,3 +1,8 @@
+<?php
+require_once('config.php');
+$skillsDropdown = getSkillsForHeader($pdo);
+?>
+
 <!-- components/header.php -->
 <!DOCTYPE html>
 <html lang="en">
@@ -73,67 +78,74 @@
 </head>
 
 <body>
-   <!--==================== HEADER ====================-->
-   <header class="header" id="header">
-      <nav class="nav container">
-         <a href="index.php" class="nav__logo">
-            <span class="nav__logo-circle"><img src="assets/img/logo-smk.png" alt=""></span>
-            <span class="nav__logo-name">smkn1bolaang</span>
-         </a>
+    <!--==================== HEADER ====================-->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.php" class="nav__logo">
+                <span class="nav__logo-circle"><img src="assets/img/logo-smk.png" alt=""></span>
+                <span class="nav__logo-name">smkn1bolaang</span>
+            </a>
 
-         <div class="nav__menu" id="nav-menu">
-            <span class="nav__title">Menu</span>
+            <div class="nav__menu" id="nav-menu">
+                <span class="nav__title">Menu</span>
 
-            <ul class="nav__list">
-               <li class="nav__item">
-                  <a href="index.php" class="nav__link">Beranda</a>
-               </li>
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.php" class="nav__link">Beranda</a>
+                    </li>
 
-               <li class="nav__item">
-                  <a href="index.php#about" class="nav__link">Tentang Kami</a>
-               </li>
+                    <li class="nav__item">
+                        <a href="index.php#about" class="nav__link">Tentang Kami</a>
+                    </li>
 
-               <li class="nav__item">
-                  <a href="index.php#news" class="nav__link">Berita</a>
-               </li>
+                    <li class="nav__item">
+                        <a href="index.php#news" class="nav__link">Berita</a>
+                    </li>
 
-               <li class="nav__item">
-                  <a href="index.php#skills" class="nav__link">Keahlian</a>
-               </li>
+                    <li class="nav__item dropdown">
+                        <a href="javascript:void(0)" class="nav__link dropdown__toggle">
+                            Keahlian <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown__menu">
+                            <?php foreach ($skillsDropdown as $skill): ?>
+                                <li><a href="skill_detail.php?id=<?php echo $skill['id']; ?>" class="dropdown__link"><?php echo htmlspecialchars($skill['title']); ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
 
-               <li class="nav__item">
-                  <a href="index.php#contact" class="nav__link">Kontak</a>
-               </li>
+                    <li class="nav__item">
+                        <a href="index.php#contact" class="nav__link">Kontak</a>
+                    </li>
 
-               <li class="nav__item dropdown">
-                  <a href="javascript:void(0)" class="nav__link dropdown__toggle">
-                     Struktur <i class="ri-arrow-down-s-line"></i>
-                  </a>
-                  <ul class="dropdown__menu">
-                     <li><a href="struktur.php#struktur" class="dropdown__link">Struktur Organisasi</a></li>
-                     <li><a href="struktur.php#tupoksi" class="dropdown__link">Tupoksi Staff</a></li>
-                     <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
-                  </ul>
-               </li>
-            </ul>
+                    <li class="nav__item dropdown">
+                        <a href="javascript:void(0)" class="nav__link dropdown__toggle">
+                            Struktur <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown__menu">
+                            <li><a href="struktur.php#struktur" class="dropdown__link">Struktur Organisasi</a></li>
+                            <li><a href="struktur.php#tupoksi" class="dropdown__link">Tupoksi Staff</a></li>
+                            <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-            <!-- Close button -->
-            <div class="nav__close" id="nav-close">
-               <i class="ri-close-line"></i>
+                <!-- Close button -->
+                <div class="nav__close" id="nav-close">
+                    <i class="ri-close-line"></i>
+                </div>
             </div>
-         </div>
 
-         <div class="nav__buttons">
-            <!-- Theme Button -->
-            <i class="ri-moon-line change-theme" id="theme-button"></i>
+            <div class="nav__buttons">
+                <!-- Theme Button -->
+                <i class="ri-moon-line change-theme" id="theme-button"></i>
 
-            <!-- Toggle button -->
-            <div class="nav__toggle" id="nav-toggle">
-               <i class="ri-menu-4-line"></i>
+                <!-- Toggle button -->
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-menu-4-line"></i>
+                </div>
             </div>
-         </div>
-      </nav>
-   </header>
+        </nav>
+    </header>
 
     <script>
         /*=============== SHOW MENU ===============*/

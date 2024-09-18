@@ -1,23 +1,6 @@
 <?php
 require_once('config.php');
 
-// Ambil ID skill dari parameter URL
-$skill_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-// Query untuk mengambil detail skill, termasuk kolom image
-try {
-    $stmt = $pdo->prepare("SELECT id, title, icon, image, description FROM skills WHERE id = ?");
-    $stmt->execute([$skill_id]);
-    $skill = $stmt->fetch(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Query failed: " . $e->getMessage());
-}
-
-// Jika skill tidak ditemukan, redirect ke halaman utama
-if (!$skill) {
-    header("Location: index.php");
-    exit();
-}
 
 // Fungsi untuk mendapatkan info kontak (diperlukan untuk footer)
 function getContactInfo()
@@ -188,12 +171,22 @@ try {
 <body>
     <!--==================== HEADER ====================-->
     <?php include 'components/header.php'; ?>
+    <?php
+    // Ambil ID skill dari parameter URL
+    $skill_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $skill = getSkillDetails($pdo, $skill_id);
+    // Jika skill tidak ditemukan, redirect ke halaman utama
+    if (!$skill) {
+        header("Location: index.php");
+        exit();
+    }
 
+    ?>
     <!--==================== MAIN ====================-->
     <main class="main">
         <section class="section skill-detail-section">
             <div class="skill-detail-container">
-                <?php if ($skill['image']): ?>
+                <?php if (!empty($skill['image'])): ?>
                     <div class="skill-detail-image-wrapper">
                         <img src="assets/img/<?php echo htmlspecialchars($skill['image']); ?>" alt="<?php echo htmlspecialchars($skill['title']); ?>" class="skill-detail-image">
                     </div>
@@ -201,12 +194,14 @@ try {
 
                 <div class="skill-detail-header">
                     <h1 class="skill-detail-title"><?php echo htmlspecialchars($skill['title']); ?></h1>
-                    <i class="<?php echo htmlspecialchars($skill['icon']); ?> skill-detail-icon"></i>
+                    <?php if (!empty($skill['icon'])): ?>
+                        <i class="<?php echo htmlspecialchars($skill['icon']); ?> skill-detail-icon"></i>
+                    <?php endif; ?>
                 </div>
 
                 <div class="skill-detail-content">
                     <p class="skill-detail-description">
-                        <?php echo nl2br(htmlspecialchars($skill['description'])); ?>
+                        <?php echo !empty($skill['description']) ? nl2br(htmlspecialchars($skill['description'])) : 'Deskripsi tidak tersedia.'; ?>
                     </p>
                 </div>
 
