@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 14, 2024 at 03:49 PM
+-- Generation Time: Sep 18, 2024 at 11:49 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -34,15 +34,60 @@ CREATE TABLE `about_info` (
   `image` varchar(255) NOT NULL,
   `facebook` varchar(255) DEFAULT NULL,
   `instagram` varchar(255) DEFAULT NULL,
-  `youtube` varchar(255) DEFAULT NULL
+  `youtube` varchar(255) DEFAULT NULL,
+  `whatsapp` varchar(20) DEFAULT '+628123456789',
+  `tabea_text` varchar(255) DEFAULT 'Tabea !'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `about_info`
 --
 
-INSERT INTO `about_info` (`id`, `description`, `name`, `image`, `facebook`, `instagram`, `youtube`) VALUES
-(1, 'Dengan penuh rasa syukur dan bangga menyambut Anda semua di platform website kami yang dirancang untuk menjadi jembatan informasi yang menghubungkan kami dengan seluruh siswa, serta masyarakat luas.<br><br>Mewujudkan visi dan misi sekolah dengan penuh dedikasi. Melalui slogan kami, MATTOA (Menjadikan Aku Tangguh Terampil Optimis Amanah).<br><br>Terima kasih telah mengunjungi website kami.&nbsp;<span style=\"background-color: rgba(255,255,255,var(--tw-bg-opacity)); font-family: inherit;\">Mari bersama-sama kita wujudkan pendidikan berkualitas dan membangun masa depan yang gemilang.</span>', 'Sukur Moanto,<br><br><b>Brusly Polakitan, S.Kom, M.Pd.</b><br><br><b>Kepala Sekolah SMK Negeri 1 Bolaang</b><div><br></div><div><br></div>', 'assets/img/about-perfil-1.jpg', 'https://www.facebook.com/bpolakitan', 'https://www.instagram.com/bpolakitan', 'https://www.youtube.com/bpolakitan');
+INSERT INTO `about_info` (`id`, `description`, `name`, `image`, `facebook`, `instagram`, `youtube`, `whatsapp`, `tabea_text`) VALUES
+(1, 'Dengan penuh rasa syukur dan bangga menyambut Anda semua di platform website kami yang dirancang untuk menjadi jembatan informasi yang menghubungkan kami dengan seluruh siswa, serta masyarakat luas.<br><br>Mewujudkan visi dan misi sekolah dengan penuh dedikasi. Melalui slogan kami, MATTOA (Menjadikan Aku Tangguh Terampil Optimis Amanah).<br><br>Terima kasih telah mengunjungi website kami.&nbsp;<span style=\"background-color: rgba(255,255,255,var(--tw-bg-opacity)); font-family: inherit;\">Mari bersama-sama kita wujudkan pendidikan berkualitas dan membangun masa depan yang gemilang.</span>', 'Sukur Moanto,<br><br><b>Brusly Polakitan, S.Kom, M.Pd.</b><br><br><b>Kepala Sekolah SMK Negeri 1 Bolaang</b><div><br></div><div><br></div>', 'assets/img/about-perfil-1.jpg', 'https://www.facebook.com/bpolakitan', 'https://www.instagram.com/bpolakitan', 'https://www.youtube.com/bpolakitan', '+628123456789', 'Tabea !');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `api_keys`
+--
+
+CREATE TABLE `api_keys` (
+  `id` int(11) NOT NULL,
+  `service` varchar(50) NOT NULL,
+  `api_key` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `api_keys`
+--
+
+INSERT INTO `api_keys` (`id`, `service`, `api_key`, `created_at`) VALUES
+(1, 'gemini', 'AIzaSyBlfXoiyJbItNGe72seHcqq0VqwHhAZbhw', '2024-09-16 17:03:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `api_usage`
+--
+
+CREATE TABLE `api_usage` (
+  `id` int(11) NOT NULL,
+  `requests_today` int(11) DEFAULT NULL,
+  `last_request_time` datetime DEFAULT NULL,
+  `requests_this_minute` int(11) DEFAULT NULL,
+  `tokens_this_minute` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `api_usage`
+--
+
+INSERT INTO `api_usage` (`id`, `requests_today`, `last_request_time`, `requests_this_minute`, `tokens_this_minute`) VALUES
+(1, 1, '2024-09-16 17:12:50', 1, 145),
+(2, 2, '2024-09-16 17:15:57', 1, 127),
+(3, 3, '2024-09-16 17:16:22', 2, 275);
 
 -- --------------------------------------------------------
 
@@ -70,6 +115,48 @@ INSERT INTO `articles` (`id`, `title`, `content`, `image`, `created_at`, `update
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `base_knowledge`
+--
+
+CREATE TABLE `base_knowledge` (
+  `id` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `base_knowledge`
+--
+
+INSERT INTO `base_knowledge` (`id`, `content`, `created_at`, `updated_at`) VALUES
+(1, 'Anda adalah asisten AI untuk SMKN 1 Bolaang, Sulawesi Utara, Indonesia. Informasi hingga 2024:\r\n\r\n1. SMKN 1 Bolaang:\r\n   - Lokasi: Jl. AKD Mopuya Selatan, Bolaang, Sulawesi Utara\r\n   - Visi: Menghasilkan SDM kompeten, mandiri, berakhlak mulia\r\n   - Misi: Pendidikan berkualitas, kewirausahaan, profesionalisme, nilai karakter\r\n   - Program Keahlian: [Isi dengan program keahlian SMKN 1 Bolaang]\r\n   - Fasilitas: [Sebutkan fasilitas utama sekolah]\r\n   - Prestasi: [Sebutkan beberapa prestasi penting sekolah]\r\n\r\n2. Pendidikan Sulawesi Utara:\r\n   - Struktur pendidikan dasar dan menengah\r\n   - Kebijakan vokasi provinsi\r\n   - Program unggulan\r\n\r\n3. SMK dan SMP di Sulawesi Utara:\r\n   - Daftar utama SMK dan SMP negeri\r\n   - Perbandingan umum SMK dan SMA\r\n   - Tantangan dan peluang pendidikan menengah\r\n\r\n4. Kehidupan Siswa:\r\n   - Kegiatan ekstrakurikuler umum\r\n   - Persiapan Ujian Nasional dan ujian masuk PT\r\n   - Program beasiswa tersedia\r\n\r\n5. Perguruan Tinggi Indonesia:\r\n   - Sistem pendidikan tinggi\r\n   - Daftar PTN/PTS terkemuka\r\n   - Jalur masuk umum\r\n\r\n6. Bolaang Mongondow dan Sulawesi Utara:\r\n   - Geografi dan iklim\r\n   - Budaya dan bahasa daerah\r\n   - Potensi ekonomi dan industri\r\n   - Objek wisata utama\r\n\r\nBatasi informasi pada topik-topik di atas dan wilayah Sulawesi Utara.', '2024-09-16 19:17:09', '2024-09-16 19:21:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `beranda`
+--
+
+CREATE TABLE `beranda` (
+  `id` int(11) NOT NULL,
+  `youtube_link` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `beranda`
+--
+
+INSERT INTO `beranda` (`id`, `youtube_link`, `title`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'https://www.youtube.com/embed/p48DjKj-JyI?si=c-O2boxorz6np0Vr', 'SMKN 1 Bolaang', 'MATTOA SmeckONEBol\n\" Menjadikan Aku Tangguh Terampil \n Optimis Amanah \"', '2024-09-16 23:03:56', '2024-09-16 23:03:56');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contact_info`
 --
 
@@ -87,6 +174,26 @@ CREATE TABLE `contact_info` (
 INSERT INTO `contact_info` (`id`, `type`, `value`, `is_active`) VALUES
 (1, 'email', 'smkn1bolaang@gmail.com', 1),
 (2, 'whatsapp', '0811-437-795', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `custom_knowledge`
+--
+
+CREATE TABLE `custom_knowledge` (
+  `id` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `custom_knowledge`
+--
+
+INSERT INTO `custom_knowledge` (`id`, `content`, `created_at`, `updated_at`) VALUES
+(1, '-', '2024-09-16 19:19:24', '2024-09-16 19:19:24');
 
 -- --------------------------------------------------------
 
@@ -218,8 +325,8 @@ CREATE TABLE `social_media_links` (
 
 INSERT INTO `social_media_links` (`id`, `platform`, `url`, `icon`, `is_active`, `created_at`, `updated_at`) VALUES
 (1, 'Facebook', 'https://www.facebook.com/', 'ri-facebook-circle-line', 1, '2024-09-06 18:16:33', '2024-09-07 05:11:37'),
-(2, 'Instagram', '#', 'ri-instagram-line', 1, '2024-09-06 18:16:33', '2024-09-06 18:16:33'),
-(3, 'YouTube', '#', 'ri-youtube-line', 1, '2024-09-06 18:16:33', '2024-09-06 18:16:33');
+(2, 'Instagram', 'https://instagram.com', 'ri-instagram-line', 1, '2024-09-06 18:16:33', '2024-09-16 23:08:04'),
+(3, 'YouTube', 'https://youtube.com', 'ri-youtube-line', 1, '2024-09-06 18:16:33', '2024-09-16 23:08:31');
 
 -- --------------------------------------------------------
 
@@ -229,15 +336,18 @@ INSERT INTO `social_media_links` (`id`, `platform`, `url`, `icon`, `is_active`, 
 
 CREATE TABLE `struktur_organisasi` (
   `id` int(11) NOT NULL,
-  `image_path` varchar(255) NOT NULL
+  `judul` varchar(255) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `tanggal_upload` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `struktur_organisasi`
 --
 
-INSERT INTO `struktur_organisasi` (`id`, `image_path`) VALUES
-(1, 'assets/img/struktur_1726021965.jpg');
+INSERT INTO `struktur_organisasi` (`id`, `judul`, `image_path`, `tanggal_upload`) VALUES
+(12, 'struktur organisasi', 'assets/img/struktur_12_1726645286.jpg', '2024-09-18 07:41:26'),
+(13, 'struktur organisasi', 'assets/img/struktur_13_1726651415.jpg', '2024-09-18 09:23:35');
 
 -- --------------------------------------------------------
 
@@ -247,6 +357,8 @@ INSERT INTO `struktur_organisasi` (`id`, `image_path`) VALUES
 
 CREATE TABLE `tupoksi_staff` (
   `id` int(11) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `deskripsi` text DEFAULT NULL,
   `tanggal_upload` timestamp NOT NULL DEFAULT current_timestamp(),
   `google_drive_link` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -255,11 +367,8 @@ CREATE TABLE `tupoksi_staff` (
 -- Dumping data for table `tupoksi_staff`
 --
 
-INSERT INTO `tupoksi_staff` (`id`, `tanggal_upload`, `google_drive_link`) VALUES
-(20, '2024-09-11 04:45:04', ''),
-(21, '2024-09-14 13:05:01', 'https://drive.google.com/file/d/1RY5uzeCGuer6PrzEz04-jar8x9nD0kHE/view?usp=sharing'),
-(22, '2024-09-14 13:12:21', 'https://drive.google.com/file/d/1WfHBfydo_93JgN42LM1abyFYT5k_w_qR/view?usp=sharing'),
-(23, '2024-09-14 13:12:55', 'https://drive.google.com/file/d/1RY5uzeCGuer6PrzEz04-jar8x9nD0kHE/view?usp=sharing');
+INSERT INTO `tupoksi_staff` (`id`, `judul`, `deskripsi`, `tanggal_upload`, `google_drive_link`) VALUES
+(65, 'asfsdf', NULL, '2024-09-18 09:01:28', 'https://drive.google.com/file/d/1RY5uzeCGuer6PrzEz04-jar8x9nD0kHE/view?usp=sharing');
 
 -- --------------------------------------------------------
 
@@ -283,7 +392,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`, `login_attempts`, `last_attempt`) VALUES
 (1, 'admin', '$2y$10$ErtD1Y6bPEbZYkM4sHQ.G.qNxtg40GH50lALC2hec6hdsrj8QwQK2', 'admin@gmail.com', 'admin', 0, NULL),
-(2, 'super', '$2y$10$cz2tuRYk8BqaGOSqaLNkBOWgY5uDqJ1b53REz7gpjcKGF8ELwir2.', 'super@gmail.com', 'admin', 0, '2024-09-05 11:24:35');
+(2, 'super', '$2y$10$cz2tuRYk8BqaGOSqaLNkBOWgY5uDqJ1b53REz7gpjcKGF8ELwir2.', 'super@gmail.com', 'admin', 0, '2024-09-18 06:36:40');
 
 -- --------------------------------------------------------
 
@@ -296,58 +405,6 @@ CREATE TABLE `visitors` (
   `ip_address` varchar(45) DEFAULT NULL,
   `visit_time` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `visitors`
---
-
-INSERT INTO `visitors` (`id`, `ip_address`, `visit_time`) VALUES
-(1, '::1', '2024-09-11 12:20:36'),
-(2, '::1', '2024-09-11 12:20:45'),
-(3, '::1', '2024-09-11 12:26:47'),
-(4, '::1', '2024-09-11 12:31:13'),
-(5, '::1', '2024-09-11 12:33:11'),
-(6, '::1', '2024-09-11 12:35:05'),
-(7, '::1', '2024-09-11 12:36:59'),
-(8, '::1', '2024-09-11 12:37:18'),
-(9, '::1', '2024-09-11 12:40:40'),
-(10, '::1', '2024-09-11 12:41:03'),
-(11, '::1', '2024-09-11 12:41:36'),
-(12, '::1', '2024-09-11 12:41:41'),
-(13, '::1', '2024-09-11 12:42:19'),
-(14, '::1', '2024-09-11 12:43:15'),
-(15, '::1', '2024-09-11 12:43:35'),
-(16, '::1', '2024-09-11 12:44:01'),
-(17, '::1', '2024-09-14 12:01:06'),
-(18, '::1', '2024-09-14 12:02:23'),
-(19, '::1', '2024-09-14 12:10:39'),
-(20, '::1', '2024-09-14 12:10:55'),
-(21, '::1', '2024-09-14 12:25:13'),
-(22, '::1', '2024-09-14 12:25:33'),
-(23, '::1', '2024-09-14 12:26:16'),
-(24, '::1', '2024-09-14 12:26:58'),
-(25, '::1', '2024-09-14 12:27:09'),
-(26, '::1', '2024-09-14 12:27:43'),
-(27, '::1', '2024-09-14 12:30:03'),
-(28, '::1', '2024-09-14 12:38:28'),
-(29, '::1', '2024-09-14 12:38:50'),
-(30, '::1', '2024-09-14 12:40:55'),
-(31, '::1', '2024-09-14 12:41:19'),
-(32, '::1', '2024-09-14 12:41:34'),
-(33, '::1', '2024-09-14 12:41:54'),
-(34, '::1', '2024-09-14 13:03:15'),
-(35, '::1', '2024-09-14 13:03:45'),
-(36, '::1', '2024-09-14 13:05:21'),
-(37, '::1', '2024-09-14 13:06:48'),
-(38, '::1', '2024-09-14 13:09:36'),
-(39, '::1', '2024-09-14 13:10:25'),
-(40, '::1', '2024-09-14 13:12:38'),
-(41, '::1', '2024-09-14 13:12:59'),
-(42, '::1', '2024-09-14 13:36:35'),
-(43, '::1', '2024-09-14 13:43:17'),
-(44, '::1', '2024-09-14 13:44:50'),
-(45, '::1', '2024-09-14 13:45:01'),
-(46, '::1', '2024-09-14 13:47:51');
 
 -- --------------------------------------------------------
 
@@ -365,7 +422,7 @@ CREATE TABLE `visitor_count` (
 --
 
 INSERT INTO `visitor_count` (`id`, `total_count`) VALUES
-(1, 118);
+(1, 0);
 
 --
 -- Indexes for dumped tables
@@ -378,15 +435,50 @@ ALTER TABLE `about_info`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `api_keys`
+--
+ALTER TABLE `api_keys`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `service` (`service`),
+  ADD UNIQUE KEY `service_2` (`service`),
+  ADD UNIQUE KEY `service_3` (`service`),
+  ADD UNIQUE KEY `service_4` (`service`),
+  ADD UNIQUE KEY `service_5` (`service`);
+
+--
+-- Indexes for table `api_usage`
+--
+ALTER TABLE `api_usage`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `articles`
 --
 ALTER TABLE `articles`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `base_knowledge`
+--
+ALTER TABLE `base_knowledge`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `beranda`
+--
+ALTER TABLE `beranda`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `contact_info`
 --
 ALTER TABLE `contact_info`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `custom_knowledge`
+--
+ALTER TABLE `custom_knowledge`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -460,16 +552,46 @@ ALTER TABLE `about_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `api_keys`
+--
+ALTER TABLE `api_keys`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `api_usage`
+--
+ALTER TABLE `api_usage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `articles`
 --
 ALTER TABLE `articles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `base_knowledge`
+--
+ALTER TABLE `base_knowledge`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `beranda`
+--
+ALTER TABLE `beranda`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `contact_info`
 --
 ALTER TABLE `contact_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `custom_knowledge`
+--
+ALTER TABLE `custom_knowledge`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -487,7 +609,7 @@ ALTER TABLE `gallery`
 -- AUTO_INCREMENT for table `profil_staff`
 --
 ALTER TABLE `profil_staff`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `skills`
@@ -505,13 +627,13 @@ ALTER TABLE `social_media_links`
 -- AUTO_INCREMENT for table `struktur_organisasi`
 --
 ALTER TABLE `struktur_organisasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tupoksi_staff`
 --
 ALTER TABLE `tupoksi_staff`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -523,7 +645,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `visitors`
 --
 ALTER TABLE `visitors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `visitor_count`

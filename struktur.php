@@ -11,7 +11,7 @@ try {
    // error_log('Database error: ' . $e->getMessage());
 }
 // Fetch struktur organisasi image path
-$stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
+$stmt = $pdo->query("SELECT image_path FROM struktur_organisasi");
 $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
 $image_path = $struktur['image_path'];
 
@@ -30,19 +30,22 @@ function getContactInfo()
    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// Fetch struktur organisasi image path
-$stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
-$struktur = $stmt->fetch(PDO::FETCH_ASSOC);
-$image_path = $struktur['image_path'];
-
-// Fetch Tupoksi PDF
-$stmt = $pdo->query("SELECT google_drive_link FROM tupoksi_staff ORDER BY tanggal_upload DESC LIMIT 1");
-$tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
-$tupoksi_link = $tupoksi ? $tupoksi['google_drive_link'] : '';
+// // Fetch struktur organisasi image path
+// $stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
+// $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
+// $image_path = $struktur['image_path'];
 
 // Fetch staff profiles
 $stmt = $pdo->query("SELECT * FROM profil_staff ORDER BY id");
 $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch all struktur organisasi
+$stmt = $pdo->query("SELECT judul, image_path, tanggal_upload FROM struktur_organisasi ORDER BY tanggal_upload DESC");
+$strukturList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch all Tupoksi PDFs
+$stmt = $pdo->query("SELECT judul, google_drive_link, tanggal_upload FROM tupoksi_staff ORDER BY tanggal_upload DESC");
+$tupoksiList = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 
@@ -221,6 +224,73 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       }
    </style>
 
+   <!-- style tupoksi -->
+   <style>
+      .struktur-tupoksi__container {
+         max-width: 1120px;
+         margin: 0 auto;
+         padding: 0 1rem;
+         text-align: center;
+      }
+
+      .struktur-tupoksi__section {
+         padding: 4rem 0;
+      }
+
+      .struktur__title,
+      .tupoksi__title {
+         margin-top: 1rem;
+         margin-bottom: 1rem;
+         font-size: 1.5rem;
+         font-weight: bold;
+         text-align: center;
+      }
+
+      .struktur__image-container,
+      .tupoksi__pdf-container {
+         margin-top: 2rem;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+
+      .struktur__image {
+         max-width: 100%;
+         height: auto;
+         display: block;
+      }
+
+      .tupoksi__pdf-container {
+         position: relative;
+         padding-bottom: 56.25%;
+         /* 16:9 Aspect Ratio */
+         height: 0;
+         overflow: hidden;
+         max-width: 800px;
+         margin-left: auto;
+         margin-right: auto;
+      }
+
+      .tupoksi__pdf-container iframe {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         border: 0;
+      }
+
+      @media (max-width: 768px) {
+         .struktur-tupoksi__section {
+            padding: 2rem 0;
+         }
+
+         .tupoksi__pdf-container {
+            padding-bottom: 75%;
+         }
+      }
+   </style>
+
    <!-- style pop up image -->
    <style>
       .image-popup {
@@ -266,6 +336,15 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       .close:hover,
       .close:focus {
          color: #bbb;
+      }
+
+      .struktur__image {
+         cursor: pointer;
+         transition: transform 0.3s ease;
+      }
+
+      .struktur__image:hover {
+         transform: scale(1.05);
       }
    </style>
 
@@ -354,35 +433,41 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
    <!--==================== MAIN ====================-->
    <main class="main">
       <!--==================== STRUKTUR ====================-->
-      <section class="struktur section" id="struktur">
-         <div class="struktur__container container grid">
+      <section class="struktur-tupoksi__section" id="struktur">
+         <div class="struktur-tupoksi__container">
             <h2 class="section__title-1">
                <span>Struktur Organisasi</span>
             </h2>
-            <img class="img-struktur mx-auto popup-trigger" src="<?php echo htmlspecialchars($image_path); ?>" alt="struktur" id="strukturImage">
+            <?php foreach ($strukturList as $struktur): ?>
+               <div class="struktur__item">
+                  <h3 class="struktur__title"><?php echo htmlspecialchars($struktur['judul']); ?></h3>
+                  <!-- <p class="struktur__date">Tanggal Upload: <?php echo htmlspecialchars($struktur['tanggal_upload']); ?></p> -->
+                  <div class="struktur__image-container">
+                     <img class="struktur__image" src="<?php echo htmlspecialchars($struktur['image_path']); ?>" alt="Struktur Organisasi" style="cursor: pointer;">
+                  </div>
+               </div>
+            <?php endforeach; ?>
+            <?php if (empty($strukturList)): ?>
+               <p>Belum ada data struktur organisasi.</p>
+            <?php endif; ?>
          </div>
       </section>
 
-      <div id="imagePopup" class="image-popup">
-         <div class="popup-inner">
-            <img class="popup-content" id="popupImage">
-            <button class="close">&times;</button>
-         </div>
-      </div>
-
       <!-- Tupoksi Section -->
-      <section class="struktur section-container" id="tupoksi">
-         <h2 class="section__title-1">Tupoksi Staff</h2>
-         <div class="pdf-container">
-            <?php if ($tupoksi_link): ?>
-               <iframe src="https://drive.google.com/file/d/<?php echo extractDriveFileId($tupoksi_link); ?>/preview"
-                  width="100%"
-                  height="600"
-                  allow="autoplay"
-                  class="w-full max-w-4xl mx-auto">
-               </iframe>
-            <?php else: ?>
-               <p>Dokumen Tupoksi belum tersedia.</p>
+      <section class="struktur-tupoksi__section" id="tupoksi">
+         <div class="struktur-tupoksi__container">
+            <h2 class="section__title-1">Tupoksi Staff</h2>
+            <?php foreach ($tupoksiList as $tupoksi): ?>
+               <div class="tupoksi__item">
+                  <h3 class="tupoksi__title"><?php echo htmlspecialchars($tupoksi['judul']); ?></h3>
+                  <!-- <p class="tupoksi__date">Tanggal Upload: <?php echo htmlspecialchars($tupoksi['tanggal_upload']); ?></p> -->
+                  <div class="tupoksi__pdf-container">
+                     <iframe src="https://drive.google.com/file/d/<?php echo extractDriveFileId($tupoksi['google_drive_link']); ?>/preview" allow="autoplay"></iframe>
+                  </div>
+               </div>
+            <?php endforeach; ?>
+            <?php if (empty($tupoksiList)): ?>
+               <p>Belum ada data tupoksi staff.</p>
             <?php endif; ?>
          </div>
       </section>
@@ -679,9 +764,15 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
       });
    </script>
    <!-- Script Popup Image -->
+   <div id="imagePopup" class="image-popup">
+      <div class="popup-inner">
+         <img class="popup-content" id="popupImage">
+         <button class="close">&times;</button>
+      </div>
+   </div>
+
    <script>
       document.addEventListener('DOMContentLoaded', function() {
-         const strukturImage = document.getElementById('strukturImage');
          const popup = document.getElementById('imagePopup');
          const popupImg = document.getElementById('popupImage');
          const closeBtn = document.querySelector('.close');
@@ -704,10 +795,6 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             scale = 1;
          }
 
-         strukturImage.addEventListener('click', function() {
-            openPopup(this.src);
-         });
-
          closeBtn.addEventListener('click', closePopup);
 
          popup.addEventListener('click', function(e) {
@@ -728,6 +815,13 @@ $staff_profiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (e.key === 'Escape') {
                closePopup();
             }
+         });
+
+         // Tambahkan event listener untuk semua gambar struktur organisasi
+         document.querySelectorAll('.struktur__image').forEach(img => {
+            img.addEventListener('click', function() {
+               openPopup(this.src);
+            });
          });
       });
    </script>

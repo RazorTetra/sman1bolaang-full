@@ -67,6 +67,9 @@ try {
 } catch (PDOException $e) {
    die("Query failed: " . $e->getMessage());
 }
+$stmt = $pdo->prepare("SELECT id, title FROM skills ORDER BY id ASC");
+$stmt->execute();
+$skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -299,8 +302,15 @@ try {
                   <a href="#news" class="nav__link">Berita</a>
                </li>
 
-               <li class="nav__item">
-                  <a href="#skills" class="nav__link">Keahlian</a>
+               <li class="nav__item dropdown">
+                  <a href="javascript:void(0)" class="nav__link dropdown__toggle">
+                     Keahlian <i class="ri-arrow-down-s-line"></i>
+                  </a>
+                  <ul class="dropdown__menu">
+                     <?php foreach ($skillsDropdown as $skill): ?>
+                        <li><a href="skill_detail.php?id=<?php echo $skill['id']; ?>" class="dropdown__link"><?php echo htmlspecialchars($skill['title']); ?></a></li>
+                     <?php endforeach; ?>
+                  </ul>
                </li>
 
                <li class="nav__item">
