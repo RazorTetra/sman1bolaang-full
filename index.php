@@ -254,14 +254,47 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
    </style>
 
    <style>
-      /* Tambahkan padding-top pada setiap section */
       section {
          padding-top: calc(var(--header-height) + 2rem);
       }
 
-      /* Sesuaikan posisi anchor untuk smooth scrolling */
       html {
          scroll-padding-top: var(--header-height);
+      }
+   </style>
+
+   <!-- AI Response formater -->
+   <style>
+      .ai-response {
+         font-family: Arial, sans-serif;
+         line-height: 1.6;
+         color: #333;
+         background-color: #f9f9f9;
+         border-radius: 8px;
+         padding: 15px;
+         margin-bottom: 15px;
+         max-width: 100%;
+         overflow-wrap: break-word;
+      }
+
+      .ai-response strong {
+         color: #0056b3;
+         font-weight: bold;
+      }
+
+      .ai-response ul {
+         padding-left: 20px;
+         margin-top: 10px;
+         margin-bottom: 10px;
+         list-style-type: disc;
+      }
+
+      .ai-response li {
+         margin-bottom: 5px;
+      }
+
+      .ai-response p {
+         margin-bottom: 10px;
       }
    </style>
    <title>SMK NEGERI 1 BOLAANG</title>

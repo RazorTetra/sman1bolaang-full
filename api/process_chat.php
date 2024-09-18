@@ -4,18 +4,28 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 try {
-    require_once '../config.php'; // Pastikan path ini benar
-    require_once '../api/gemini_connection.php'; // Nama file telah diubah
+    require_once '../config.php';
+    require_once '../api/gemini_connection.php';
+    // Jika Anda membuat file baru untuk fungsi formatAIResponse, include di sini
+    // require_once '../helpers.php';
 
-    // Pastikan request adalah POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Ambil pesan dari request
         $userMessage = isset($_POST['message']) ? $_POST['message'] : '';
 
         if (!empty($userMessage)) {
-            // Gunakan fungsi processChat untuk mendapatkan respons
             $response = processChat($userMessage);
-            echo $response;
+            
+            // Log respon asli untuk debugging
+            error_log("Original AI response: " . $response);
+            
+            // Format respon AI
+            $formattedResponse = formatAIResponse($response);
+            
+            // Log respon yang telah diformat untuk debugging
+            error_log("Formatted AI response: " . $formattedResponse);
+            
+            // Kirim respon yang telah diformat
+            echo $formattedResponse;
         } else {
             throw new Exception("Pesan tidak boleh kosong");
         }
@@ -25,6 +35,6 @@ try {
 } catch (Exception $e) {
     error_log('Error in process_chat.php: ' . $e->getMessage());
     http_response_code(500);
-    echo "Terjadi kesalahan: " . $e->getMessage(); // Hanya untuk debugging, hapus atau komentari ini di produksi
+    echo "Terjadi kesalahan: " . $e->getMessage();
 }
 ?>

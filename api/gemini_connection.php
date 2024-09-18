@@ -2,15 +2,39 @@
 // api/gemini_connection.php
 
 // Fungsi untuk mendapatkan API key dari database
-function getGeminiKey() {
+function getGeminiKey()
+{
     global $pdo;
     $stmt = $pdo->query("SELECT api_key FROM api_keys WHERE service = 'gemini' ORDER BY id DESC LIMIT 1");
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result ? $result['api_key'] : null;
 }
 
+
+function formatAIResponse($response) {
+    // Ubah ** menjadi tag <strong>
+    $response = preg_replace('/\*\*(.*?)\*\*/s', '<strong>$1</strong>', $response);
+    
+    // Ubah baris yang dimulai dengan * menjadi list item
+    $response = preg_replace('/^\* (.*?)$/m', '<li>$1</li>', $response);
+    
+    // Bungkus list items berurutan dengan tag <ul>
+    $response = preg_replace('/(<li>.*?<\/li>(\s*)?)+/s', '<ul>$0</ul>', $response);
+    
+    // Ubah baris kosong menjadi paragraf baru
+    $response = '<p>' . preg_replace('/\n\s*\n/', '</p><p>', $response) . '</p>';
+    
+    // Bungkus seluruh respon dalam div dengan class untuk styling
+    $response = '<div class="ai-response">' . $response . '</div>';
+    
+    return $response;
+}
+
+
+
 // Kelas untuk melacak penggunaan API
-class UsageTracker {
+class UsageTracker
+{
     private $pdo;
     private $requests_today;
     private $last_request_time;
@@ -21,12 +45,14 @@ class UsageTracker {
     const MAX_TPM = 32000;
     const MAX_RPD = 1500;
 
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
         $this->loadUsage();
     }
 
-    private function loadUsage() {
+    private function loadUsage()
+    {
         $stmt = $this->pdo->query("SELECT * FROM api_usage ORDER BY id DESC LIMIT 1");
         $usage = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($usage) {
@@ -42,9 +68,10 @@ class UsageTracker {
         }
     }
 
-    public function canMakeRequest() {
+    public function canMakeRequest()
+    {
         $current_time = time();
-        
+
         // Reset counters jika sudah hari baru
         if (date('Y-m-d', $current_time) != date('Y-m-d', $this->last_request_time)) {
             $this->requests_today = 0;
@@ -59,11 +86,12 @@ class UsageTracker {
         }
 
         return ($this->requests_today < self::MAX_RPD &&
-                $this->requests_this_minute < self::MAX_RPM &&
-                $this->tokens_this_minute < self::MAX_TPM);
+            $this->requests_this_minute < self::MAX_RPM &&
+            $this->tokens_this_minute < self::MAX_TPM);
     }
 
-    public function updateUsage($tokens_estimate) {
+    public function updateUsage($tokens_estimate)
+    {
         $this->requests_today++;
         $this->requests_this_minute++;
         $this->tokens_this_minute += $tokens_estimate;
@@ -75,7 +103,8 @@ class UsageTracker {
 }
 
 // Fungsi untuk melakukan request ke Gemini API
-function chatWithGemini($message) {
+function chatWithGemini($message)
+{
     global $pdo;
     $api_key = getGeminiKey();
     if (!$api_key) {
@@ -127,7 +156,8 @@ function chatWithGemini($message) {
 }
 
 // Fungsi untuk memproses chat
-function processChat($userMessage) {
+function processChat($userMessage)
+{
     global $pdo;
     $baseKnowledge = $pdo->query("SELECT content FROM base_knowledge ORDER BY id DESC LIMIT 1")->fetchColumn();
     $customKnowledge = $pdo->query("SELECT content FROM custom_knowledge ORDER BY id DESC LIMIT 1")->fetchColumn();

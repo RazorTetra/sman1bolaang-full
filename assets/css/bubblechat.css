@@ -1,0 +1,300 @@
+.chat-widget {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  /* Ubah ke sisi kiri */
+  z-index: 1000;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.chat-toggle {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.chat-toggle:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.chat-container {
+  display: none;
+  position: fixed;
+  /* Ubah ke fixed untuk tampilan mobile */
+  bottom: 80px;
+  left: 20px;
+  /* Sesuaikan dengan posisi tombol */
+  width: 350px;
+  height: 500px;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.chat-header {
+  background-color: #007bff;
+  color: white;
+  padding: 15px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-privacy-notice {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  border-bottom: 1px solid #ffeeba;
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.chat-close:hover {
+  transform: scale(1.1);
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding-bottom: 60px; 
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #f8f9fa;
+}
+
+.chat-input-container {
+  padding: 15px;
+  background-color: white;
+  border-top: 1px solid #e0e0e0;
+}
+
+.chat-input-form {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input {
+  flex-grow: 1;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.chat-submit {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.chat-submit:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message-user {
+  align-self: flex-end;
+  background-color: #007bff;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message-assistant {
+  align-self: flex-start;
+  background-color: #e9ecef;
+  color: #212529;
+  border-bottom-left-radius: 4px;
+}
+
+.message-system {
+  align-self: center;
+  background-color: #ffc107;
+  color: #212529;
+  border-radius: 12px;
+  font-style: italic;
+}
+
+.chat-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 10px;
+  padding: 0 5px;
+}
+
+.stop-respond {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.stop-respond:hover {
+  color: #a71d2a;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .chat-widget {
+    bottom: 70px;
+    /* Sesuaikan agar tidak menutupi elemen lain */
+    left: 10px;
+  }
+
+  .chat-container {
+    width: calc(100% - 20px);
+    /* Kurangi lebar untuk margin */
+    height: calc(100% - 140px);
+    /* Sesuaikan tinggi */
+    bottom: 70px;
+    left: 10px;
+    right: 10px;
+    border-radius: 10px;
+  }
+
+  .chat-toggle {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* ... (CSS lain tetap sama) ... */
+
+.loading-indicator {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+
+.loading-indicator .dot {
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
+  background-color: #007bff;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.loading-indicator .dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.loading-indicator .dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(0.7);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dot-flashing {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+
+.dot-flashing::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+
+.dot-flashing::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: #9880ff;
+  }
+
+  50%,
+  100% {
+    background-color: rgba(152, 128, 255, 0.2);
+  }
+}
