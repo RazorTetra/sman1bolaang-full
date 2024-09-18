@@ -1,196 +1,7 @@
 <?php
-require_once('../config.php');
-include('../admin/auth.php');
-
-$message = '';
-$messageType = '';
-
-// ==================== HANDLE FORM SUBMISSIONS ====================
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_FILES["new_image"]) && $_FILES["new_image"]["error"] == 0) {
-        // Handle structure image upload
-        $target_dir = "../assets/img/";
-        $file_extension = pathinfo($_FILES["new_image"]["name"], PATHINFO_EXTENSION);
-        $new_file_name = "struktur_" . time() . "." . $file_extension;
-        $target_file = $target_dir . $new_file_name;
-        $uploadOk = 1;
-        $imageFileType = strtolower($file_extension);
-
-        // Check if image file is an actual image or fake image
-        $check = getimagesize($_FILES["new_image"]["tmp_name"]);
-        if ($check === false) {
-            $message = "File is not an image.";
-            $messageType = "error";
-            $uploadOk = 0;
-        }
-
-        // Check file size (limit to 5MB)
-        if ($_FILES["new_image"]["size"] > 5000000) {
-            $message = "Sorry, your file is too large. Maximum size is 5MB.";
-            $messageType = "error";
-            $uploadOk = 0;
-        }
-
-        // Allow certain file formats
-        $allowed_types = ["jpg", "jpeg", "png", "gif"];
-        if (!in_array($imageFileType, $allowed_types)) {
-            $message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            $messageType = "error";
-            $uploadOk = 0;
-        }
-
-        // If everything is ok, try to upload file and update database
-        if ($uploadOk == 1) {
-            if (move_uploaded_file($_FILES["new_image"]["tmp_name"], $target_file)) {
-                try {
-                    $db_image_path = "assets/img/" . $new_file_name; // Store relative path in database
-                    $stmt = $pdo->prepare("UPDATE struktur_organisasi SET image_path = ? WHERE id = 1");
-                    if ($stmt->execute([$db_image_path])) {
-                        $message = "The file has been uploaded and the database has been updated.";
-                        $messageType = "success";
-
-                        // Delete old file if exists
-                        $stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
-                        $old_file = $stmt->fetchColumn();
-                        if ($old_file && file_exists("../" . $old_file) && $old_file != $db_image_path) {
-                            unlink("../" . $old_file);
-                        }
-                    } else {
-                        $message = "Sorry, there was an error updating the database.";
-                        $messageType = "error";
-                    }
-                } catch (PDOException $e) {
-                    $message = "Database error: " . $e->getMessage();
-                    $messageType = "error";
-                }
-            } else {
-                $message = "Sorry, there was an error uploading your file.";
-                $messageType = "error";
-            }
-        }
-    } elseif (isset($_POST['aksi'])) {
-        // Handle other form submissions (staff management and tupoksi)
-        switch ($_POST['aksi']) {
-            case 'update_tupoksi':
-                if (isset($_POST['google_drive_link'])) {
-                    $response = json_decode(updateTupoksi($_POST['google_drive_link']), true);
-                } else {
-                    $response = ['success' => false, 'message' => "Link Google Drive Tupoksi tidak ditemukan."];
-                }
-                header('Content-Type: application/json');
-                echo json_encode($response);
-                exit;
-            case 'tambah_staff':
-            case 'edit_staff':
-                $pesan = kelolaProfilStaff($_POST, isset($_FILES['foto']) ? $_FILES['foto'] : null);
-                break;
-            case 'hapus_staff':
-                $id = intval($_POST['id']);
-                $stmt = $pdo->prepare("DELETE FROM profil_staff WHERE id = ?");
-                $stmt->execute([$id]);
-                $pesan = "Profil staff berhasil dihapus.";
-                break;
-        }
-    }
-}
-
-// ==================== HELPER FUNCTIONS ====================
-
-// Function to update Tupoksi link
-function updateTupoksi($link)
-{
-    global $pdo;
-    try {
-        $stmt = $pdo->prepare("INSERT INTO tupoksi_staff (google_drive_link) VALUES (?)");
-        $stmt->execute([$link]);
-        return json_encode(['success' => true, 'message' => "Link Tupoksi berhasil diperbarui."]);
-    } catch (PDOException $e) {
-        return json_encode(['success' => false, 'message' => "Terjadi kesalahan saat menyimpan data ke database: " . $e->getMessage()]);
-    }
-}
-
-// Function to manage staff profiles
-function kelolaProfilStaff($data, $foto = null)
-{
-    global $pdo;
-    $id = isset($data['id']) ? $data['id'] : null;
-
-    $fields = ['nama', 'jabatan', 'riwayat_pendidikan', 'status', 'mata_pelajaran', 'lama_mengajar', 'pangkat', 'alamat', 'motto'];
-    $params = array_intersect_key($data, array_flip($fields));
-
-    if ($id) {
-        $sql = "UPDATE profil_staff SET " . implode("=?,", $fields) . "=? WHERE id=?";
-        $params[] = $id;
-        if ($foto && $foto['error'] == 0) {
-            $foto_name = "staff_" . time() . "." . pathinfo($foto['name'], PATHINFO_EXTENSION);
-            move_uploaded_file($foto['tmp_name'], "../assets/img/" . $foto_name);
-            $sql = str_replace("WHERE", ", lokasi_foto=? WHERE", $sql);
-            $params[] = $foto_name;
-        }
-    } else {
-        // Check if a staff with the same name already exists
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM profil_staff WHERE nama = ?");
-        $stmt->execute([$data['nama']]);
-        if ($stmt->fetchColumn() > 0) {
-            return "Staff dengan nama tersebut sudah ada.";
-        }
-
-        $sql = "INSERT INTO profil_staff (" . implode(",", $fields) . ",lokasi_foto) VALUES (" . str_repeat("?,", count($fields)) . "?)";
-        if ($foto && $foto['error'] == 0) {
-            $foto_name = "staff_" . time() . "." . pathinfo($foto['name'], PATHINFO_EXTENSION);
-            move_uploaded_file($foto['tmp_name'], "../assets/img/" . $foto_name);
-            $params[] = $foto_name;
-        } else {
-            $params[] = '';
-        }
-    }
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(array_values($params));
-
-    return "Profil staff berhasil " . ($id ? "diperbarui" : "ditambahkan") . ".";
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aksi'])) {
-    $response = ['success' => false, 'message' => ''];
-
-    switch ($_POST['aksi']) {
-        case 'tambah_staff':
-        case 'edit_staff':
-            $response['message'] = kelolaProfilStaff($_POST, isset($_FILES['foto']) ? $_FILES['foto'] : null);
-            $response['success'] = true;
-            break;
-        case 'hapus_staff':
-            $id = intval($_POST['id']);
-            $stmt = $pdo->prepare("DELETE FROM profil_staff WHERE id = ?");
-            $stmt->execute([$id]);
-            $response['message'] = "Profil staff berhasil dihapus.";
-            $response['success'] = true;
-            break;
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($response);
-    exit;
-}
-
-// ==================== FETCH DATA ====================
-
-// Fetch current struktur organisasi
-$stmt = $pdo->query("SELECT * FROM struktur_organisasi WHERE id = 1");
-$struktur = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// Fetch staff data
-$stmt = $pdo->query("SELECT * FROM profil_staff ORDER BY jabatan");
-$result_staff = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch current Tupoksi link
-$stmt = $pdo->query("SELECT * FROM tupoksi_staff ORDER BY tanggal_upload DESC LIMIT 1");
-$current_tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// ==================== HTML OUTPUT ====================
+include_once "../admin/function_manage_struktur.php";
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -218,45 +29,80 @@ $current_tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
     <div class="container mx-auto p-6">
         <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Struktur Organisasi</h1>
 
-        <!-- Structure Image Section -->
-        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-md mb-8">
-            <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">Gambar Struktur Organisasi</h2>
-            <div class="w-full overflow-hidden rounded-lg shadow">
-                <img src="../<?php echo htmlspecialchars($struktur['image_path']); ?>"
-                    alt="Struktur Organisasi"
-                    class="w-full h-auto object-contain max-h-[70vh]">
+        <!-- Struktur Organisasi Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Kelola Struktur Organisasi</h2>
+            <button class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg mb-4 transition duration-300" onclick="openStrukturModal('add')">
+                Tambah Struktur Baru
+            </button>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left">Judul</th>
+                            <th class="py-2 px-4 border-b text-left">Gambar</th>
+                            <th class="py-2 px-4 border-b text-left">Tanggal Upload</th>
+                            <th class="py-2 px-4 border-b text-left">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($strukturData['data'] as $item): ?>
+                            <tr>
+                                <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($item['judul']); ?></td>
+                                <td class="py-2 px-4 border-b"><img src="../<?php echo htmlspecialchars($item['image_path']); ?>" alt="Struktur" class="w-20 h-auto"></td>
+                                <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($item['tanggal_upload']); ?></td>
+                                <td class="py-2 px-4 border-b">
+                                    <button onclick="editStruktur(<?php echo $item['id']; ?>)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs mr-1">Edit</button>
+                                    <button onclick="deleteStruktur(<?php echo $item['id']; ?>)" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs">Hapus</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
-
-            <form action="" method="POST" enctype="multipart/form-data" class="mt-6">
-                <div class="mb-4">
-                    <label for="new_image" class="block text-sm font-medium text-gray-700 mb-2">Upload Gambar Baru</label>
-                    <input type="file" id="new_image" name="new_image" accept="image/*"
-                        class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" required>
-                </div>
-                <button type="submit"
-                    class="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300">
-                    Update Gambar
-                </button>
-            </form>
+            <div class="mt-4 flex justify-center">
+                <?php for ($i = 1; $i <= $strukturData['totalPages']; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>" class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"><?php echo $i; ?></a>
+                <?php endfor; ?>
+            </div>
         </div>
 
         <!-- Tupoksi Section -->
         <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Kelola Tupoksi PDF</h2>
-            <?php if ($current_tupoksi): ?>
-                <p class="mb-2">Link Tupoksi saat ini: <a href="<?php echo htmlspecialchars($current_tupoksi['google_drive_link']); ?>" target="_blank" class="text-blue-500 hover:underline"><?php echo htmlspecialchars($current_tupoksi['google_drive_link']); ?></a></p>
-                <p class="mb-4">Tanggal Upload: <?php echo htmlspecialchars($current_tupoksi['tanggal_upload']); ?></p>
-            <?php else: ?>
-                <p class="mb-4 text-gray-600">Belum ada link Tupoksi.</p>
-            <?php endif; ?>
-            <form id="tupoksiForm" action="" method="POST">
-                <input type="hidden" name="aksi" value="update_tupoksi">
-                <div class="mb-4">
-                    <label for="google_drive_link" class="block text-sm font-medium text-gray-700 mb-2">Link Google Drive Tupoksi PDF</label>
-                    <input type="url" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none" id="google_drive_link" name="google_drive_link" required placeholder="https://drive.google.com/file/d/...">
-                </div>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300">Update Link Tupoksi</button>
-            </form>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Kelola Tupoksi Staff</h2>
+            <button class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg mb-4 transition duration-300" onclick="openTupoksiModal('add')">
+                Tambah Tupoksi Baru
+            </button>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left">Judul</th>
+                            <th class="py-2 px-4 border-b text-left">Link Google Drive</th>
+                            <th class="py-2 px-4 border-b text-left">Tanggal Upload</th>
+                            <th class="py-2 px-4 border-b text-left">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tupoksiData['data'] as $item): ?>
+                            <tr>
+                                <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($item['judul']); ?></td>
+                                <td class="py-2 px-4 border-b"><a href="<?php echo htmlspecialchars($item['google_drive_link']); ?>" target="_blank" class="text-blue-500 hover:underline">Lihat PDF</a></td>
+                                <td class="py-2 px-4 border-b"><?php echo htmlspecialchars($item['tanggal_upload']); ?></td>
+                                <td class="py-2 px-4 border-b">
+                                    <button onclick="editTupoksi(<?php echo $item['id']; ?>)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded text-xs mr-1">Edit</button>
+                                    <button onclick="deleteTupoksi(<?php echo $item['id']; ?>)" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded text-xs">Hapus</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 flex justify-center">
+                <?php for ($i = 1; $i <= $tupoksiData['totalPages']; $i++): ?>
+                    <a href="?page=<?php echo $i; ?>" class="mx-1 px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"><?php echo $i; ?></a>
+                <?php endfor; ?>
+            </div>
         </div>
 
         <!-- Staff Profiles Section -->
@@ -298,6 +144,64 @@ $current_tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Struktur Modal -->
+    <div id="strukturModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="strukturModalLabel">Tambah/Edit Struktur Organisasi</h3>
+                <form id="strukturForm" method="POST" enctype="multipart/form-data" class="mt-2">
+                    <input type="hidden" name="aksi" value="tambah_struktur">
+                    <input type="hidden" name="id" id="struktur_id">
+                    <div class="mt-2">
+                        <label for="struktur_judul" class="block text-sm font-medium text-gray-700 text-left">Judul:</label>
+                        <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="struktur_judul" name="judul" required>
+                    </div>
+                    <div class="mt-2">
+                        <label for="struktur_image" class="block text-sm font-medium text-gray-700 text-left">Gambar:</label>
+                        <input type="file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="struktur_image" name="image" accept="image/*">
+                    </div>
+                    <div class="mt-4 flex justify-between">
+                        <button type="button" onclick="closeStrukturModal()" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+                            Batal
+                        </button>
+                        <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tupoksi Modal -->
+    <div id="tupoksiModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="tupoksiModalLabel">Tambah/Edit Tupoksi Staff</h3>
+                <form id="tupoksiForm" method="POST" class="mt-2">
+                    <input type="hidden" name="aksi" value="tambah_tupoksi">
+                    <input type="hidden" name="id" id="tupoksi_id">
+                    <div class="mt-2">
+                        <label for="tupoksi_judul" class="block text-sm font-medium text-gray-700 text-left">Judul:</label>
+                        <input type="text" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="tupoksi_judul" name="judul" required>
+                    </div>
+                    <div class="mt-2">
+                        <label for="tupoksi_link" class="block text-sm font-medium text-gray-700 text-left">Link Google Drive:</label>
+                        <input type="url" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="tupoksi_link" name="google_drive_link" required>
+                    </div>
+                    <div class="mt-4 flex justify-between">
+                        <button type="button" onclick="closeTupoksiModal()" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+                            Batal
+                        </button>
+                        <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -438,12 +342,18 @@ $current_tupoksi = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <!-- Script staff profil -->
     <script src="assets/js.manage_struktur.js"></script>
+    <script src="assets/js.manage_struktur_tupoksi.js"></script>
+
     <script>
-        <?php if ($message): ?>
-            showMessage("<?php echo addslashes($message); ?>");
+        <?php if (isset($message) && $message): ?>
+            alert("<?php echo addslashes($message); ?>");
         <?php endif; ?>
     </script>
+
+
+
 </body>
 
 </html>

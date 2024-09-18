@@ -96,7 +96,9 @@ function deleteStaff(id) {
     .then((result) => {
       showMessage(result.message);
       closeConfirmDeleteModal();
-      location.reload();
+      if (result.success) {
+        setTimeout(() => location.reload(), 2000);
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
