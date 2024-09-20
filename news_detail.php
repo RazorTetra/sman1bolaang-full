@@ -1,10 +1,22 @@
 <?php
 require_once('config.php'); // Koneksi database
 
-// Ambil data berita dari database untuk artikel terkait
-$stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC LIMIT 3");
-$stmt->execute();
-$related_news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Ambil data artikel
+$stmt = $pdo->prepare("SELECT title, content, image, created_at FROM articles WHERE id = :id");
+$stmt->execute(['id' => $id]);
+$news = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Ambil jumlah like
+$stmt = $pdo->prepare("SELECT COUNT(*) as like_count FROM article_likes WHERE article_id = :id");
+$stmt->execute(['id' => $id]);
+$like_count = $stmt->fetchColumn();
+
+// Ambil komentar
+$stmt = $pdo->prepare("SELECT * FROM article_comments WHERE article_id = :id ORDER BY created_at DESC");
+$stmt->execute(['id' => $id]);
+$comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 function getContactInfo()
 {
@@ -36,6 +48,8 @@ try {
     <!--=============== REMIXICONS ===============-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.4.0/remixicon.css" crossorigin="">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css">
 
@@ -196,27 +210,57 @@ try {
         <div class="max-w-7xl mx-auto md:flex md:space-x-8">
             <!-- Main Article -->
             <article class="md:w-2/3 mb-8 md:mb-0">
-                <?php
-                require_once('config.php');
-
-                $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-                $stmt = $pdo->prepare("SELECT title, content, image, created_at FROM articles WHERE id = :id");
-                $stmt->execute(['id' => $id]);
-                $news = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($news):
-                ?>
-                    <h2 class="text-3xl font-bold mb-4"><?php echo htmlspecialchars($news['title']); ?></h2>
+                <?php if ($news): ?>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-3xl font-bold"><?php echo htmlspecialchars($news['title']); ?></h2>
+                        <button id="likeButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                            <span>Like</span>
+                            <span id="likeCount" class="ml-2">(<?php echo $like_count; ?>)</span>
+                        </button>
+                    </div>
                     <p class="text-sm mb-4">Dibuat tanggal <?php echo date('d F Y', strtotime($news['created_at'])); ?></p>
                     <?php if ($news['image']): ?>
                         <img src="<?php echo htmlspecialchars($news['image']); ?>" alt="News Image" class="w-full h-auto object-cover rounded-lg mb-6">
                     <?php endif; ?>
-                    <div class="prose max-w-none">
+                    <div class="prose max-w-none mb-6">
                         <?php echo nl2br(htmlspecialchars($news['content'])); ?>
                     </div>
+
+
+
+                    <!-- Comment form -->
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold mb-4 dark:text-white">Tambahkan Komentar</h3>
+                        <form id="commentForm">
+                            <input type="hidden" name="article_id" value="<?php echo $id; ?>">
+                            <div class="mb-4">
+                                <label for="user_name" class="block mb-2 dark:text-white">Nama:</label>
+                                <input type="text" id="user_name" name="user_name" required class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600">
+                            </div>
+                            <div class="mb-4">
+                                <label for="comment" class="block mb-2 dark:text-white">Komentar:</label>
+                                <textarea id="comment" name="comment" required class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 resize-none h-32"></textarea>
+                            </div>
+                            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Kirim Komentar</button>
+                        </form>
+                    </div>
+
+                    <!-- Comments section -->
+                    <div id="commentsSection">
+                        <h3 class="text-xl font-bold mb-4 dark:text-white">Komentar (<?php echo count($comments); ?>)</h3>
+                        <div class="space-y-4 max-h-96 overflow-y-auto">
+                            <?php foreach ($comments as $comment): ?>
+                                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">
+                                    <p class="font-bold dark:text-white"><?php echo htmlspecialchars($comment['user_name']); ?></p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400"><?php echo date('d F Y H:i', strtotime($comment['created_at'])); ?></p>
+                                    <p class="mt-2 dark:text-white"><?php echo nl2br(htmlspecialchars($comment['comment'])); ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
                 <?php else: ?>
-                    <p class="text-center">Berita tidak ditemukan.</p>
+                    <p class="text-center dark:text-white">Berita tidak ditemukan.</p>
                 <?php endif; ?>
             </article>
 
@@ -335,6 +379,57 @@ try {
 
     <!--=============== MAIN JS ===============-->
     <script src="assets/js/main.js"></script>
+
+    <!-- Script komnetar dan like -->
+    <script>
+        $(document).ready(function() {
+            // Handle like button click
+            $('#likeButton').click(function() {
+                $.post('functions/article_likes.php', {
+                    article_id: <?php echo $id; ?>
+                }, function(response) {
+                    if (response.success) {
+                        $('#likeCount').text(response.likes);
+                    }
+                }, 'json');
+            });
+            // Handle add comment
+            $('#commentForm').submit(function(e) {
+                e.preventDefault();
+                $.post('functions/add_comment.php', $(this).serialize(), function(response) {
+                    if (response.success) {
+                        // Add the new comment to the comments section
+                        $('#commentsSection .space-y-4').prepend(
+                            '<div class="bg-gray-100 dark:bg-gray-700 p-4 rounded">' +
+                            '<p class="font-bold dark:text-white">' + response.user_name + '</p>' +
+                            '<p class="text-sm text-gray-600 dark:text-gray-400">' + response.created_at + '</p>' +
+                            '<p class="mt-2 dark:text-white">' + response.comment + '</p>' +
+                            '</div>'
+                        );
+                        // Clear the form
+                        $('#commentForm')[0].reset();
+                        // Update comment count
+                        var currentCount = parseInt($('#commentsSection h3').text().match(/\d+/)[0]);
+                        $('#commentsSection h3').text('Komentar (' + (currentCount + 1) + ')');
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: 'Komentar Anda telah berhasil ditambahkan.',
+                            confirmButtonColor: '#3085d6',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Gagal menambahkan komentar. Silakan coba lagi.',
+                            confirmButtonColor: '#3085d6',
+                        });
+                    }
+                }, 'json');
+            });
+        });
+    </script>
 </body>
 
 
