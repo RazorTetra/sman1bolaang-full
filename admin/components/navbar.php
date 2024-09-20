@@ -57,6 +57,7 @@
                         </button>
                         <div x-show="dropdown" class="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                             <a href="../admin/manage_beranda.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('manage_beranda.php')}">Kelola Beranda</a>
+                            <a href="../admin/manage_navbar_link.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('manage_navbar_link.php')}">Kelola Navbar</a>
                             <a href="../admin/manage_about.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('manage_about.php')}">Kelola About</a>
                             <a href="../admin/manage_news.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('manage_news.php')}">Kelola Berita</a>
                             <a href="../admin/manage_struktur.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" :class="{'font-bold': window.location.pathname.includes('manage_struktur.php')}">Kelola Struktur</a>
@@ -89,6 +90,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="index.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('index.php')}">Dashboard</a>
                 <a href="../admin/manage_beranda.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_beranda.php')}">Kelola Beranda</a>
+                <a href="../admin/manage_navbar_link.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_navbar_link.php')}">Kelola Navbar</a>
                 <a href="../admin/manage_about.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_about.php')}">Kelola About</a>
                 <a href="../admin/manage_news.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_news.php')}">Kelola Berita</a>
                 <a href="../admin/manage_struktur.php" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700 transition duration-150 ease-in-out" :class="{'bg-gray-900': window.location.pathname.includes('manage_struktur.php')}">Kelola Struktur</a>

@@ -1,6 +1,11 @@
 <?php
 require_once('config.php');
 $skillsDropdown = getSkillsForHeader($pdo);
+
+// Ambil data button
+$pdo = new PDO($dsn, $user, $pass, $options);
+$stmt = $pdo->query("SELECT * FROM custom_navbar_button WHERE is_visible = 1 LIMIT 1");
+$customButton = $stmt->fetch();
 ?>
 
 <!-- components/header.php -->
@@ -14,6 +19,7 @@ $skillsDropdown = getSkillsForHeader($pdo);
     <link rel="stylesheet" href="assets/css/dropdown.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet"> <!-- Remix Icon CDN -->
     <title><?php echo $pageTitle ?? 'SMKN 1 Bolaang'; ?></title>
+
     <style>
         @media screen and (max-width: 960px) {
             .container {
@@ -75,6 +81,38 @@ $skillsDropdown = getSkillsForHeader($pdo);
             }
         }
     </style>
+
+    <!-- Custom Button in Navbar -->
+    <style>
+        .nav__custom-button {
+            display: inline-block;
+            padding: 0.2rem 0.2rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .nav__custom-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        @media screen and (max-width: 1024px) {
+            .nav__item--custom-button {
+                margin-left: 0;
+            }
+
+
+        }
+
+        @media screen and (max-width: 380px) {
+            .nav__custom-button {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -113,9 +151,9 @@ $skillsDropdown = getSkillsForHeader($pdo);
                         </ul>
                     </li>
 
-                    <li class="nav__item">
+                    <!-- <li class="nav__item">
                         <a href="index.php#contact" class="nav__link">Kontak</a>
-                    </li>
+                    </li> -->
 
                     <li class="nav__item dropdown">
                         <a href="javascript:void(0)" class="nav__link dropdown__toggle">
@@ -127,6 +165,18 @@ $skillsDropdown = getSkillsForHeader($pdo);
                             <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
                         </ul>
                     </li>
+
+                    <?php if ($customButton && $customButton['is_visible']): ?>
+                        <li class="nav__item nav__item--custom-button">
+                            <a href="<?php echo htmlspecialchars($customButton['url']); ?>"
+                                class="nav__link nav__custom-button"
+                                style="background-color: <?php echo htmlspecialchars($customButton['button_color']); ?>;
+                  color: <?php echo htmlspecialchars($customButton['text_color']); ?>;"
+                                target="_blank" rel="noopener noreferrer">
+                                <?php echo htmlspecialchars($customButton['text']); ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
 
                 <!-- Close button -->

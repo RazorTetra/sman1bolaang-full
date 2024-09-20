@@ -1,3 +1,4 @@
+<!-- PHP Script -->
 <?php
 require_once('config.php'); // Koneksi database
 include('functions/visitors.php');
@@ -6,11 +7,6 @@ include('functions/visitors.php');
 $stmt = $pdo->prepare("SELECT id, title, content, image, created_at FROM articles ORDER BY created_at DESC");
 $stmt->execute();
 $news_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Ambil gambar dari database
-// $stmt = $pdo->prepare("SELECT image FROM gallery ORDER BY created_at DESC");
-// $stmt->execute();
-// $gallery_images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Ambil gambar dari database yang ditandai untuk ditampilkan
 $stmt = $pdo->prepare("SELECT image FROM gallery WHERE is_displayed = 1 ORDER BY created_at DESC LIMIT 9");
@@ -26,13 +22,17 @@ $stmt = $pdo->prepare("SELECT * FROM about_info LIMIT 1");
 $stmt->execute();
 $about = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Ambil data button
+$pdo = new PDO($dsn, $user, $pass, $options);
+$stmt = $pdo->query("SELECT * FROM custom_navbar_button WHERE is_visible = 1 LIMIT 1");
+$customButton = $stmt->fetch();
+
 // ambil data dari tabel social media links
 try {
    $stmt = $pdo->query("SELECT * FROM social_media_links WHERE is_active = TRUE");
    $socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
    $socialLinks = [];
-   // error_log('Database error: ' . $e->getMessage());
 }
 
 // Periksa apakah data about jika ditemukan
@@ -46,7 +46,7 @@ if ($about) {
 } else {
    $description = "Deskripsi tidak tersedia.";
    $name = "Nama tidak tersedia.";
-   $image = "default-image.jpg"; // Gambar default jika tidak ada
+   $image = "default-image.jpg";
    $facebook = "#";
    $instagram = "#";
    $youtube = "#";
@@ -72,6 +72,7 @@ $stmt->execute();
 $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
+<!-- Akhir PHP Script -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +80,7 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>SMK NEGERI 1 BOLAANG</title>
 
    <!-- SEO Meta Tags -->
    <title>SMK NEGERI 1 BOLAANG - Pendidikan Kejuruan Berkualitas</title>
@@ -297,18 +299,44 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
          margin-bottom: 10px;
       }
    </style>
-   <title>SMK NEGERI 1 BOLAANG</title>
+   <!-- Custom Button in Navbar -->
+   <style>
+      .nav__item--custom-button {
+         margin-left: .2rem;
+      }
+
+      .nav__custom-button {
+         display: inline-block;
+         padding: 0.2rem .5rem;
+         border-radius: 0.25rem;
+         font-size: 0.9rem;
+         font-weight: 600;
+         text-align: center;
+         transition: opacity 0.3s, transform 0.3s;
+      }
+
+      .nav__custom-button:hover {
+         opacity: 0.9;
+         transform: translateY(-2px);
+      }
+
+      @media screen and (max-width: 1024px) {
+         .nav__item--custom-button {
+            margin-left: 0;
+         }
+
+         .nav__custom-button {
+            padding: 0.75rem 1rem;
+         }
+      }
+
+      @media screen and (max-width: 380px) {
+         .nav__custom-button {
+            font-size: 0.8rem;
+         }
+      }
+   </style>
 </head>
-
-<!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NN3BHD7T"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T4NN3BHD7T');
-</script> -->
 
 <body>
    <!--==================== HEADER ====================-->
@@ -346,9 +374,9 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   </ul>
                </li>
 
-               <li class="nav__item">
+               <!-- <li class="nav__item">
                   <a href="#contact" class="nav__link">Kontak</a>
-               </li>
+               </li> -->
 
                <li class="nav__item dropdown">
                   <a href="javascript:void(0)" class="nav__link dropdown__toggle">
@@ -360,6 +388,18 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
                      <li><a href="struktur.php#profil-staff" class="dropdown__link">Profil Staff</a></li>
                   </ul>
                </li>
+
+               <?php if ($customButton && $customButton['is_visible']): ?>
+                  <li class="nav__item nav__item--custom-button">
+                     <a href="<?php echo htmlspecialchars($customButton['url']); ?>"
+                        class="nav__link nav__custom-button"
+                        style="background-color: <?php echo htmlspecialchars($customButton['button_color']); ?>;
+                  color: <?php echo htmlspecialchars($customButton['text_color']); ?>;"
+                        target="_blank" rel="noopener noreferrer">
+                        <?php echo htmlspecialchars($customButton['text']); ?>
+                     </a>
+                  </li>
+               <?php endif; ?>
             </ul>
 
             <!-- Close button -->

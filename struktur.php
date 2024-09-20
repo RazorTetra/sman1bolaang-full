@@ -30,10 +30,10 @@ function getContactInfo()
    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-// // Fetch struktur organisasi image path
-// $stmt = $pdo->query("SELECT image_path FROM struktur_organisasi WHERE id = 1");
-// $struktur = $stmt->fetch(PDO::FETCH_ASSOC);
-// $image_path = $struktur['image_path'];
+// Ambil data button
+$pdo = new PDO($dsn, $user, $pass, $options);
+$stmt = $pdo->query("SELECT * FROM custom_navbar_button WHERE is_visible = 1 LIMIT 1");
+$customButton = $stmt->fetch();
 
 // Fetch staff profiles
 $stmt = $pdo->query("SELECT * FROM profil_staff ORDER BY id");
@@ -375,6 +375,40 @@ $tupoksiList = $stmt->fetchAll(PDO::FETCH_ASSOC);
       }
    </style>
 
+   <!-- Custom Button in Navbar -->
+   <style>
+      .nav__custom-button {
+         display: inline-block;
+         padding: 0.2rem .5rem;
+         border-radius: 0.25rem;
+         font-size: 0.9rem;
+         font-weight: 600;
+         text-align: center;
+         transition: opacity 0.3s, transform 0.3s;
+      }
+
+      .nav__custom-button:hover {
+         opacity: 0.9;
+         transform: translateY(-2px);
+      }
+
+      @media screen and (max-width: 1024px) {
+         .nav__item--custom-button {
+            margin-left: 0;
+         }
+
+         .nav__custom-button {
+            padding: 0.75rem 1rem;
+         }
+      }
+
+      @media screen and (max-width: 380px) {
+         .nav__custom-button {
+            font-size: 0.8rem;
+         }
+      }
+   </style>
+
    <title>SMK NEGERI 1 BOLAANG</title>
 </head>
 
@@ -407,9 +441,17 @@ $tupoksiList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   <a href="#profil-staff" class="nav__link">Profil Staff</a>
                </li>
 
-               <li class="nav__item">
-                  <a href="#contact" class="nav__link">Kontak</a>
-               </li>
+               <?php if ($customButton && $customButton['is_visible']): ?>
+                  <li class="nav__item nav__item--custom-button">
+                     <a href="<?php echo htmlspecialchars($customButton['url']); ?>"
+                        class="nav__link nav__custom-button"
+                        style="background-color: <?php echo htmlspecialchars($customButton['button_color']); ?>;
+                  color: <?php echo htmlspecialchars($customButton['text_color']); ?>;"
+                        target="_blank" rel="noopener noreferrer">
+                        <?php echo htmlspecialchars($customButton['text']); ?>
+                     </a>
+                  </li>
+               <?php endif; ?>
             </ul>
 
             <!-- Close button -->
