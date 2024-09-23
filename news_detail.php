@@ -330,16 +330,16 @@ $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
 
                     <!-- Comment form -->
                     <div class="mb-6">
-                        <h3 class="text-xl font-bold mb-4 dark:text-white">Tambahkan Komentar</h3>
+                        <h3 class="text-xl font-bold mb-4">Tambahkan Komentar</h3>
                         <form id="commentForm">
                             <input type="hidden" name="article_id" value="<?php echo $id; ?>">
                             <div class="mb-4">
-                                <label for="user_name" class="block mb-2 dark:text-white">Nama:</label>
-                                <input type="text" id="user_name" name="user_name" required class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600">
+                                <label for="user_name" class="block mb-2">Nama:</label>
+                                <input type="text" id="user_name" name="user_name" required class="w-full p-2 border rounded">
                             </div>
                             <div class="mb-4">
-                                <label for="comment" class="block mb-2 dark:text-white">Komentar:</label>
-                                <textarea id="comment" name="comment" required class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600 resize-none h-32"></textarea>
+                                <label for="comment" class="block mb-2 ">Komentar:</label>
+                                <textarea id="comment" name="comment" required class="w-full p-2 border rounded   resize-none h-32"></textarea>
                             </div>
                             <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Kirim Komentar</button>
                         </form>

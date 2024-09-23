@@ -755,7 +755,7 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
    </footer>
 
    <!--========== SCROLL UP ==========-->
-   <a href="#" class="scrollup" id="scroll-up">
+   <a href="#home" class="scrollup" id="scroll-up">
       <i class="ri-arrow-up-s-line"></i>
    </a>
 
