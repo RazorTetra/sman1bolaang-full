@@ -185,7 +185,7 @@
 
 @media (max-width: 480px) {
   .chat-widget {
-    bottom: 70px;
+    bottom: 20px;
     /* Sesuaikan agar tidak menutupi elemen lain */
     left: 10px;
   }

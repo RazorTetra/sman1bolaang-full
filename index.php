@@ -523,7 +523,9 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
                <article class="news__card">
                   <div class="news__image">
                      <img src="<?php echo htmlspecialchars($news['image']); ?>" alt="image" class="news__img">
-                     <a href="news_detail.php?id=<?php echo $news['id']; ?>" class="news__button button">
+                     <?php
+                     $url_friendly_title = urlencode(str_replace(' ', '-', strtolower($news['title'])));
+                     ?> <a href="news_detail.php?title=<?php echo $url_friendly_title; ?>" class="news__button button">
                         <i class="ri-arrow-right-up-line"></i>
                      </a>
                   </div>
@@ -537,7 +539,7 @@ $skillsDropdown = $stmt->fetchAll(PDO::FETCH_ASSOC);
                   </div>
 
                   <div class="news__buttons">
-                     <a href="news_detail.php?id=<?php echo $news['id']; ?>" target="_blank" class="news__link">
+                     <a href="news_detail.php?title=<?php echo $url_friendly_title; ?>" target="_blank" class="news__link">
                         <i class="ri-arrow-right-circle-line"></i> Baca Selengkapnya.
                      </a>
                   </div>

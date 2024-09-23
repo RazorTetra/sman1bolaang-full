@@ -1,3 +1,0 @@
-RewriteEngine On
-RewriteRule ^about$ /index.php?page=about [L]
-RewriteRule ^contact$ /index.php?page=contact [L]
