@@ -1,5 +1,5 @@
 <?php
-require_once('config.php'); // Koneksi database
+require_once('config.php'); 
 
 $title = isset($_GET['title']) ? $_GET['title'] : '';
 $original_title = str_replace('-', ' ', urldecode($title));
@@ -38,7 +38,6 @@ try {
     $socialLinks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $socialLinks = [];
-    // error_log('Database error: ' . $e->getMessage());
 }
 ?>
 
@@ -108,7 +107,7 @@ function getRelevantEmoji($title)
         }
     }
 
-    return '📢';  // Default emoji if no keyword matches
+    return '📢'; 
 }
 
 function createHashtag($title)
@@ -126,10 +125,6 @@ $url_friendly_title = urlencode(strtolower(str_replace(' ', '-', $news['title'])
 $currentUrl = "http://$_SERVER[HTTP_HOST]" . dirname($_SERVER['PHP_SELF']) . "/news_detail.php?title=" . $url_friendly_title;
 $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
 $fullImageUrl = 'https://mahasiswa-it.com/Sekolah/' . $news['image'];
-
-// Aktifkan ini ketika hosting dan ganti urlnya
-// $currentUrl = "https://mahasiswa-it.com/Sekolah/news_detail.php?title=" . $url_friendly_title;$shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
-
 ?>
 
 
