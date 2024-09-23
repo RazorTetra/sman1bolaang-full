@@ -79,12 +79,16 @@ function createWhatsAppMessage($title, $description, $url)
     $emoji = getRelevantEmoji($title);
     $hashtag = createHashtag($title);
 
-    return "🔥 Berita Terbaru SMKN 1 Bolaang! 🔥\n\n" .
+    // return "*{$title}*\n\n" .
+    //     "{$emoji} *{$title}*\n\n" .
+    //     "🔗 Baca selengkapnya: {$url}";
+    return 
         "{$emoji} *{$title}*\n\n" .
         "{$description}\n\n" .
         "🔗 Baca selengkapnya: {$url}\n\n" .
         "Jangan lupa share ke teman-temanmu ya! 👍\n" .
         "{$hashtag}";
+    // return $url;
 }
 
 function getRelevantEmoji($title)
@@ -121,6 +125,11 @@ function createHashtag($title)
 $url_friendly_title = urlencode(strtolower(str_replace(' ', '-', $news['title'])));
 $currentUrl = "http://$_SERVER[HTTP_HOST]" . dirname($_SERVER['PHP_SELF']) . "/news_detail.php?title=" . $url_friendly_title;
 $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
+$fullImageUrl = 'https://mahasiswa-it.com/Sekolah/' . $news['image'];
+
+// Aktifkan ini ketika hosting dan ganti urlnya
+// $currentUrl = "https://mahasiswa-it.com/Sekolah/news_detail.php?title=" . $url_friendly_title;$shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
+
 ?>
 
 
@@ -130,6 +139,13 @@ $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="<?php echo htmlspecialchars($news['title']); ?> - SMKN 1 Bolaang">
+    <meta property="og:description" content="<?php echo htmlspecialchars(substr(strip_tags($news['content']), 0, 200)) . '...'; ?>">
+    <meta property="og:image" content="<?php echo $fullImageUrl; ?>">
+    <meta property="og:url" content="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="fb:app_id" content="827402309596938">
 
     <!--=============== FAVICON ===============-->
     <link rel="shortcut icon" href="assets/img/logo-smk.png" type="image/x-icon">
@@ -288,7 +304,9 @@ $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
             }
         }
     </style>
-    <title>Detail Berita</title>
+    <title><?php echo htmlspecialchars($news['title']); ?> - SMKN 1 Bolaang</title>
+
+
 </head>
 
 <body>
@@ -311,7 +329,7 @@ $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
                     </div>
                     <p class="text-sm mb-4">Dibuat tanggal <?php echo date('d F Y', strtotime($news['created_at'])); ?></p>
                     <?php if ($news['image']): ?>
-                        <img src="<?php echo htmlspecialchars($news['image']); ?>" alt="News Image" class="w-full h-auto object-cover rounded-lg mb-6">
+                        <img src="<?php echo htmlspecialchars($news['image']); ?>" alt="<?php echo htmlspecialchars($news['title']); ?>" class="w-full h-auto object-cover rounded-lg mb-6">
                     <?php endif; ?>
                     <div class="prose max-w-none mb-6">
                         <?php echo nl2br(htmlspecialchars($news['content'])); ?>
@@ -330,6 +348,11 @@ $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
                                     <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z" fill="#25D366" />
                                 </svg>
                             </a>
+                            <button id="copyLinkBtn" class="hover:opacity-80 transition duration-300" title="Salin Link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000">
+                                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
 
@@ -536,6 +559,27 @@ $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
                         });
                     }
                 }, 'json');
+            });
+        });
+    </script>
+    <script>
+        // Handle copy link button
+        $('#copyLinkBtn').click(function() {
+            var dummy = document.createElement('input'),
+                text = window.location.href;
+
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Link Disalin!',
+                text: 'Link artikel telah disalin ke clipboard.',
+                showConfirmButton: false,
+                timer: 1500
             });
         });
     </script>
