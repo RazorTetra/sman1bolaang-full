@@ -122,7 +122,7 @@ function createHashtag($title)
 
 // Usage:
 $url_friendly_title = urlencode(strtolower(str_replace(' ', '-', $news['title'])));
-$currentUrl = "http://$_SERVER[HTTP_HOST]" . dirname($_SERVER['PHP_SELF']) . "/news_detail.php?title=" . $url_friendly_title;
+$currentUrl = "https://$_SERVER[HTTP_HOST]" . dirname($_SERVER['PHP_SELF']) . "/news_detail.php?title=" . $url_friendly_title;
 $shareLinks = generateShareLinks($currentUrl, $news['title'], $news['content']);
 $fullImageUrl = 'https://mahasiswa-it.com/Sekolah/' . $news['image'];
 ?>
