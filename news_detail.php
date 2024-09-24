@@ -1,5 +1,5 @@
 <?php
-require_once('config.php'); 
+require_once('config.php');
 
 $title = isset($_GET['title']) ? $_GET['title'] : '';
 $original_title = str_replace('-', ' ', urldecode($title));
@@ -81,7 +81,7 @@ function createWhatsAppMessage($title, $description, $url)
     // return "*{$title}*\n\n" .
     //     "{$emoji} *{$title}*\n\n" .
     //     "🔗 Baca selengkapnya: {$url}";
-    return 
+    return
         "{$emoji} *{$title}*\n\n" .
         "{$description}\n\n" .
         "🔗 Baca selengkapnya: {$url}\n\n" .
@@ -107,7 +107,7 @@ function getRelevantEmoji($title)
         }
     }
 
-    return '📢'; 
+    return '📢';
 }
 
 function createHashtag($title)
@@ -576,6 +576,21 @@ $fullImageUrl = 'https://mahasiswa-it.com/Sekolah/' . $news['image'];
                 showConfirmButton: false,
                 timer: 1500
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var whatsappLink = document.querySelector('a[href^="https://wa.me/"]');
+            if (whatsappLink) {
+                whatsappLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var width = 550;
+                    var height = 420;
+                    var left = (screen.width / 2) - (width / 2);
+                    var top = (screen.height / 2) - (height / 2);
+                    window.open(this.href, 'whatsapp-share', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+                });
+            }
         });
     </script>
 </body>
