@@ -124,7 +124,7 @@ $customKnowledge = getValue('custom_knowledge');
 
     <div class="container mx-auto p-6">
         <h1 class="text-3xl font-bold text-center text-primary">AI Chatbot</h1>
-        <h3 class="text-xl text-center text-gray-400">Powered by Google Gemini 1.0 Pro</h3>
+        <h3 class="text-xl text-center text-gray-400">Powered by Google Gemini 1.5 Flash</h3>
         <p class="text-center mb-8 text-gray-400">Visit: <a class="text-primary" href="https://ai.google.dev/" target="_blank">the website</a></p>
 
         <?php if (!empty($updateMessage)): ?>
@@ -139,6 +139,7 @@ $customKnowledge = getValue('custom_knowledge');
                 <li>Jangan pernah memasukkan informasi kredensial atau data pribadi sensitif ke dalam sistem ini.</li>
                 <li>Pastikan untuk menggunakan API key yang aman dan tidak membagikannya kepada siapapun.</li>
                 <li>Informasi yang dimasukkan di sini akan digunakan oleh AI untuk berinteraksi dengan pengguna.</li>
+                <li>Maksimal chat dalam satu hari adalah 1500 permintaan</li>
             </ul>
         </div>
 

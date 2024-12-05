@@ -1,7 +1,7 @@
 <?php
 // api/gemini_connection.php
 
-// Fungsi untuk mendapatkan API key dari database
+// Function to get API key from database
 function getGeminiKey()
 {
     global $pdo;
@@ -10,29 +10,26 @@ function getGeminiKey()
     return $result ? $result['api_key'] : null;
 }
 
-
 function formatAIResponse($response) {
-    // Ubah ** menjadi tag <strong>
+    // Convert ** to <strong> tags
     $response = preg_replace('/\*\*(.*?)\*\*/s', '<strong>$1</strong>', $response);
     
-    // Ubah baris yang dimulai dengan * menjadi list item
+    // Convert lines starting with * to list items
     $response = preg_replace('/^\* (.*?)$/m', '<li>$1</li>', $response);
     
-    // Bungkus list items berurutan dengan tag <ul>
+    // Wrap consecutive list items with <ul> tags
     $response = preg_replace('/(<li>.*?<\/li>(\s*)?)+/s', '<ul>$0</ul>', $response);
     
-    // Ubah baris kosong menjadi paragraf baru
+    // Convert empty lines to new paragraphs
     $response = '<p>' . preg_replace('/\n\s*\n/', '</p><p>', $response) . '</p>';
     
-    // Bungkus seluruh respon dalam div dengan class untuk styling
+    // Wrap the entire response in a div with class for styling
     $response = '<div class="ai-response">' . $response . '</div>';
     
     return $response;
 }
 
-
-
-// Kelas untuk melacak penggunaan API
+// Class to track API usage
 class UsageTracker
 {
     private $pdo;
@@ -41,9 +38,10 @@ class UsageTracker
     private $requests_this_minute;
     private $tokens_this_minute;
 
-    const MAX_RPM = 15;
-    const MAX_TPM = 32000;
-    const MAX_RPD = 1500;
+    // Updated rate limits for Gemini 1.5 Flash
+    const MAX_RPM = 15;  // Requests per minute
+    const MAX_TPM = 1000000;  // Tokens per minute (1 million)
+    const MAX_RPD = 1500;  // Requests per day
 
     public function __construct($pdo)
     {
@@ -72,14 +70,14 @@ class UsageTracker
     {
         $current_time = time();
 
-        // Reset counters jika sudah hari baru
+        // Reset counters if it's a new day
         if (date('Y-m-d', $current_time) != date('Y-m-d', $this->last_request_time)) {
             $this->requests_today = 0;
             $this->requests_this_minute = 0;
             $this->tokens_this_minute = 0;
         }
 
-        // Reset counters per menit
+        // Reset per-minute counters
         if ($current_time - $this->last_request_time >= 60) {
             $this->requests_this_minute = 0;
             $this->tokens_this_minute = 0;
@@ -102,7 +100,7 @@ class UsageTracker
     }
 }
 
-// Fungsi untuk melakukan request ke Gemini API
+// Function to make requests to Gemini API
 function chatWithGemini($message)
 {
     global $pdo;
@@ -116,7 +114,8 @@ function chatWithGemini($message)
         throw new Exception("Usage limit reached. Please try again later.");
     }
 
-    $url = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.0-pro:generateContent?key=' . $api_key;
+    // Updated to use Gemini 1.5 Flash
+    $url = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=' . $api_key;
     $headers = ['Content-Type: application/json'];
 
     $data = [
@@ -124,6 +123,30 @@ function chatWithGemini($message)
             [
                 'role' => 'user',
                 'parts' => [['text' => $message]]
+            ]
+        ],
+        'generationConfig' => [
+            'temperature' => 0.9,
+            'topK' => 1,
+            'topP' => 1,
+            'maxOutputTokens' => 8192,
+        ],
+        'safetySettings' => [
+            [
+                'category' => 'HARM_CATEGORY_HARASSMENT',
+                'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
+            ],
+            [
+                'category' => 'HARM_CATEGORY_HATE_SPEECH',
+                'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
+            ],
+            [
+                'category' => 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+                'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
+            ],
+            [
+                'category' => 'HARM_CATEGORY_DANGEROUS_CONTENT',
+                'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
             ]
         ]
     ];
@@ -149,13 +172,13 @@ function chatWithGemini($message)
     }
 
     $ai_response = $result['candidates'][0]['content']['parts'][0]['text'];
-    $tokens_estimate = (strlen($message) + strlen($ai_response)) / 4; // Estimasi kasar
+    $tokens_estimate = (strlen($message) + strlen($ai_response)) / 4; // Rough estimation
     $usage_tracker->updateUsage($tokens_estimate);
 
     return $ai_response;
 }
 
-// Fungsi untuk memproses chat
+// Function to process chat
 function processChat($userMessage)
 {
     global $pdo;
@@ -169,6 +192,6 @@ function processChat($userMessage)
         return $response;
     } catch (Exception $e) {
         error_log($e->getMessage());
-        return "Maaf, terjadi kesalahan dalam memproses permintaan Anda.";
+        return "Sorry, there was an error processing your request.";
     }
 }
